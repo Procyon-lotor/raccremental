@@ -1,0 +1,3545 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Acorn Incremental</title>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        /* ============================================================
+           GENERAL
+           ============================================================ */
+
+        body {
+            margin: 0;
+            background-color: #202020;
+            color: #eeeeee;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+
+
+        /* ============================================================
+           RESOURCE DISPLAYS
+           ============================================================ */
+
+        #resource-display {
+            margin-top: 30px;
+        }
+
+        #acorn-count {
+            font-size: 32px;
+        }
+
+        #production-rate {
+            margin-top: 8px;
+            font-size: 18px;
+            color: #bbbbbb;
+        }
+
+
+        #golden-resource-display {
+            display: none;
+            margin-top: 30px;
+        }
+
+        #golden-acorn-count {
+            font-size: 32px;
+            color: #ffd700;
+        }
+
+        #golden-production-rate {
+            margin-top: 8px;
+            font-size: 18px;
+            color: #b89b40;
+        }
+
+        #golden-production-rate strong {
+            color: #ffd700;
+        }
+
+        #golden-acorn-description {
+            margin-top: 36px;
+            margin-bottom: 28px;
+            font-size: 18px;
+            color: #bbbbbb;
+        }
+
+
+        /* ============================================================
+           RESOURCE TABS
+           ============================================================ */
+
+        #resource-tabs {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .resource-tab {
+            padding: 10px 25px;
+            font-size: 16px;
+            font-weight: bold;
+
+            color: #eeeeee;
+            background-color: #333333;
+
+            border: 2px solid #666666;
+            border-radius: 8px;
+
+            cursor: pointer;
+
+            transition:
+                box-shadow 0.2s ease,
+                background-color 0.2s ease;
+        }
+
+        .resource-tab:hover {
+            background-color: #444444;
+        }
+
+        .resource-tab.active {
+            border-color: #eeeeee;
+        }
+
+
+        /* Golden Acorns tab */
+
+        #golden-acorns-tab {
+            color: #ffd700;
+        }
+
+        #golden-acorns-tab.active {
+            border-color: #ffd700;
+        }
+
+
+        /* Tab upgrade availability glow */
+
+        .resource-tab.upgrade-available {
+            box-shadow: 0 0 10px 3px #eeeeee;
+        }
+
+        #golden-acorns-tab.upgrade-available {
+            box-shadow: 0 0 10px 3px #ffd700;
+        }
+
+        .resource-tab.active.upgrade-available {
+            box-shadow: 0 0 10px 3px #eeeeee;
+        }
+
+        #golden-acorns-tab.active.upgrade-available {
+            box-shadow: 0 0 10px 3px #ffd700;
+        }
+
+
+        /* ============================================================
+           PAGES
+           ============================================================ */
+
+        #acorns-page {
+            display: block;
+        }
+
+        #golden-acorns-page {
+            display: none;
+        }
+
+
+        /* ============================================================
+           GATHER BUTTON
+           ============================================================ */
+
+        #gather-button {
+            margin-top: 64px;
+
+            padding: 18px 40px;
+
+            font-size: 22px;
+            font-weight: bold;
+
+            background-color: #444444;
+            color: #eeeeee;
+
+            border: 2px solid #eeeeee;
+            border-radius: 10px;
+
+            cursor: pointer;
+
+            position: relative;
+            overflow: hidden;
+
+            isolation: isolate;
+        }
+
+
+        /* Cooldown progress fill */
+
+        #gather-button::before {
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            left: 0;
+            bottom: 0;
+
+            width: var(--cooldown-progress, 100%);
+
+            background-color: #666666;
+
+            z-index: 0;
+
+            transition: width 0.1s linear;
+        }
+
+
+        /* Keep button text above progress fill */
+
+        #gather-button-text {
+            position: relative;
+            z-index: 1;
+        }
+
+
+        #gather-button:hover:not(:disabled) {
+            background-color: #555555;
+        }
+
+        #gather-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+
+        #cooldown-text {
+            margin-top: 8px;
+
+            font-size: 14px;
+
+            min-height: 18px;
+
+            color: #aaaaaa;
+        }
+
+
+        /* ============================================================
+           REGULAR UPGRADE GRID
+           ============================================================ */
+
+        #upgrade-container {
+            width: 700px;
+
+            margin: 35px auto;
+
+            display: grid;
+
+            grid-template-columns: repeat(10, 60px);
+            grid-template-rows: repeat(3, 60px);
+
+            gap: 10px;
+
+            justify-content: center;
+        }
+
+
+        .upgrade-button {
+    width: 60px;
+    height: 60px;
+
+    background-color: #383838;
+    color: #eeeeee;
+
+    border: 3px solid white;
+    border-radius: 8px;
+
+    cursor: pointer;
+
+    font-size: 16px;
+    font-weight: bold;
+
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+
+    transition: box-shadow 0.2s ease;
+}
+
+        .upgrade-button:hover:not(:disabled) {
+            background-color: #4a4a4a;
+        }
+
+
+        .upgrade-button:disabled {
+            cursor: not-allowed;
+        }
+
+
+        /* Purchased upgrade */
+
+        .upgrade-button.purchased {
+            border-color: #e7e700;
+        }
+
+
+        /* Fully purchased upgrade */
+
+        .upgrade-button.maxed {
+            border-color: #3fbf3f;
+            box-shadow: none;
+        }
+
+
+        /* Available upgrade glow */
+
+        .upgrade-button.available {
+            box-shadow: 0 0 10px 3px white;
+        }
+
+        .upgrade-button.purchased.available {
+            box-shadow: 0 0 10px 3px #ffd700;
+        }
+
+
+        /* Upgrade tooltip */
+
+        .upgrade-button .tooltip {
+            visibility: hidden;
+
+            width: 240px;
+
+            background-color: #111111;
+            color: #eeeeee;
+
+            text-align: left;
+
+            padding: 10px;
+
+            border: 1px solid #666666;
+            border-radius: 6px;
+
+            position: absolute;
+
+            z-index: 10;
+
+            bottom: 70px;
+            left: 50%;
+
+            transform: translateX(-50%);
+
+            font-size: 13px;
+            font-weight: normal;
+
+            line-height: 1.4;
+        }
+
+
+        .upgrade-button:hover .tooltip {
+            visibility: visible;
+        }
+
+
+        .upgrade-level {
+    position: absolute;
+
+    top: 8px;
+    left: 0;
+    right: 0;
+
+    font-size: 14px;
+
+    text-align: center;
+}
+
+        /* ============================================================
+           GOLDEN UPGRADE GRID
+           ============================================================ */
+
+        #golden-upgrade-container {
+            width: 900px;
+            max-width: 90%;
+
+            margin: 35px auto;
+
+            display: grid;
+
+            grid-template-columns: repeat(4, 1fr);
+
+            gap: 15px;
+        }
+
+
+        .golden-upgrade-button {
+            min-height: 180px;
+
+            padding: 20px;
+
+            background-color: #383838;
+            color: #eeeeee;
+
+            border: 3px solid #ffd700;
+            border-radius: 10px;
+
+            cursor: pointer;
+
+            display: flex;
+
+            flex-direction: column;
+
+            justify-content: flex-start;
+            align-items: center;
+
+            text-align: center;
+
+            transition:
+                background-color 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+
+        .golden-upgrade-button:hover:not(:disabled) {
+            background-color: #4a4a4a;
+        }
+
+
+        .golden-upgrade-button.available {
+            box-shadow: 0 0 10px 3px #ffd700;
+        }
+
+
+        .golden-upgrade-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+
+        .golden-upgrade-name {
+            font-size: 18px;
+            font-weight: bold;
+
+            margin-bottom: 12px;
+
+            color: #ffd700;
+        }
+
+
+        .golden-upgrade-description {
+            font-size: 14px;
+
+            line-height: 1.4;
+
+            margin-bottom: 12px;
+        }
+
+
+        .golden-upgrade-current {
+            font-size: 15px;
+            font-weight: bold;
+
+            margin-bottom: 10px;
+
+            color: #eeeeee;
+        }
+
+
+        .golden-upgrade-cost {
+            font-size: 15px;
+            font-weight: bold;
+            margin-top: auto;
+            color: #ffd700;
+        }
+
+        .upgrade-divider {
+    position: absolute;
+
+    left: 10%;
+    right: 10%;
+    top: 60%;
+
+    height: 1px;
+
+    background-color: #777777;
+}
+
+.upgrade-cost {
+    position: absolute;
+
+    left: 0;
+    right: 0;
+    top: 67%;
+
+    font-size: 10px;
+    font-weight: normal;
+
+    color: #bbbbbb;
+
+    text-align: center;
+}
+
+#skills-page {
+    display: none;
+}
+
+#skill-point-display {
+    margin-top: 30px;
+
+    font-size: 32px;
+    color: #ff69b4;
+}
+
+#skills-tab {
+    color: #ff69b4;
+}
+
+#skills-tab.active {
+    border-color: #ff69b4;
+}
+
+#skills-resource-display {
+    display: none;
+
+    margin-top: 30px;
+
+    font-size: 32px;
+    color: #ff69b4;
+}
+
+#skills-resource-display strong {
+    color: #ff69b4;
+}
+
+#skills-page {
+    display: none;
+    margin-top: 25px;
+}
+
+#learn-skill-point-button {
+    width: 500px;
+    max-width: 90%;
+
+    padding: 15px;
+
+    font-size: 18px;
+    font-weight: bold;
+
+    background-color: #383838;
+    color: #eeeeee;
+
+    border: 2px solid #ff69b4;
+    border-radius: 8px;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+#learn-skill-point-button:hover:not(:disabled) {
+    background-color: #4a4a4a;
+}
+
+#learn-skill-point-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+#total-skill-points {
+    margin-top: 10px;
+
+    font-size: 16px;
+    color: #bbbbbb;
+}
+
+#total-skill-points strong {
+    color: #ff69b4;
+}
+
+#skills-container {
+    width: 500px;
+    max-width: 90%;
+
+    margin: 30px auto;
+}
+
+.skill {
+    text-align: left;
+}
+
+.skill-header {
+    margin-bottom: 8px;
+
+    font-size: 18px;
+    color: #ff69b4;
+}
+
+.skill-content {
+    display: flex;
+    align-items: center;
+
+    gap: 15px;
+}
+
+.skill-points-controls {
+    width: 50px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    gap: 5px;
+}
+
+.skill-points-controls button {
+    width: 32px;
+    height: 25px;
+
+    padding: 0;
+
+    font-size: 18px;
+    font-weight: bold;
+
+    background-color: #383838;
+    color: #eeeeee;
+
+    border: 1px solid #777777;
+    border-radius: 5px;
+
+    cursor: pointer;
+}
+
+.skill-points-controls button:hover:not(:disabled) {
+    background-color: #4a4a4a;
+}
+
+.skill-points-controls button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+#skill-content {
+    flex: 1;
+}
+
+.skill-progress-section {
+    flex: 1;
+}
+
+.skill-xp-text {
+    margin-bottom: 5px;
+
+    font-size: 13px;
+    color: #bbbbbb;
+}
+
+.skill-xp-bar-container {
+    width: 100%;
+
+    padding: 8px;
+
+    background-color: #383838;
+
+    border: 1px solid #666666;
+    border-radius: 7px;
+}
+
+.skill-xp-bar {
+    width: 100%;
+    height: 26px;
+
+    background-color: #222222;
+
+    border-radius: 4px;
+
+    overflow: hidden;
+}
+
+.skill-xp-bar div {
+    height: 100%;
+    width: 0%;
+
+    background-color: #add8e6;
+
+    transition: width 0.1s linear;
+}
+
+.skill-xp-bar div {
+    height: 100%;
+    width: 0%;
+
+    background-color: #add8e6;
+
+    transition: width 0.1s linear;
+}
+
+.skill-xp-rate {
+    margin-top: 5px;
+
+    font-size: 13px;
+    color: #bbbbbb;
+}
+
+.skill {
+    padding: 20px;
+
+    background-color: #383838;
+
+    border: 2px solid #add8e6;
+    border-radius: 10px;
+
+    text-align: left;
+
+    margin-bottom: 12px;
+}
+
+/* ============================================================
+   FORGING SKILL THEME
+   ============================================================ */
+
+   #forging-skill {
+    border-color: #ffd700;
+}
+
+#forging-skill .skill-header {
+    color: #ffd700;
+}
+
+#forging-skill .skill-effect strong {
+    color: #ffd700;
+}
+
+#forging-skill .skill-xp-bar div {
+    background-color: #ffd700;
+}
+
+.skill-header {
+    margin-bottom: 8px;
+
+    font-size: 18px;
+    color: #add8e6;
+}
+
+.skill-effect {
+    margin-top: 8px;
+
+    font-size: 13px;
+    color: #bbbbbb;
+}
+
+.skill-effect strong {
+    color: #add8e6;
+}
+
+#skills-description {
+    width: 800px;
+    max-width: 90%;
+
+    margin: 25px auto 0;
+
+    font-size: 13px;
+    line-height: 1.7;
+
+    color: #bbbbbb;
+}
+
+#skills-tab.upgrade-available {
+    box-shadow: 0 0 10px 3px #ff69b4;
+}
+
+#golden-acorn-timer {
+    display: none;
+    margin-top: 6px;
+    font-size: 16px;
+    color: #b89b40;
+}
+
+/* ============================================================
+   CHANGELOG
+   ============================================================ */
+
+   #changelog-button {
+    position: fixed;
+    right: 15px;
+    bottom: 15px;
+
+    padding: 6px 10px;
+
+    background-color: #333333;
+    color: #bbbbbb;
+
+    border: 1px solid #666666;
+    border-radius: 5px;
+
+    font-size: 12px;
+
+    cursor: pointer;
+
+    z-index: 100;
+}
+
+#changelog-button:hover {
+    background-color: #444444;
+    color: #eeeeee;
+}
+
+#changelog-modal {
+    display: none;
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    background-color: rgba(0, 0, 0, 0.7);
+
+    align-items: center;
+    justify-content: center;
+
+    z-index: 200;
+}
+
+#changelog-content {
+    position: relative;
+
+    width: 800px;
+    max-width: 90%;
+    max-height: 80vh;
+
+    padding: 25px;
+
+    background-color: #303030;
+    color: #eeeeee;
+
+    border: 2px solid #666666;
+    border-radius: 10px;
+
+    text-align: center;
+
+    overflow-y: auto;
+}
+
+#changelog-content h1 {
+    position: sticky;
+    top: -25px;
+
+    margin: -25px -25px 25px -25px;
+    padding: 25px;
+
+    background-color: #303030;
+
+    text-align: center;
+    z-index: 1;
+}
+
+#changelog-content h2 {
+    margin-top: 25px;
+    margin-bottom: 8px;
+}
+
+#changelog-content p {
+    margin: 8px 0;
+}
+
+#changelog-close {
+    position: absolute;
+    top: 8px;
+    right: 10px;
+
+    background: none;
+    border: none;
+
+    color: #bbbbbb;
+
+    font-size: 24px;
+    cursor: pointer;
+
+    z-index: 2;
+}
+
+#changelog-close:hover {
+    color: #eeeeee;
+}
+
+.upgrade-subtitle {
+    margin-top: 26px;
+
+    padding: 0 4px;
+
+    color: #999999;
+
+    font-size: 9px;
+
+    font-style: italic;
+
+    font-weight: normal;
+
+    line-height: 1.2;
+
+    text-align: center;
+}
+
+.skill-subtitle {
+    margin-top: 4px;
+
+    margin-bottom: 16px;
+
+    font-size: 13px;
+
+    color: #999999;
+
+    font-style: italic;
+
+    font-weight: normal;
+}
+
+.upgrade-tooltip-subtitle {
+    display: inline-block;
+
+    margin-top: 4px;
+
+    color: #999999;
+
+    font-size: 12px;
+
+    font-style: italic;
+
+    font-weight: normal;
+}
+
+.skill-level-up-timer {
+    margin-top: 6px;
+    font-size: 13px;
+    color: #999999;
+}
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- ============================================================
+         RESOURCE DISPLAYS
+         ============================================================ -->
+
+    <div id="resource-display">
+
+        <div id="acorn-count">
+            You have <strong id="acorn-number">0</strong> acorns
+        </div>
+
+        <div id="production-rate">
+            You are gathering
+            <strong id="acorn-rate">0</strong>
+            acorns/sec
+        </div>
+
+    </div>
+
+
+    <div id="golden-resource-display">
+
+        <div id="golden-acorn-count">
+            You have
+            <strong id="golden-acorn-number">0</strong>
+            golden acorns
+        </div>
+
+        <div id="golden-production-rate">
+            You are gathering
+            <strong id="golden-acorn-rate">0</strong>
+            golden acorns/sec
+        </div>
+
+        <div id="golden-acorn-timer">
+            Next golden acorn in 60:00
+        </div>
+
+    </div>
+
+    <div id="skills-resource-display">
+        You have <strong id="skill-point-number">0</strong> skill points
+    </div>
+
+    <!-- ============================================================
+         RESOURCE TABS
+         ============================================================ -->
+
+    <div id="resource-tabs">
+
+        <button
+            id="acorns-tab"
+            class="resource-tab active"
+        >
+            Acorns
+        </button>
+
+        <button
+            id="golden-acorns-tab"
+            class="resource-tab"
+        >
+            Golden Acorns
+        </button>
+
+        <button id="skills-tab" class="resource-tab">
+            Skills
+        </button>
+
+    </div>
+
+
+    <!-- ============================================================
+         ACORNS PAGE
+         ============================================================ -->
+
+    <div id="acorns-page">
+
+        <button id="gather-button">
+
+            <span id="gather-button-text">
+                Gather 1 acorn
+            </span>
+
+        </button>
+
+
+        <div id="cooldown-text"></div>
+
+
+        <div id="upgrade-container"></div>
+
+    </div>
+
+
+    <!-- ============================================================
+         GOLDEN ACORNS PAGE
+         ============================================================ -->
+
+    <div id="golden-acorns-page">
+        <div id="golden-acorn-description"></div>
+        <div id="golden-upgrade-container"></div>
+
+    </div>
+
+    <div id="skills-page">
+
+        <button id="learn-skill-point-button">
+            Learn a Skill Point: 1,000,000 acorns
+        </button>
+    
+        <div id="total-skill-points">
+            Total skill points purchased:
+            <strong id="total-skill-points-number">0</strong>
+        </div>
+
+        <div id="skills-description">
+            <div>
+                Click the + button to assign skill points, and click the - button to unassign them.
+            </div>
+        
+            <div>
+                Each skill has an effect, and leveling up the skill improves that effect!
+            </div>
+        
+            <div>
+                You can assign multiple skill points to one skill, and the XP/sec gain is multiplied by the square of the skill points assigned.
+            </div>
+        </div>
+    
+        <div id="skills-container">
+
+            <!-- ============================================================
+                 GATHERING
+                 ============================================================ -->
+        
+            <div class="skill">
+        
+                <div class="skill-header">
+                    <strong>Gathering: Level 1</strong>
+        
+                    <div class="skill-subtitle">
+                        "What do you mean you don't know how to wash your food? Is it your first day as a raccoon?"
+                    </div>
+                </div>
+        
+                <div class="skill-content">
+        
+                    <div class="skill-points-controls">
+        
+                        <button id="gathering-minus">
+                            −
+                        </button>
+        
+                        <div id="gathering-points">
+                            0
+                        </div>
+        
+                        <button id="gathering-plus">
+                            +
+                        </button>
+        
+                    </div>
+        
+                    <div class="skill-progress-section">
+        
+                        <div class="skill-xp-text">
+                            <span id="gathering-xp">0</span>
+                            /
+                            <span id="gathering-xp-needed">10</span>
+                            XP
+                        </div>
+        
+                        <div class="skill-xp-bar">
+                            <div id="gathering-xp-fill"></div>
+                        </div>
+        
+                        <div class="skill-effect">
+                            Effect:
+                            <strong id="gathering-effect">1.00x</strong>
+                            all acorn gain
+                        </div>
+        
+                        <div class="skill-xp-rate">
+                            <span id="gathering-xp-rate">0</span>
+                            XP/sec
+                        </div>
+        
+                        <div class="skill-level-up-timer">
+                            Next level-up in
+                            <span id="gathering-level-up-timer">
+                                --:--
+                            </span>
+                        </div>
+        
+                    </div>
+        
+                </div>
+        
+            </div>
+        
+        
+            <!-- ============================================================
+                 FORGING
+                 ============================================================ -->
+        
+            <div
+                class="skill"
+                id="forging-skill"
+                style="display: none;"
+            >
+        
+                <div class="skill-header">
+                    <strong>Forging: Level 1</strong>
+        
+                    <div class="skill-subtitle">
+                        "Watch out for those little sparky things that come out when you smash your hammer!"
+                    </div>
+                </div>
+        
+                <div class="skill-content">
+        
+                    <div class="skill-points-controls">
+        
+                        <button id="forging-minus">
+                            −
+                        </button>
+        
+                        <div id="forging-points">
+                            0
+                        </div>
+        
+                        <button id="forging-plus">
+                            +
+                        </button>
+        
+                    </div>
+        
+                    <div class="skill-progress-section">
+        
+                        <div class="skill-xp-text">
+                            <span id="forging-xp">0</span>
+                            /
+                            <span id="forging-xp-needed">100</span>
+                            XP
+                        </div>
+        
+                        <div class="skill-xp-bar">
+                            <div id="forging-xp-fill"></div>
+                        </div>
+        
+                        <div class="skill-effect">
+                            Effect:
+                            <strong id="forging-effect">1.00x</strong>
+                            all golden acorns
+                        </div>
+        
+                        <div class="skill-xp-rate">
+                            <span id="forging-xp-rate">0</span>
+                            XP/sec
+                        </div>
+        
+                        <div class="skill-level-up-timer">
+                            Next level-up in
+                            <span id="forging-level-up-timer">
+                                --:--
+                            </span>
+                        </div>
+        
+                    </div>
+        
+                </div>
+        
+            </div>
+        
+        </div>
+
+    </div>
+
+    <!-- CHANGELOG -->
+
+<button id="changelog-button">v1.1</button>
+
+<div id="changelog-modal">
+
+    <div id="changelog-content">
+
+        <button id="changelog-close">×</button>
+
+        <h1>Changelog</h1>
+
+        <div id="changelog-entries">
+            <h2>v1.1</h2>
+            <p>- Added four more Acorns upgrades</p>
+            <p>- Added the second skill: Forging</p>
+            <p>- Added timers for each of the skills that say how long until the next level-up</p>
+            <p>- Added a little more description text</p>
+            <p>- Removed fourth golden upgrade effect display because it didn't apply</p>
+            <h2>v1.0</h2>
+            <p>- Started game and set up boilerplate code</p>
+            <p>- Added Acorns tab and five Acorns upgrades</p>
+            <p>- Added Golden Acorns tab and four Golden Acorns upgrades</p>
+            <p>- Added Skills tab and the first skill: Gathering</p>
+            <p>- Tons of CSS styling, will probably go back and do more later</p>
+        </div>
+
+    </div>
+
+</div>
+
+    <!-- ============================================================
+         JAVASCRIPT
+         ============================================================ -->
+
+    <script>
+
+
+        /* ============================================================
+           GAME STATE
+           ============================================================ */
+
+        let acorns = 0;
+
+        // Number of acorns gathered by one click.
+        let acornsPerGather = 1;
+
+        // Golden Acorn currency.
+        let goldenAcorns = 0;
+
+        // Multiplier applied to all regular acorn gain.
+        let goldenAcornMultiplier = 1;
+        let goldenAcornCostMultiplier = 1;
+        let goldenAcornChance = 0.10;
+
+        // Base multiplier for Upgrade 1.
+        let upgrade1BaseMultiplier = 1.4;
+
+        // There is currently no passive production.
+        const acornsPerSecond = 0;
+
+        let totalSkillPoints = 0;
+        let skillSpeedMultiplier = 1;
+
+        let goldenAcornTimerEnd = 0;
+let goldenAcornTimerActive = false;
+let skillXPMultiplier = 1;
+let gatheringXPAcornMultiplier = 1;
+let totalGatheringXP = 0;
+let forgingGoldenAcornMultiplier = 1;
+
+function updateForgingEffect() {
+
+const forging =
+    skills.forging;
+
+forgingGoldenAcornMultiplier =
+    forging.level;
+}
+
+function startGoldenAcornTimer() {
+
+goldenAcornTimerActive = true;
+
+goldenAcornTimerEnd =
+    Date.now() + 60 * 60 * 1000;
+
+updateGoldenAcornTimer();
+}
+
+function updateGoldenAcornTimer() {
+
+if (!goldenAcornTimerActive) {
+    return;
+}
+
+let remaining =
+    Math.max(
+        0,
+        goldenAcornTimerEnd - Date.now()
+    );
+
+if (remaining <= 0) {
+
+    goldenAcorns += forgingGoldenAcornMultiplier;
+
+    updateGoldenAcornDisplay();
+    updateGoldenUpgradeButtons();
+
+    goldenAcornTimerEnd =
+        Date.now() + 60 * 60 * 1000;
+
+    remaining =
+        goldenAcornTimerEnd - Date.now();
+}
+
+const totalSeconds =
+    Math.ceil(remaining / 1000);
+
+const minutes =
+    Math.floor(totalSeconds / 60);
+
+const seconds =
+    totalSeconds % 60;
+
+goldenAcornTimer.textContent =
+    "+" + `${forgingGoldenAcornMultiplier} ` + "golden acorns in " +
+    String(minutes).padStart(2, "0") +
+    ":" +
+    String(seconds).padStart(2, "0") +
+    " from Acorn Bank!";
+
+requestAnimationFrame(updateGoldenAcornTimer);
+}
+
+const skills = {
+    gathering: {
+        name: "Gathering",
+        points: 0,
+        level: 1,
+        xp: 0,
+        effectMultiplier: 1,
+        effectPerLevel: 1.2,
+        xpBase: 10,
+        xpMultiplier: 1.5
+    },
+
+    forging: {
+        name: "Forging",
+        points: 0,
+        level: 1,
+        xp: 0,
+        effectMultiplier: 1,
+        effectPerLevel: 1,
+        xpBase: 10000,
+        xpMultiplier: 1.8
+    }
+};
+
+        /* ============================================================
+           CALCULATED GATHER AMOUNT
+           ============================================================ */
+
+           function getAcornsPerGather() {
+    return (
+        acornsPerGather *
+        goldenAcornMultiplier *
+        skills.gathering.effectMultiplier *
+        gatheringXPAcornMultiplier
+    );
+}
+
+        /* ============================================================
+           REGULAR UPGRADE DATA
+           ============================================================ */
+
+        const upgrades = [
+
+            {
+                id: 0,
+
+                name: "Look in Trash Cans",
+
+                subtitle: "You heard it's a good place to look for quick, easy food.",
+
+                description:
+                    "Multiplies the number of acorns gathered per click by " +
+                    upgrade1BaseMultiplier.toFixed(1) +
+                    "x.",
+
+                baseCost: 5,
+
+                costMultiplier: 2,
+
+                maxPurchases: 10,
+
+                purchases: 0,
+
+                effect: function() {
+
+                    updateAcornsPerGather();
+
+                }
+            },
+
+
+            {
+                id: 1,
+
+                name: "Steal Caffeine from Convenience Store",
+
+                subtitle: "Hey, you're a raccoon now...what are they gonna do, arrest you?",
+
+                description:
+                    "Reduces the gather button cooldown by 0.5 seconds.",
+
+                baseCost: 10,
+
+                costMultiplier: 3,
+
+                maxPurchases: 8,
+
+                purchases: 0,
+
+                effect: function() {
+
+                    gatherCooldown -= 0.5;
+
+                }
+            },
+
+
+            {
+                id: 2,
+
+                name: "Join a Pack",
+
+                subtitle: "There's always strength in numbers. Especially for you.",
+
+                description:
+                    "Increases the base multiplier of \"Look in Trash Cans\" by 0.2x.",
+
+                baseCost: 30,
+
+                costMultiplier: 4,
+
+                maxPurchases: 8,
+
+                purchases: 0,
+
+                effect: function() {
+
+                    upgrade1BaseMultiplier += 0.2;
+
+
+                    upgrades[0].description =
+                        "Multiplies the number of acorns gathered per click by " +
+                        upgrade1BaseMultiplier.toFixed(1) +
+                        "x.";
+
+
+                    updateAcornsPerGather();
+
+                }
+            },
+            {
+    id: 3,
+    name: "Kneel to the Racc King",
+    subtitle: "He is pleased with your unwavering loyalty and devotion.",
+    description: "Increases your chance of gaining a golden acorn by 1%.",
+    baseCost: 50,
+    costMultiplier: 7,
+    maxPurchases: 10,
+    purchases: 0,
+    effect: function() {
+        goldenAcornChance += 0.01;
+        updateGoldenAcornDescription();
+    }
+},
+{
+    id: 4,
+    name: "Start Your Own Business",
+    subtitle: "Finding food is tough...maybe you can hire people to do it for you!",
+    description: "Unlocks the Skills tab.",
+    baseCost: 1000000,
+    costMultiplier: 1,
+    maxPurchases: 1,
+    purchases: 0,
+    effect: function() {
+        skillsTab.style.display = "block";
+    }
+},
+{
+    id: 5,
+    name: "Increase Wages",
+    subtitle: "Who knew that paying your workers would make them more productive?",
+    description: "Multiplies all skill XP gained by 1.5x.",
+    baseCost: 10000000,
+    costMultiplier: 2,
+    maxPurchases: 20,
+    purchases: 0,
+    effect: function() {
+        skillXPMultiplier *= 1.5;
+        updateSkillsDisplay();
+    }
+},
+{
+    id: 6,
+    name: "Open a New Acorn Market",
+    subtitle: "Finally, you start to see some good payoff from all this work.",
+    description: "Increases all acorn gain based on your Gathering skill XP.",
+    baseCost: 30000000,
+    costMultiplier: 10,
+    maxPurchases: 10,
+    purchases: 0,
+    effect: function() {
+        updateAcornGainMultiplier();
+    }
+},
+{
+    id: 7,
+    name: "Engage in Questionable Economical Tactics",
+    subtitle: "Perhaps you can find a way to get more value out of these golden acorns.",
+    description: "Unlock a new skill.",
+    baseCost: 1000000000,
+    costMultiplier: 1,
+    maxPurchases: 1,
+    purchases: 0,
+    effect: function() {
+        skillsTab.style.display = "block";
+        forgingSkill.style.display = "block";
+        updateSkillsDisplay();
+    }
+},
+{
+    id: 8,
+    name: "Bribe the Skills Council",
+    subtitle: "You're able to sway the council's vote with your signature charm.",
+    description: "Reduces the skill point cost multiplier by 5.",
+    baseCost: 5e18,
+    costMultiplier: 100,
+    maxPurchases: 5,
+    purchases: 0,
+    effect: function() {
+        updateSkillsDisplay();
+    }
+},
+
+            // Future upgrades go here.
+            // Note: Upgrade 10 should have starting cost 3e21 (I tested this)
+
+        ];
+
+
+        /* ============================================================
+           GOLDEN UPGRADE DATA
+           ============================================================ */
+
+        const goldenUpgrades = [
+
+        {
+    id: 0,
+    name: "Develop Acorn Radar",
+    description:
+        "Increases all acorn gain by 10%, multiplicatively.",
+    baseCost: 1,
+    costMultiplier: 1.2,
+    effectMultiplier: 1.1,
+    purchases: 0,
+    effect: function() {
+        goldenAcornMultiplier *= 1.1;
+        updateGatherButtonText();
+    }
+},
+{
+    id: 1,
+    name: "Negotiate with Loan Sharks",
+    description:
+        "Reduces the cost of all acorn upgrades by 5%, multiplicatively.",
+    baseCost: 2,
+    costMultiplier: 1.5,
+    effectMultiplier: 0.95,
+    purchases: 0,
+    effect: function() {
+        goldenAcornCostMultiplier *= 0.95;
+        updateUpgradeButtons();
+    }
+},
+{
+    id: 2,
+    name: "Hang Motivational Posters",
+    description:
+        "Increases all skill speed by 10%, multiplicatively.",
+    baseCost: 5,
+    costMultiplier: 1.2,
+    effectMultiplier: 1.1,
+    purchases: 0,
+    effect: function() {
+        skillSpeedMultiplier *= 1.1;
+        updateSkillsDisplay();
+    }
+},
+{
+    id: 3,
+    name: "Invest in Acorn Bank",
+    description:
+        "Gain 1 golden acorn every hour, even when away!",
+    baseCost: 100,
+    costMultiplier: 1,
+    maxPurchases: 1,
+    purchases: 0
+},
+
+            // Future Golden Acorn upgrades go here.
+
+        ];
+
+
+        /* ============================================================
+           DOM ELEMENTS
+           ============================================================ */
+
+        const acornNumber =
+            document.getElementById("acorn-number");
+
+        const acornRate =
+            document.getElementById("acorn-rate");
+
+
+        const goldenAcornNumber =
+            document.getElementById("golden-acorn-number");
+
+        const goldenAcornRate =
+            document.getElementById("golden-acorn-rate");
+
+
+        const resourceDisplay =
+            document.getElementById("resource-display");
+
+        const goldenResourceDisplay =
+            document.getElementById("golden-resource-display");
+
+
+        const acornsPage =
+            document.getElementById("acorns-page");
+
+        const goldenAcornsPage =
+            document.getElementById("golden-acorns-page");
+
+
+        const acornsTab =
+            document.getElementById("acorns-tab");
+
+        const goldenAcornsTab =
+            document.getElementById("golden-acorns-tab");
+
+
+        const gatherButton =
+            document.getElementById("gather-button");
+
+        const gatherButtonText =
+            document.getElementById("gather-button-text");
+
+        const cooldownText =
+            document.getElementById("cooldown-text");
+
+
+        const upgradeContainer =
+            document.getElementById("upgrade-container");
+
+        const goldenUpgradeContainer =
+            document.getElementById("golden-upgrade-container");
+
+            const skillsTab =
+    document.getElementById("skills-tab");
+
+const skillsPage =
+    document.getElementById("skills-page");
+
+    skillsTab.style.display = "none";
+
+    const skillsResourceDisplay =
+    document.getElementById("skills-resource-display");
+
+    const learnSkillPointButton =
+    document.getElementById("learn-skill-point-button");
+
+const totalSkillPointsNumber =
+    document.getElementById("total-skill-points-number");
+
+const gatheringMinus =
+    document.getElementById("gathering-minus");
+
+const gatheringPlus =
+    document.getElementById("gathering-plus");
+
+const gatheringPoints =
+    document.getElementById("gathering-points");
+
+const gatheringXPElement =
+    document.getElementById("gathering-xp");
+
+const gatheringXPNeeded =
+    document.getElementById("gathering-xp-needed");
+
+const gatheringXPFill =
+    document.getElementById("gathering-xp-fill");
+
+const gatheringXPRate =
+    document.getElementById("gathering-xp-rate");
+
+    function getSkillPointCost() {
+
+const upgrade =
+    upgrades.find(
+        upgrade => upgrade.id === 8
+    );
+
+const costMultiplier =
+    100 -
+    (10 * (upgrade ? upgrade.purchases : 0));
+
+return (
+    1000000 *
+    Math.pow(
+        costMultiplier,
+        totalSkillPoints
+    )
+);
+}
+
+function getSkillXPNeeded(skill) {
+    return (
+        skill.xpBase *
+        Math.pow(
+            skill.xpMultiplier,
+            skill.level - 1
+        )
+    );
+}
+
+const gatheringEffect =
+    document.getElementById("gathering-effect");
+
+    const skillPointNumber =
+    document.getElementById("skill-point-number");
+
+    const goldenAcornTimer =
+    document.getElementById("golden-acorn-timer");
+
+    const changelogButton =
+    document.getElementById("changelog-button");
+
+const changelogModal =
+    document.getElementById("changelog-modal");
+
+const changelogClose =
+    document.getElementById("changelog-close");
+
+    changelogButton.addEventListener(
+    "click",
+    function() {
+        changelogModal.style.display = "flex";
+    }
+);
+
+changelogClose.addEventListener(
+    "click",
+    function() {
+        changelogModal.style.display = "none";
+    }
+);
+
+changelogModal.addEventListener(
+    "click",
+    function(event) {
+        if (event.target === changelogModal) {
+            changelogModal.style.display = "none";
+        }
+    }
+);
+
+const gatheringLevelUpTimer =
+    document.getElementById("gathering-level-up-timer");
+
+    const forgingSkill =
+    document.getElementById("forging-skill");
+
+const forgingMinus =
+    document.getElementById("forging-minus");
+
+const forgingPlus =
+    document.getElementById("forging-plus");
+
+const forgingPoints =
+    document.getElementById("forging-points");
+
+const forgingXPElement =
+    document.getElementById("forging-xp");
+
+const forgingXPNeeded =
+    document.getElementById("forging-xp-needed");
+
+const forgingXPFill =
+    document.getElementById("forging-xp-fill");
+
+const forgingXPRate =
+    document.getElementById("forging-xp-rate");
+
+const forgingEffect =
+    document.getElementById("forging-effect");
+
+const forgingLevelUpTimer =
+    document.getElementById("forging-level-up-timer");
+
+        /* ============================================================
+           RESOURCE DISPLAY
+           ============================================================ */
+
+           function formatNumber(number) {
+
+number = Number(number);
+
+if (Math.abs(number) >= 1000000) {
+
+    return number
+        .toPrecision(3)
+        .replace(/\.?0+e/, "e")
+        .replace("e+", "e");
+
+}
+
+if (Math.abs(number) >= 1000) {
+
+    return Math.round(number).toLocaleString();
+
+}
+
+if (Number.isInteger(number)) {
+    return number.toString();
+}
+
+return number.toFixed(2);
+
+}
+
+        function updateResourceDisplay() {
+
+            // Always round displayed acorns to a whole number.
+            acornNumber.textContent =
+            formatNumber(Math.floor(acorns));
+
+
+            acornRate.textContent =
+                acornsPerSecond;
+
+        }
+
+
+        function updateGoldenAcornDisplay() {
+
+            goldenAcornNumber.textContent =
+            formatNumber(Math.floor(goldenAcorns));
+
+
+            goldenAcornRate.textContent =
+                "0";
+
+        }
+
+
+        /* ============================================================
+           TAB SWITCHING
+           ============================================================ */
+
+        acornsTab.addEventListener("click", function() {
+
+            resourceDisplay.style.display = "block";
+            goldenResourceDisplay.style.display = "none";
+
+            acornsPage.style.display = "block";
+            goldenAcornsPage.style.display = "none";
+
+
+            acornsTab.classList.add("active");
+            goldenAcornsTab.classList.remove("active");
+
+            skillsPage.style.display = "none";
+skillsTab.classList.remove("active");
+skillsResourceDisplay.style.display = "none";
+
+        });
+
+
+        goldenAcornsTab.addEventListener("click", function() {
+
+            resourceDisplay.style.display = "none";
+            goldenResourceDisplay.style.display = "block";
+
+            acornsPage.style.display = "none";
+            goldenAcornsPage.style.display = "block";
+
+
+            acornsTab.classList.remove("active");
+            goldenAcornsTab.classList.add("active");
+
+            skillsPage.style.display = "none";
+skillsTab.classList.remove("active");
+skillsResourceDisplay.style.display = "none";
+
+        });
+
+        skillsTab.addEventListener("click", function() {
+    resourceDisplay.style.display = "none";
+    goldenResourceDisplay.style.display = "none";
+
+    acornsPage.style.display = "none";
+    goldenAcornsPage.style.display = "none";
+    skillsPage.style.display = "block";
+
+    acornsTab.classList.remove("active");
+    goldenAcornsTab.classList.remove("active");
+    skillsTab.classList.add("active");
+    skillsResourceDisplay.style.display = "block";
+});
+
+        /* ============================================================
+           GATHER BUTTON
+           ============================================================ */
+
+        let gatherOnCooldown = false;
+
+        let cooldownEndTime = 0;
+
+        let gatherCooldown = 5;
+
+        gatherButton.addEventListener("click", function() {
+
+            if (gatherOnCooldown) {
+                return;
+            }
+
+
+            /* --------------------------------------------------------
+               Gather acorns
+               -------------------------------------------------------- */
+
+            acorns += getAcornsPerGather();
+
+
+            /* --------------------------------------------------------
+               10% chance to receive a Golden Acorn
+               -------------------------------------------------------- */
+
+               if (Math.random() < goldenAcornChance) {
+                goldenAcorns += forgingGoldenAcornMultiplier;
+
+
+                updateGoldenAcornDisplay();
+
+                updateGoldenUpgradeButtons();
+
+            }
+
+
+            updateResourceDisplay();
+
+            updateUpgradeButtons();
+
+
+            /* --------------------------------------------------------
+               Start cooldown
+               -------------------------------------------------------- */
+
+            gatherOnCooldown = true;
+
+            cooldownEndTime =
+                Date.now() +
+                gatherCooldown * 1000;
+
+
+            gatherButton.disabled = true;
+
+
+            gatherButton.style.setProperty(
+                "--cooldown-progress",
+                "0%"
+            );
+
+
+            updateCooldown();
+
+        });
+
+
+        /* ============================================================
+           COOLDOWN
+           ============================================================ */
+
+        function updateCooldown() {
+
+            if (!gatherOnCooldown) {
+
+                cooldownText.textContent = "";
+
+                gatherButton.disabled = false;
+
+                return;
+            }
+
+
+            const remaining =
+                Math.max(
+                    0,
+                    cooldownEndTime - Date.now()
+                );
+
+
+            /* --------------------------------------------------------
+               Cooldown finished
+               -------------------------------------------------------- */
+
+            if (remaining <= 0) {
+
+                gatherOnCooldown = false;
+
+                gatherButton.disabled = false;
+
+                cooldownText.textContent = "";
+
+
+                gatherButton.style.setProperty(
+                    "--cooldown-progress",
+                    "100%"
+                );
+
+
+                return;
+            }
+
+
+            /* --------------------------------------------------------
+               Display remaining time
+               -------------------------------------------------------- */
+
+            const secondsRemaining =
+                (remaining / 1000).toFixed(1);
+
+
+            cooldownText.textContent =
+                "Ready again in " +
+                secondsRemaining +
+                " seconds";
+
+
+            /* --------------------------------------------------------
+               Update progress bar
+               -------------------------------------------------------- */
+
+            const progress =
+                100 -
+                (
+                    remaining /
+                    (gatherCooldown * 1000)
+                    * 100
+                );
+
+
+            gatherButton.style.setProperty(
+                "--cooldown-progress",
+                Math.min(
+                    100,
+                    Math.max(0, progress)
+                ) + "%"
+            );
+
+
+            requestAnimationFrame(updateCooldown);
+
+        }
+
+
+        /* ============================================================
+           GATHER BUTTON TEXT
+           ============================================================ */
+
+           function updateGatherButtonText() {
+    const displayedGatherAmount =
+        formatNumber(getAcornsPerGather());
+
+    gatherButtonText.textContent =
+        "Gather " +
+        displayedGatherAmount +
+        " acorn" +
+        (displayedGatherAmount === 1 ? "" : "s");
+           }
+
+        /* ============================================================
+           REGULAR UPGRADE CALCULATIONS
+           ============================================================ */
+
+           function getUpgradeCost(upgrade) {
+
+if (upgrade.id === 6) {
+
+    let cost = upgrade.baseCost;
+
+    for (let i = 0; i < upgrade.purchases; i++) {
+
+        const multiplier = 10 + (20 * i);
+
+        cost *= multiplier;
+    }
+
+    return cost * goldenAcornCostMultiplier;
+}
+
+return upgrade.baseCost *
+    Math.pow(
+        upgrade.costMultiplier,
+        upgrade.purchases
+    ) *
+    goldenAcornCostMultiplier;
+}
+
+        function updateAcornsPerGather() {
+
+            const upgrade1Purchases =
+                upgrades[0].purchases;
+
+
+            acornsPerGather =
+                Math.pow(
+                    upgrade1BaseMultiplier,
+                    upgrade1Purchases
+                );
+
+
+            updateGatherButtonText();
+
+        }
+
+        function updateAcornGainMultiplier() {
+
+const upgrade = upgrades.find(
+    upgrade => upgrade.id === 6
+);
+
+if (!upgrade || upgrade.purchases <= 0) {
+    gatheringXPAcornMultiplier = 1;
+    return;
+}
+
+if (totalGatheringXP > 1) {
+
+    const baseMultiplier =
+        Math.max(
+            1,
+            Math.log(
+                Math.pow(
+                    totalGatheringXP,
+                    1.2
+                )
+            )
+        );
+
+    gatheringXPAcornMultiplier =
+        Math.pow(
+            baseMultiplier,
+            upgrade.purchases
+        );
+
+} else {
+
+    gatheringXPAcornMultiplier = 1;
+}
+}
+
+        /* ============================================================
+           VISIBLE REGULAR UPGRADES
+           ============================================================ */
+
+           function getVisibleUpgradeCount() {
+    const purchasedUpgrades = upgrades.filter(
+        upgrade => upgrade.purchases > 0
+    );
+
+    if (purchasedUpgrades.length === 0) {
+        return Math.min(3, upgrades.length);
+    }
+
+    const furthestPurchased = Math.max(
+        ...purchasedUpgrades.map(upgrade => upgrade.id)
+    );
+
+    return Math.min(
+        upgrades.length,
+        furthestPurchased + 4
+    );
+}
+
+        /* ============================================================
+           CREATE REGULAR UPGRADE BUTTONS
+           ============================================================ */
+
+        function createUpgradeButtons() {
+
+            upgradeContainer.innerHTML = "";
+
+
+            const visibleCount =
+                getVisibleUpgradeCount();
+
+
+            for (
+                let i = 0;
+                i < visibleCount;
+                i++
+            ) {
+
+                const upgrade =
+                    upgrades[i];
+
+
+                /* ----------------------------------------------------
+                   Empty future upgrade slot
+                   ---------------------------------------------------- */
+
+                if (!upgrade) {
+
+                    const placeholder =
+                        document.createElement("button");
+
+
+                    placeholder.className =
+                        "upgrade-button";
+
+
+                    placeholder.textContent =
+                        "?";
+
+
+                    placeholder.disabled =
+                        true;
+
+
+                    upgradeContainer.appendChild(
+                        placeholder
+                    );
+
+
+                    continue;
+
+                }
+
+
+                const button =
+                    document.createElement("button");
+
+
+                button.className =
+                    "upgrade-button";
+
+                /* ----------------------------------------------------
+                   Level
+                   ---------------------------------------------------- */
+
+                const level =
+                    document.createElement("div");
+
+
+                level.className =
+                    "upgrade-level";
+
+
+                level.textContent =
+                    upgrade.purchases +
+                    "/" +
+                    upgrade.maxPurchases;
+
+
+                button.appendChild(level);
+
+                if (upgrade.purchases < upgrade.maxPurchases) {
+    const divider = document.createElement("div");
+    divider.className = "upgrade-divider";
+
+    const cost = document.createElement("div");
+    cost.className = "upgrade-cost";
+
+    cost.textContent =
+    formatNumber(Math.floor(getUpgradeCost(upgrade))) +
+        "";
+
+    button.appendChild(divider);
+    button.appendChild(cost);
+}
+
+
+                /* ----------------------------------------------------
+                   Border state
+                   ---------------------------------------------------- */
+
+                if (
+                    upgrade.purchases >=
+                    upgrade.maxPurchases
+                ) {
+
+                    button.classList.add("maxed");
+
+                }
+                else if (
+                    upgrade.purchases > 0
+                ) {
+
+                    button.classList.add("purchased");
+
+                }
+
+
+                /* ----------------------------------------------------
+                   Tooltip
+                   ---------------------------------------------------- */
+
+                const tooltip =
+                    document.createElement("div");
+
+
+                tooltip.className =
+                    "tooltip";
+
+
+                updateTooltip(
+                    tooltip,
+                    upgrade
+                );
+
+
+                button.appendChild(tooltip);
+
+
+                /* ----------------------------------------------------
+                   Purchase
+                   ---------------------------------------------------- */
+
+                button.addEventListener(
+                    "click",
+                    function() {
+
+                        purchaseUpgrade(upgrade);
+
+                    }
+                );
+
+
+                upgradeContainer.appendChild(button);
+
+            }
+
+        }
+
+
+        /* ============================================================
+           REGULAR UPGRADE TOOLTIP
+           ============================================================ */
+
+           function updateTooltip(tooltip, upgrade) {
+
+let currentEffectText = "";
+
+if (upgrade.id === 6) {
+    currentEffectText =
+        "Currently: " +
+        formatNumber(gatheringXPAcornMultiplier.toFixed(2)) +
+        "x";
+}
+
+const currentEffectHTML =
+    currentEffectText
+        ? "<br><br>" + currentEffectText
+        : "";
+
+if (
+    upgrade.purchases >=
+    upgrade.maxPurchases
+) {
+
+    tooltip.innerHTML =
+        "<strong>" +
+        upgrade.name +
+        "</strong><br>" +
+
+        "<span class=\"upgrade-tooltip-subtitle\">" +
+        upgrade.subtitle +
+        "</span><br><br>" +
+
+        upgrade.description +
+
+        currentEffectHTML +
+
+        "<br><br>" +
+
+        "<strong>MAXED</strong>";
+
+    return;
+}
+
+const cost =
+    getUpgradeCost(upgrade);
+
+tooltip.innerHTML =
+    "<strong>" +
+    upgrade.name +
+    "</strong><br>" +
+
+    "<span class=\"upgrade-tooltip-subtitle\">" +
+    upgrade.subtitle +
+    "</span><br><br>" +
+
+    upgrade.description +
+
+    currentEffectHTML +
+
+    "<br><br>" +
+
+    "Cost: <strong>" +
+
+    formatNumber(Math.floor(cost)) +
+
+    "</strong> acorns" +
+
+    "<br>" +
+
+    "Level: " +
+
+    upgrade.purchases +
+
+    "/" +
+
+    upgrade.maxPurchases;
+}
+
+        /* ============================================================
+           PURCHASE REGULAR UPGRADE
+           ============================================================ */
+
+        function purchaseUpgrade(upgrade) {
+
+            if (
+                upgrade.purchases >=
+                upgrade.maxPurchases
+            ) {
+
+                return;
+
+            }
+
+
+            const cost =
+                getUpgradeCost(upgrade);
+
+
+            if (acorns < cost) {
+
+                return;
+
+            }
+
+
+            // Pay for the upgrade.
+            acorns -= cost;
+
+
+            // Increase purchase count.
+            upgrade.purchases++;
+
+
+            // Apply upgrade effect.
+            upgrade.effect();
+
+
+            updateResourceDisplay();
+
+            createUpgradeButtons();
+
+            updateUpgradeButtons();
+
+        }
+
+
+        /* ============================================================
+           UPDATE REGULAR UPGRADE BUTTONS
+           ============================================================ */
+
+        function updateUpgradeButtons() {
+
+            const buttons =
+                upgradeContainer.querySelectorAll(
+                    ".upgrade-button"
+                );
+
+
+            const visibleCount =
+                getVisibleUpgradeCount();
+
+
+            for (
+                let i = 0;
+                i < visibleCount;
+                i++
+            ) {
+
+                const upgrade =
+                    upgrades[i];
+
+
+                if (!upgrade) {
+                    continue;
+                }
+
+
+                const button =
+                    buttons[i];
+
+
+                if (!button) {
+                    continue;
+                }
+
+
+                const cost =
+                    getUpgradeCost(upgrade);
+
+
+                /* ----------------------------------------------------
+                   Availability
+                   ---------------------------------------------------- */
+
+                if (
+                    upgrade.purchases >=
+                    upgrade.maxPurchases ||
+                    acorns < cost
+                ) {
+
+                    button.disabled = true;
+
+                    button.classList.remove(
+                        "available"
+                    );
+
+                }
+                else {
+
+                    button.disabled = false;
+
+                    button.classList.add(
+                        "available"
+                    );
+
+                }
+
+
+                /* ----------------------------------------------------
+                   Border
+                   ---------------------------------------------------- */
+
+                button.classList.remove(
+                    "purchased",
+                    "maxed"
+                );
+
+
+                if (
+                    upgrade.purchases >=
+                    upgrade.maxPurchases
+                ) {
+
+                    button.classList.add(
+                        "maxed"
+                    );
+
+                }
+                else if (
+                    upgrade.purchases > 0
+                ) {
+
+                    button.classList.add(
+                        "purchased"
+                    );
+
+                }
+
+
+                /* ----------------------------------------------------
+                   Level
+                   ---------------------------------------------------- */
+
+                const level =
+                    button.querySelector(
+                        ".upgrade-level"
+                    );
+
+
+                if (level) {
+
+                    level.textContent =
+                        upgrade.purchases +
+                        "/" +
+                        upgrade.maxPurchases;
+
+                }
+
+                const costElement =
+    button.querySelector(".upgrade-cost");
+
+if (costElement) {
+    costElement.textContent =
+    formatNumber(Math.floor(getUpgradeCost(upgrade))) +
+        "";
+}
+
+if (upgrade.purchases >= upgrade.maxPurchases) {
+    level.style.top = "50%";
+    level.style.transform = "translateY(-50%)";
+} else {
+    level.style.top = "8px";
+    level.style.transform = "none";
+}
+
+                /* ----------------------------------------------------
+                   Tooltip
+                   ---------------------------------------------------- */
+
+                const tooltip =
+                    button.querySelector(
+                        ".tooltip"
+                    );
+
+
+                if (tooltip) {
+
+                    updateTooltip(
+                        tooltip,
+                        upgrade
+                    );
+
+                }
+
+            }
+
+
+            updateTabGlows();
+
+        }
+
+        /* ============================================================
+           GOLDEN UPGRADE COST
+           ============================================================ */
+
+        function getGoldenUpgradeCost(
+            upgrade
+        ) {
+
+            return Math.floor(
+                upgrade.baseCost *
+                Math.pow(
+                    upgrade.costMultiplier,
+                    upgrade.purchases
+                )
+            );
+
+        }
+
+        /* ============================================================
+           CREATE GOLDEN UPGRADE BUTTONS
+           ============================================================ */
+
+        function createGoldenUpgradeButtons() {
+
+            goldenUpgradeContainer.innerHTML =
+                "";
+
+
+            for (
+                const upgrade of goldenUpgrades
+            ) {
+
+                const button =
+                    document.createElement("button");
+
+
+                button.className =
+                    "golden-upgrade-button";
+
+
+                /* ----------------------------------------------------
+                   Name
+                   ---------------------------------------------------- */
+
+                const name =
+                    document.createElement("div");
+
+
+                name.className =
+                    "golden-upgrade-name";
+
+
+                name.textContent =
+                    upgrade.name;
+
+
+                /* ----------------------------------------------------
+                   Description
+                   ---------------------------------------------------- */
+
+                const description =
+                    document.createElement("div");
+
+
+                description.className =
+                    "golden-upgrade-description";
+
+
+                description.textContent =
+                    upgrade.description;
+
+
+                /* ----------------------------------------------------
+                   Current effect
+                   ---------------------------------------------------- */
+
+                   const current =
+    document.createElement("div");
+
+current.className =
+    "golden-upgrade-current";
+
+if (upgrade.id !== 3) {
+    current.textContent =
+        "Currently: " +
+        Math.pow(
+            upgrade.effectMultiplier,
+            upgrade.purchases
+        ).toFixed(2) +
+        "x";
+}
+
+
+                /* ----------------------------------------------------
+                   Cost
+                   ---------------------------------------------------- */
+
+                const cost =
+                    document.createElement("div");
+
+
+                cost.className =
+                    "golden-upgrade-cost";
+
+
+                cost.textContent =
+                    "Cost: " +
+                    formatNumber(getGoldenUpgradeCost(upgrade)) +
+                    " Golden Acorn";
+
+
+                /* ----------------------------------------------------
+                   Add elements
+                   ---------------------------------------------------- */
+
+                button.appendChild(name);
+
+                button.appendChild(
+                    description
+                );
+
+                if (upgrade.id !== 3) {
+    button.appendChild(current);
+}
+
+                button.appendChild(
+                    cost
+                );
+
+
+                /* ----------------------------------------------------
+                   Purchase
+                   ---------------------------------------------------- */
+
+                button.addEventListener(
+                    "click",
+                    function() {
+
+                        purchaseGoldenUpgrade(
+                            upgrade
+                        );
+
+                    }
+                );
+
+
+                goldenUpgradeContainer.appendChild(
+                    button
+                );
+
+            }
+
+
+            updateGoldenUpgradeButtons();
+
+        }
+
+        const goldenAcornDescription =
+    document.getElementById("golden-acorn-description");
+
+    function updateGoldenAcornDescription() {
+    goldenAcornDescription.textContent =
+        "Every time you gather, you have a " +
+        (goldenAcornChance * 100).toFixed(0) +
+        "% chance of gaining 1 golden acorn. You can spend your golden acorns on small bonuses in this shop!";
+}
+
+        /* ============================================================
+           PURCHASE GOLDEN UPGRADE
+           ============================================================ */
+
+           function purchaseGoldenUpgrade(upgrade) {
+
+if (
+    upgrade.maxPurchases !== undefined &&
+    upgrade.purchases >= upgrade.maxPurchases
+) {
+    return;
+}
+
+const cost =
+    getGoldenUpgradeCost(upgrade);
+
+if (goldenAcorns < cost) {
+    return;
+}
+
+goldenAcorns -= cost;
+
+upgrade.purchases++;
+if (upgrade.id === 3) {
+    goldenAcornTimer.style.display = "block";
+    startGoldenAcornTimer();
+}
+
+if (upgrade.effect) {
+    upgrade.effect();
+}
+
+updateGoldenAcornDisplay();
+updateGoldenUpgradeButtons();
+updateTabGlows();
+}
+
+        /* ============================================================
+           UPDATE GOLDEN UPGRADE BUTTONS
+           ============================================================ */
+
+        function updateGoldenUpgradeButtons() {
+
+            const buttons =
+                goldenUpgradeContainer.querySelectorAll(
+                    ".golden-upgrade-button"
+                );
+
+
+            for (
+                let i = 0;
+                i < goldenUpgrades.length;
+                i++
+            ) {
+
+                const upgrade =
+                    goldenUpgrades[i];
+
+
+                const button =
+                    buttons[i];
+
+
+                if (!button) {
+                    continue;
+                }
+
+
+                const cost =
+                    getGoldenUpgradeCost(
+                        upgrade
+                    );
+
+
+                /* ----------------------------------------------------
+                   Availability
+                   ---------------------------------------------------- */
+
+                   button.disabled =
+    upgrade.purchases >= upgrade.maxPurchases ||
+    goldenAcorns < cost;
+
+
+                if (button.disabled) {
+
+                    button.classList.remove(
+                        "available"
+                    );
+
+                }
+                else {
+
+                    button.classList.add(
+                        "available"
+                    );
+
+                }
+
+
+                /* ----------------------------------------------------
+                   Current effect
+                   ---------------------------------------------------- */
+
+                const currentElement =
+                    button.querySelector(
+                        ".golden-upgrade-current"
+                    );
+
+
+                if (currentElement) {
+
+                    currentElement.textContent =
+                        "Currently: " +
+                        Math.pow(
+    upgrade.effectMultiplier,
+    upgrade.purchases
+).toFixed(2) +
+                        "x";
+
+                }
+
+
+                /* ----------------------------------------------------
+                   Cost
+                   ---------------------------------------------------- */
+
+                const costElement =
+                    button.querySelector(
+                        ".golden-upgrade-cost"
+                    );
+
+
+                if (costElement) {
+
+                    costElement.textContent =
+                        "Cost: " +
+                        formatNumber(cost) +
+                        " Golden Acorn" +
+                        (
+                            cost === 1
+                                ? ""
+                                : "s"
+                        );
+
+                }
+
+            }
+
+
+            updateTabGlows();
+
+        }
+
+        function updateSkillsDisplay() {
+
+const gathering =
+    skills.gathering;
+
+const forging =
+    skills.forging;
+
+skillPointNumber.textContent =
+    formatNumber(
+        getAvailableSkillPoints()
+    );
+
+totalSkillPointsNumber.textContent =
+    formatNumber(
+        totalSkillPoints
+    );
+
+/* ============================================================
+   GATHERING
+   ============================================================ */
+
+gatheringPoints.textContent =
+    gathering.points;
+
+const gatheringXPNeededAmount =
+    getSkillXPNeeded(gathering);
+
+gatheringXPElement.textContent =
+    formatNumber(gathering.xp);
+
+gatheringXPNeeded.textContent =
+    formatNumber(gatheringXPNeededAmount);
+
+const gatheringProgress =
+    Math.min(
+        100,
+        (
+            gathering.xp /
+            gatheringXPNeededAmount
+        ) * 100
+    );
+
+gatheringXPFill.style.width =
+    gatheringProgress + "%";
+
+const currentGatheringXPRate =
+    Math.pow(gathering.points, 2) *
+    skillSpeedMultiplier *
+    skillXPMultiplier;
+
+gatheringXPRate.textContent =
+    formatNumber(currentGatheringXPRate);
+
+if (currentGatheringXPRate > 0) {
+
+    const gatheringXPRemaining =
+        gatheringXPNeededAmount -
+        gathering.xp;
+
+    const gatheringSecondsRemaining =
+        Math.max(
+            0,
+            Math.ceil(
+                gatheringXPRemaining /
+                currentGatheringXPRate
+            )
+        );
+
+    const gatheringMinutes =
+        Math.floor(
+            gatheringSecondsRemaining / 60
+        );
+
+    const gatheringSeconds =
+        gatheringSecondsRemaining % 60;
+
+    gatheringLevelUpTimer.textContent =
+        String(gatheringMinutes).padStart(2, "0") +
+        ":" +
+        String(gatheringSeconds).padStart(2, "0");
+
+} else {
+
+    gatheringLevelUpTimer.textContent =
+        "--:--";
+
+}
+
+document.querySelector(
+    ".skill-header strong"
+).textContent =
+    gathering.name +
+    ": Level " +
+    gathering.level;
+
+gatheringEffect.textContent =
+    gathering.effectMultiplier.toFixed(2) +
+    "x";
+
+
+/* ============================================================
+   FORGING
+   ============================================================ */
+
+forgingPoints.textContent =
+    forging.points;
+
+const forgingXPNeededAmount =
+    getSkillXPNeeded(forging);
+
+forgingXPElement.textContent =
+    formatNumber(forging.xp);
+
+forgingXPNeeded.textContent =
+    formatNumber(forgingXPNeededAmount);
+
+const forgingProgress =
+    Math.min(
+        100,
+        (
+            forging.xp /
+            forgingXPNeededAmount
+        ) * 100
+    );
+
+forgingXPFill.style.width =
+    forgingProgress + "%";
+
+const currentForgingXPRate =
+    Math.pow(forging.points, 2) *
+    skillSpeedMultiplier *
+    skillXPMultiplier;
+
+forgingXPRate.textContent =
+    formatNumber(currentForgingXPRate);
+
+if (currentForgingXPRate > 0) {
+
+    const forgingXPRemaining =
+        forgingXPNeededAmount -
+        forging.xp;
+
+    const forgingSecondsRemaining =
+        Math.max(
+            0,
+            Math.ceil(
+                forgingXPRemaining /
+                currentForgingXPRate
+            )
+        );
+
+    const forgingMinutes =
+        Math.floor(
+            forgingSecondsRemaining / 60
+        );
+
+    const forgingSeconds =
+        forgingSecondsRemaining % 60;
+
+    forgingLevelUpTimer.textContent =
+        String(forgingMinutes).padStart(2, "0") +
+        ":" +
+        String(forgingSeconds).padStart(2, "0");
+
+} else {
+
+    forgingLevelUpTimer.textContent =
+        "--:--";
+
+}
+
+document.querySelectorAll(
+    ".skill-header strong"
+)[1].textContent =
+    forging.name +
+    ": Level " +
+    forging.level;
+
+forgingEffect.textContent =
+    forging.level.toFixed(2) +
+    "x";
+
+
+/* ============================================================
+   SKILL POINT BUTTONS
+   ============================================================ */
+
+learnSkillPointButton.textContent =
+    "Learn a Skill Point: " +
+    formatNumber(
+        getSkillPointCost()
+    ) +
+    " acorns";
+
+learnSkillPointButton.disabled =
+    acorns < getSkillPointCost();
+
+    const availableSkillPoints =
+    getAvailableSkillPoints();
+
+gatheringPlus.disabled =
+    availableSkillPoints <= 0;
+
+forgingPlus.disabled =
+    availableSkillPoints <= 0;
+
+gatheringMinus.disabled =
+    gathering.points <= 0;
+
+forgingMinus.disabled =
+    forging.points <= 0;
+
+}
+
+setInterval(updateSkillsDisplay, 1000);
+
+learnSkillPointButton.addEventListener(
+    "click",
+    function() {
+
+        const cost =
+            getSkillPointCost();
+
+        if (acorns < cost) {
+            return;
+        }
+
+        acorns -= cost;
+
+        totalSkillPoints++;
+
+        updateResourceDisplay();
+        updateUpgradeButtons();
+        updateSkillsDisplay();
+        updateTabGlows();
+    }
+);
+
+gatheringPlus.addEventListener(
+    "click",
+    function() {
+
+        const gathering =
+            skills.gathering;
+
+        if (getAvailableSkillPoints() <= 0) {
+            return;
+        }
+
+        gathering.points++;
+
+        updateSkillsDisplay();
+    }
+);
+
+gatheringMinus.addEventListener(
+    "click",
+    function() {
+
+        const gathering =
+            skills.gathering;
+
+        if (gathering.points <= 0) {
+            return;
+        }
+
+        gathering.points--;
+
+        updateSkillsDisplay();
+    }
+);
+
+forgingPlus.addEventListener(
+    "click",
+    function() {
+
+        const forging =
+            skills.forging;
+
+        if (getAvailableSkillPoints() <= 0) {
+            return;
+        }
+
+        forging.points++;
+
+        updateSkillsDisplay();
+    }
+);
+
+forgingMinus.addEventListener(
+    "click",
+    function() {
+
+        const forging =
+            skills.forging;
+
+        if (forging.points <= 0) {
+            return;
+        }
+
+        forging.points--;
+
+        updateSkillsDisplay();
+    }
+);
+
+function getAvailableSkillPoints() {
+    let assignedPoints = 0;
+
+    for (const skill of Object.values(skills)) {
+        assignedPoints += skill.points;
+    }
+
+    return totalSkillPoints - assignedPoints;
+}
+
+let lastSkillUpdateTime = Date.now();
+
+function updateSkillXP() {
+
+const now = Date.now();
+
+const elapsed =
+    (now - lastSkillUpdateTime) / 1000;
+
+lastSkillUpdateTime = now;
+
+
+for (const skill of Object.values(skills)) {
+
+    const xpPerSecond =
+        Math.pow(skill.points, 2) *
+        skillSpeedMultiplier *
+        skillXPMultiplier;
+
+    const xpGained =
+        xpPerSecond * elapsed;
+
+    skill.xp += xpGained;
+
+
+    /*
+     * Only Gathering XP counts toward
+     * the cumulative Gathering XP total.
+     */
+    if (skill === skills.gathering) {
+
+        totalGatheringXP += xpGained;
+
+    }
+
+
+    let xpNeeded =
+        getSkillXPNeeded(skill);
+
+
+    while (skill.xp >= xpNeeded) {
+
+        skill.xp -= xpNeeded;
+
+        skill.level++;
+
+        skill.effectMultiplier *=
+            skill.effectPerLevel;
+
+        xpNeeded =
+            getSkillXPNeeded(skill);
+
+    }
+
+
+    /*
+     * Update Forging's golden-acorn effect
+     * whenever Forging levels up.
+     */
+    if (skill === skills.forging) {
+
+        updateForgingEffect();
+
+    }
+
+}
+
+
+updateAcornGainMultiplier();
+
+updateSkillsDisplay();
+
+updateGatherButtonText();
+
+updateUpgradeButtons();
+
+requestAnimationFrame(updateSkillXP);
+
+}
+
+        /* ============================================================
+           TAB AVAILABILITY GLOW
+           ============================================================ */
+
+        function updateTabGlows() {
+
+            /* --------------------------------------------------------
+               Regular Acorn upgrades
+               -------------------------------------------------------- */
+
+            let acornUpgradeAvailable =
+                false;
+
+
+            for (
+                const upgrade of upgrades
+            ) {
+
+                if (
+                    upgrade.purchases >=
+                    upgrade.maxPurchases
+                ) {
+
+                    continue;
+
+                }
+
+
+                const cost =
+                    getUpgradeCost(upgrade);
+
+
+                if (acorns >= cost) {
+
+                    acornUpgradeAvailable =
+                        true;
+
+                    break;
+
+                }
+
+            }
+
+
+            /* --------------------------------------------------------
+               Golden Acorn upgrades
+               -------------------------------------------------------- */
+
+            let goldenUpgradeAvailable =
+                false;
+
+
+                for (const upgrade of goldenUpgrades) {
+
+if (
+    upgrade.maxPurchases !== undefined &&
+    upgrade.purchases >= upgrade.maxPurchases
+) {
+    continue;
+}
+
+const cost =
+    getGoldenUpgradeCost(upgrade);
+
+if (goldenAcorns >= cost) {
+    goldenUpgradeAvailable = true;
+    break;
+}
+}
+
+            /* --------------------------------------------------------
+               Regular Acorn tab
+               -------------------------------------------------------- */
+
+            if (acornUpgradeAvailable) {
+
+                acornsTab.classList.add(
+                    "upgrade-available"
+                );
+
+            }
+            else {
+
+                acornsTab.classList.remove(
+                    "upgrade-available"
+                );
+
+            }
+
+
+            /* --------------------------------------------------------
+               Golden Acorn tab
+               -------------------------------------------------------- */
+
+            if (goldenUpgradeAvailable) {
+
+                goldenAcornsTab.classList.add(
+                    "upgrade-available"
+                );
+
+            }
+            else {
+
+                goldenAcornsTab.classList.remove(
+                    "upgrade-available"
+                );
+
+            }
+
+            /* --------------------------------------------------------
+   Skills tab
+   -------------------------------------------------------- */
+
+const skillPointAvailable =
+    acorns >= getSkillPointCost();
+
+if (skillPointAvailable) {
+    skillsTab.classList.add("upgrade-available");
+}
+else {
+    skillsTab.classList.remove("upgrade-available");
+}
+
+        }
+
+        /* ============================================================
+           INITIALIZE
+           ============================================================ */
+
+        createUpgradeButtons();
+
+        createGoldenUpgradeButtons();
+
+        updateResourceDisplay();
+
+        updateGoldenAcornDisplay();
+
+        updateAcornsPerGather();
+
+        updateUpgradeButtons();
+
+        updateGoldenUpgradeButtons();
+
+        updateGatherButtonText();
+
+        updateCooldown();
+
+        updateGoldenAcornDescription();
+
+        updateSkillsDisplay();
+        
+        updateSkillXP();
+
+    </script>
+
+
+</body>
+
+</html>
