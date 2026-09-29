@@ -1092,19 +1092,40 @@ cursor: not-allowed;
     transform: translateX(20px);
 }
 
-#hard-reset-button {
+#save-controls {
     position: fixed;
-    bottom: 15px;
-    left: 15px;
-    padding: 8px 14px;
-    font-size: 14px;
+    left: 12px;
+    bottom: 12px;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+
+    z-index: 10000;
+}
+
+.save-control-button {
+    padding: 8px 12px;
+
+    font-size: 13px;
     font-weight: bold;
-    background: #8b1a1a;
+
+    background: #333333;
     color: white;
-    border: 2px solid black;
+
+    border: 2px solid #555555;
     border-radius: 6px;
+
     cursor: pointer;
-    z-index: 1000;
+}
+
+.save-control-button:hover {
+    background: #444444;
+}
+
+#hard-reset-button {
+    background: #8b1a1a;
+    border-color: black;
 }
 
 #hard-reset-button:hover {
@@ -1240,6 +1261,118 @@ cursor: not-allowed;
     color: #eeeeee;
 
     text-align: center;
+}
+
+#save-bank-modal {
+    display: none;
+
+    position: fixed;
+
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    background-color: rgba(0, 0, 0, 0.7);
+
+    align-items: center;
+    justify-content: center;
+
+    z-index: 200;
+}
+
+#save-bank-content {
+    position: relative;
+
+    width: 700px;
+    max-width: 90%;
+    max-height: 80vh;
+
+    padding: 25px;
+
+    background-color: #303030;
+    color: #eeeeee;
+
+    border: 2px solid #666666;
+    border-radius: 10px;
+
+    text-align: center;
+
+    overflow-y: auto;
+}
+
+#save-bank-content h1 {
+    margin-top: 0;
+    margin-bottom: 25px;
+}
+
+#save-bank-close {
+    position: absolute;
+
+    top: 10px;
+    right: 15px;
+
+    background: none;
+    border: none;
+
+    color: #bbbbbb;
+
+    font-size: 24px;
+
+    cursor: pointer;
+}
+
+#save-bank-close:hover {
+    color: #eeeeee;
+}
+
+.save-point {
+    display: flex;
+
+    align-items: center;
+
+    margin-bottom: 10px;
+    padding: 12px;
+
+    background-color: #242424;
+
+    border: 1px solid #555555;
+    border-radius: 6px;
+
+    text-align: left;
+}
+
+.save-point-info {
+    flex: 1;
+}
+
+.save-point-title {
+    font-size: 16px;
+    font-weight: bold;
+    color: #eeeeee;
+}
+
+.save-point-acorns {
+    margin-top: 4px;
+
+    font-size: 13px;
+    color: #bbbbbb;
+}
+
+.load-save-button {
+    padding: 7px 12px;
+
+    background-color: #333333;
+    color: white;
+
+    border: 1px solid #777777;
+    border-radius: 5px;
+
+    cursor: pointer;
+}
+
+.load-save-button:hover {
+    background-color: #444444;
 }
 
     </style>
@@ -1618,13 +1751,43 @@ cursor: not-allowed;
 
     </div>
 
-    <button id="hard-reset-button">
-        Hard Reset
-    </button>
+    <div id="save-controls">
+
+        <button id="export-data-button" class="save-control-button">
+            Export Data
+        </button>
+    
+        <button id="import-data-button" class="save-control-button">
+            Import Data
+        </button>
+    
+        <button id="save-bank-button" class="save-control-button">
+            Save Bank
+        </button>
+    
+        <button id="hard-reset-button" class="save-control-button">
+            Hard Reset
+        </button>
+    
+    </div>
+
+    <div id="save-bank-modal">
+
+        <div id="save-bank-content">
+    
+            <button id="save-bank-close">×</button>
+    
+            <h1>Save Bank</h1>
+    
+            <div id="save-bank-list"></div>
+    
+        </div>
+    
+    </div>
 
     <!-- CHANGELOG -->
 
-<button id="changelog-button">v1.2</button>
+<button id="changelog-button">v1.3</button>
 
 <div id="changelog-modal">
 
@@ -1635,6 +1798,11 @@ cursor: not-allowed;
         <h1>Changelog</h1>
 
         <div id="changelog-entries">
+            <h2>v1.3</h2>
+            <p>- Improved saving by adding Export Data, Import Data, and Save Bank buttons (also for the sake of my own playtesting)</p>
+            <p>- Added log message that encourages players to export their game data every 24 hours</p>
+            <p>- Fixed description text on Golden Acorns tab that wouldn't update with multipliers</p>
+            <p>- Changed timer format on skills to display days and hours if necessary</p>
             <h2>v1.2</h2>
             <p>- Added Acorn Upgrade 10 and Prestige</p>
             <p>- Finally added local saving and a hard reset button for testing purposes</p>
@@ -1715,6 +1883,18 @@ let hardResetting = false;
 
 let logMessages = [];
 let nextLogNumber = 1;
+let nextExportReminderTime =
+    Date.now() + (24 * 60 * 60 * 1000);
+
+const savePoints = [
+
+        {
+            title: "Pre-Prestige",
+            data: `{"acorns":3.635826041749309e+22,"acornsPerGather":59049.00000000009,"goldenAcorns":46,"goldenAcornMultiplier":8.954302432552389,"goldenAcornCostMultiplier":0.6302494097246091,"goldenAcornChance":0.20000000000000007,"upgrade1BaseMultiplier":3.0000000000000004,"totalSkillPoints":9,"skillSpeedMultiplier":3.797498335832415,"prestigeMultiplier":1,"prestigeUnlocked":true,"highestAcorns":0,"lastPrestigeAcorns":0,"prestigeGoldenAcornMultiplier":1,"goldenAcornTimerEnd":0,"goldenAcornTimerActive":false,"skillXPMultiplier":3325.256730079651,"gatheringXPAcornMultiplier":2037098947377.312,"totalGatheringXP":274544766.7985769,"forgingGoldenAcornMultiplier":10,"gatherOnCooldown":false,"cooldownEndTime":1790694807524,"gatherCooldown":1,"currentTab":"acorns","prestigeConfirmation":false,"upgrades":[{"id":0,"purchases":10},{"id":1,"purchases":8},{"id":2,"purchases":8},{"id":3,"purchases":10},{"id":4,"purchases":1},{"id":5,"purchases":20},{"id":6,"purchases":9},{"id":7,"purchases":1},{"id":8,"purchases":2},{"id":9,"purchases":1}],"goldenUpgrades":[{"id":0,"purchases":23},{"id":1,"purchases":9},{"id":2,"purchases":14},{"id":3,"purchases":0}],"skills":{"gathering":{"points":9,"level":41,"xp":53398140.37975573,"effectMultiplier":1469.7715679690846},"forging":{"points":0,"level":10,"xp":19264.56052500019,"effectMultiplier":1}},"logMessages":[{"id":"welcome","number":1,"text":"You wake up one day to find that you have transformed into a raccoon overnight. After overcoming the initial shock, you realize that you've retained very little memory from your previous human life, only remembering basic things like what constitutes as food, and potential threats of the outside. You start to look around and notice you're deep in a deciduous forest, as the sunlight peeks through tree branches, spotting your dark gray fur with light patches. You don't know how this happened, but you know one thing's for sure: you're pretty darn hungry right now. After stumbling for a few minutes in your new raccoon form looking for food, you hear a hard crunch under your paw. You look down and see a small acorn that fell off of an oak tree from above. Surely enough, there's plenty more where it came from, and you start to gather them. They're not the best-tasting, but they should sustain you for a while.","color":"#eeeeee"},{"id":"first-golden-acorn","number":2,"text":"You find a particularly shiny acorn. You examine it thoroughly, not for its beauty but because of its uncanny, almost synthetic quality. Nonetheless, you take a bite and feel stronger...perhaps you should check out the Golden Acorns tab?","color":"#ffd700"},{"id":"skills-unlocked","number":3,"text":"You're now somewhat accustomed to the raccoon lifestyle and realize...there's really not much to it. What you can remember of things like school, work, money, and human society seem completely irrelevant to you now. You decide to spend your time refining your gathering skills like all the other raccoons you've met so far...who knows, maybe you can even work with them!","color":"#ff69b4"}],"nextLogNumber":4,"nextExportReminderTime":1790779608236}`
+        }
+
+
+];
 
 function updateForgingEffect() {
 
@@ -1723,6 +1903,8 @@ const forging =
 
 forgingGoldenAcornMultiplier =
     forging.level;
+
+    updateGoldenAcornDescription();
 }
 
 function startGoldenAcornTimer() {
@@ -2036,7 +2218,7 @@ addLogMessage(
 },
 
             // Future upgrades go here.
-            // Note: Upgrade 10 should have starting cost 3e21 (I tested this)
+            // Note: Upgrade 11 should have starting cost 1e26 (I tested this)
 
         ];
 
@@ -2345,6 +2527,24 @@ const forgingLevelUpTimer =
 const logMessagesElement =
     document.getElementById("log-messages");
 
+    const exportDataButton =
+    document.getElementById("export-data-button");
+
+const importDataButton =
+    document.getElementById("import-data-button");
+
+const saveBankButton =
+    document.getElementById("save-bank-button");
+
+const saveBankModal =
+    document.getElementById("save-bank-modal");
+
+const saveBankClose =
+    document.getElementById("save-bank-close");
+
+const saveBankList =
+    document.getElementById("save-bank-list");
+
     const prestigeLogMessages = [
     "After being absolutely pulverized by a moving vehicle, you find yourself back where you started.",
     "After being devoured by a hungry coyote, you find yourself back where you started.",
@@ -2375,60 +2575,122 @@ addLogMessage(
 
         const SAVE_KEY = "acornIncrementalSave";
 
-        function saveGame() {
+        function getSaveData() {
 
-            if (hardResetting) {
-        return;
-    }
+return {
 
-            const saveData = {
-                acorns,
-                acornsPerGather,
-                goldenAcorns,
-                goldenAcornMultiplier,
-                goldenAcornCostMultiplier,
-                goldenAcornChance,
-                upgrade1BaseMultiplier,
-                totalSkillPoints,
-                skillSpeedMultiplier,
-                prestigeMultiplier,
-                prestigeUnlocked,
-                highestAcorns,
-                lastPrestigeAcorns,
-                prestigeGoldenAcornMultiplier,
-                goldenAcornTimerEnd,
-                goldenAcornTimerActive,
-                skillXPMultiplier,
-                gatheringXPAcornMultiplier,
-                totalGatheringXP,
-                forgingGoldenAcornMultiplier,
-                gatherOnCooldown,
-                cooldownEndTime,
-                gatherCooldown,
-                currentTab,
-                prestigeConfirmation: prestigeConfirmationToggle.checked,
-                upgrades: upgrades.map(upgrade => ({ id: upgrade.id, purchases: upgrade.purchases })),
-                goldenUpgrades: goldenUpgrades.map(upgrade => ({ id: upgrade.id, purchases: upgrade.purchases })),
-                skills: {
-                    gathering: {
-                        points: skills.gathering.points,
-                        level: skills.gathering.level,
-                        xp: skills.gathering.xp,
-                        effectMultiplier: skills.gathering.effectMultiplier
-                    },
-                    forging: {
-                        points: skills.forging.points,
-                        level: skills.forging.level,
-                        xp: skills.forging.xp,
-                        effectMultiplier: skills.forging.effectMultiplier
-                    },
-                },
-                logMessages,
-                nextLogNumber,
-            };
+    acorns,
+    acornsPerGather,
 
-            localStorage.setItem(SAVE_KEY, JSON.stringify(saveData));
+    goldenAcorns,
+    goldenAcornMultiplier,
+    goldenAcornCostMultiplier,
+    goldenAcornChance,
+
+    upgrade1BaseMultiplier,
+
+    totalSkillPoints,
+    skillSpeedMultiplier,
+
+    prestigeMultiplier,
+    prestigeUnlocked,
+    highestAcorns,
+    lastPrestigeAcorns,
+    prestigeGoldenAcornMultiplier,
+
+    goldenAcornTimerEnd,
+    goldenAcornTimerActive,
+
+    skillXPMultiplier,
+    gatheringXPAcornMultiplier,
+    totalGatheringXP,
+    forgingGoldenAcornMultiplier,
+
+    gatherOnCooldown,
+    cooldownEndTime,
+    gatherCooldown,
+
+    currentTab,
+
+    prestigeConfirmation:
+        prestigeConfirmationToggle.checked,
+
+    upgrades:
+        upgrades.map(
+            upgrade => ({
+                id: upgrade.id,
+                purchases: upgrade.purchases
+            })
+        ),
+
+    goldenUpgrades:
+        goldenUpgrades.map(
+            upgrade => ({
+                id: upgrade.id,
+                purchases: upgrade.purchases
+            })
+        ),
+
+    skills: {
+
+        gathering: {
+
+            points:
+                skills.gathering.points,
+
+            level:
+                skills.gathering.level,
+
+            xp:
+                skills.gathering.xp,
+
+            effectMultiplier:
+                skills.gathering.effectMultiplier
+
+        },
+
+        forging: {
+
+            points:
+                skills.forging.points,
+
+            level:
+                skills.forging.level,
+
+            xp:
+                skills.forging.xp,
+
+            effectMultiplier:
+                skills.forging.effectMultiplier
+
         }
+
+    },
+
+    logMessages,
+    nextLogNumber,
+    nextExportReminderTime,
+
+};
+
+}
+
+
+function saveGame() {
+
+if (hardResetting) {
+    return;
+}
+
+const saveData =
+    getSaveData();
+
+localStorage.setItem(
+    SAVE_KEY,
+    JSON.stringify(saveData)
+);
+
+}
 
         function loadGame() {
 
@@ -2558,6 +2820,707 @@ localStorage.removeItem(SAVE_KEY);
 
 location.reload();
 }
+
+function checkExportReminder() {
+
+if (
+    Date.now() <
+    nextExportReminderTime
+) {
+    return;
+}
+
+addLogMessage(
+    "Attention: You haven't exported your game data in a while! You can save your game data by clicking the \"Export Data\" button in the bottom left corner, then pasting the text that was copied into a document or text file. Then, if your data ever gets lost, you can import that string and pick up right where you left off!",
+    "#ff4444",
+    "export-reminder-" + Date.now()
+);
+
+nextExportReminderTime =
+    Date.now() + (3 * 1000);
+
+saveGame();
+}
+
+async function exportGameData() {
+
+const gameData =
+    getSaveData();
+
+const dataString =
+    JSON.stringify(gameData);
+
+try {
+
+    await navigator.clipboard.writeText(
+    dataString
+);
+
+nextExportReminderTime =
+    Date.now() +
+    (24 * 60 * 60 * 1000);
+
+saveGame();
+
+    addLogMessage(
+        "Game state exported to clipboard!",
+        "#eeeeee",
+        "export-" + Date.now()
+    );
+
+}
+catch (error) {
+
+    console.error(
+        "Could not copy game data:",
+        error
+    );
+
+    alert(
+        "Could not copy game data to clipboard."
+    );
+
+}
+
+}
+
+function importGameData() {
+
+const dataString =
+    prompt(
+        "Please import data string into the box below: "
+    );
+
+if (dataString === null) {
+    return;
+}
+
+try {
+
+    const saveData =
+        JSON.parse(dataString);
+
+    if (
+        !saveData ||
+        typeof saveData !== "object" ||
+        typeof saveData.acorns !== "number"
+    ) {
+        throw new Error(
+            "Invalid save data"
+        );
+    }
+
+    loadImportedGameData(saveData);
+
+    addLogMessage(
+        "Import successful!",
+        "#eeeeee",
+        "import-" + Date.now()
+    );
+
+    saveGame();
+
+}
+catch (error) {
+
+    console.error(
+        "Could not import game data:",
+        error
+    );
+
+    addLogMessage(
+        "Error: could not read game data",
+        "#ff6666",
+        "import-error-" + Date.now()
+    );
+
+}
+
+}
+
+function loadImportedGameData(saveData) {
+
+acorns =
+    saveData.acorns;
+
+acornsPerGather =
+    saveData.acornsPerGather;
+
+goldenAcorns =
+    saveData.goldenAcorns;
+
+goldenAcornMultiplier =
+    saveData.goldenAcornMultiplier;
+
+goldenAcornCostMultiplier =
+    saveData.goldenAcornCostMultiplier;
+
+goldenAcornChance =
+    saveData.goldenAcornChance;
+
+upgrade1BaseMultiplier =
+    saveData.upgrade1BaseMultiplier;
+
+totalSkillPoints =
+    saveData.totalSkillPoints;
+
+skillSpeedMultiplier =
+    saveData.skillSpeedMultiplier;
+
+prestigeMultiplier =
+    saveData.prestigeMultiplier;
+
+prestigeUnlocked =
+    saveData.prestigeUnlocked;
+
+highestAcorns =
+    saveData.highestAcorns;
+
+lastPrestigeAcorns =
+    saveData.lastPrestigeAcorns;
+
+prestigeGoldenAcornMultiplier =
+    saveData.prestigeGoldenAcornMultiplier;
+
+goldenAcornTimerEnd =
+    saveData.goldenAcornTimerEnd;
+
+goldenAcornTimerActive =
+    saveData.goldenAcornTimerActive;
+
+skillXPMultiplier =
+    saveData.skillXPMultiplier;
+
+gatheringXPAcornMultiplier =
+    saveData.gatheringXPAcornMultiplier;
+
+totalGatheringXP =
+    saveData.totalGatheringXP;
+
+forgingGoldenAcornMultiplier =
+    saveData.forgingGoldenAcornMultiplier;
+
+gatherOnCooldown =
+    saveData.gatherOnCooldown;
+
+cooldownEndTime =
+    saveData.cooldownEndTime;
+
+gatherCooldown =
+    saveData.gatherCooldown;
+
+currentTab =
+    saveData.currentTab;
+
+if (
+    typeof saveData.prestigeConfirmation === "boolean"
+) {
+
+    prestigeConfirmationToggle.checked =
+        saveData.prestigeConfirmation;
+
+}
+
+if (
+    typeof saveData.nextExportReminderTime === "number"
+) {
+
+    nextExportReminderTime =
+        saveData.nextExportReminderTime;
+
+}
+
+function checkExportReminder() {
+
+if (
+    Date.now() <
+    nextExportReminderTime
+) {
+    return;
+}
+
+addLogMessage(
+    "Attention: You haven't exported your game data in a while! You can save your game data by clicking the \"Export Data\" button in the bottom left corner, then pasting the text that was copied into a document or text file. Then, if your data ever gets lost, you can import that string and pick up right where you left off!",
+    "#ff4444",
+    "export-reminder-" + Date.now()
+);
+
+nextExportReminderTime =
+    Date.now() +
+    (24 * 60 * 60 * 1000);
+
+saveGame();
+}
+
+/* ------------------------------------------------------------
+   Regular upgrades
+   ------------------------------------------------------------ */
+
+   if (Array.isArray(saveData.upgrades)) {
+
+saveData.upgrades.forEach(
+    (upgradeData, index) => {
+
+        if (upgrades[index]) {
+
+            if (
+                typeof upgradeData === "object" &&
+                typeof upgradeData.purchases === "number"
+            ) {
+
+                upgrades[index].purchases =
+                    upgradeData.purchases;
+
+            }
+
+        }
+
+    }
+);
+
+}
+
+/* ------------------------------------------------------------
+   Golden upgrades
+   ------------------------------------------------------------ */
+
+if (Array.isArray(saveData.goldenUpgrades)) {
+
+saveData.goldenUpgrades.forEach(
+    (upgradeData, index) => {
+
+        if (goldenUpgrades[index]) {
+
+            if (
+                typeof upgradeData === "object" &&
+                typeof upgradeData.purchases === "number"
+            ) {
+
+                goldenUpgrades[index].purchases =
+                    upgradeData.purchases;
+
+            }
+
+        }
+
+    }
+);
+
+}
+
+/* ------------------------------------------------------------
+   Skills
+   ------------------------------------------------------------ */
+
+if (saveData.skills) {
+
+    if (saveData.skills.gathering) {
+
+        skills.gathering.points =
+            saveData.skills.gathering.points;
+
+        skills.gathering.level =
+            saveData.skills.gathering.level;
+
+        skills.gathering.xp =
+            saveData.skills.gathering.xp;
+
+        skills.gathering.effectMultiplier =
+            saveData.skills.gathering.effectMultiplier;
+
+    }
+
+    if (saveData.skills.forging) {
+
+        skills.forging.points =
+            saveData.skills.forging.points;
+
+        skills.forging.level =
+            saveData.skills.forging.level;
+
+        skills.forging.xp =
+            saveData.skills.forging.xp;
+
+        skills.forging.effectMultiplier =
+            saveData.skills.forging.effectMultiplier;
+
+    }
+
+}
+
+
+/* ------------------------------------------------------------
+   Log
+   ------------------------------------------------------------ */
+
+   if (Array.isArray(saveData.logMessages)) {
+    logMessages = saveData.logMessages;
+}
+
+if (typeof saveData.nextLogNumber === "number") {
+    nextLogNumber = saveData.nextLogNumber;
+}
+
+if (
+    typeof saveData.nextExportReminderTime === "number"
+) {
+    nextExportReminderTime =
+        saveData.nextExportReminderTime;
+}
+
+
+/* ------------------------------------------------------------
+   Refresh the game
+   ------------------------------------------------------------ */
+
+lastSkillUpdateTime =
+    Date.now();
+
+    updateAcornsPerGather();
+updateAcornGainMultiplier();
+
+updateResourceDisplay();
+updateGoldenAcornDisplay();
+updateSkillsDisplay();
+
+createUpgradeButtons();
+updateUpgradeButtons();
+
+createGoldenUpgradeButtons();
+updateGoldenUpgradeButtons();
+
+updatePrestigeDisplay();
+updateTabGlows();
+
+updateLogDisplay();
+
+
+/* ------------------------------------------------------------
+   Restore unlocked tabs
+   ------------------------------------------------------------ */
+
+if (
+    upgrades[4].purchases > 0 ||
+    upgrades[7].purchases > 0
+) {
+    skillsTab.style.display = "block";
+}
+else {
+    skillsTab.style.display = "none";
+}
+
+if (upgrades[7].purchases > 0) {
+    forgingSkill.style.display = "block";
+}
+else {
+    forgingSkill.style.display = "none";
+}
+
+if (goldenUpgrades[3].purchases > 0) {
+    goldenAcornTimer.style.display = "block";
+}
+else {
+    goldenAcornTimer.style.display = "none";
+}
+
+
+/* ------------------------------------------------------------
+   Make sure the saved tab is actually available
+   ------------------------------------------------------------ */
+
+if (
+    currentTab === "skills" &&
+    skillsTab.style.display === "none"
+) {
+    currentTab = "acorns";
+}
+
+
+/* ------------------------------------------------------------
+   Display the saved tab
+   ------------------------------------------------------------ */
+
+if (currentTab === "goldenAcorns") {
+
+    resourceDisplay.style.display = "none";
+    goldenResourceDisplay.style.display = "block";
+
+    acornsPage.style.display = "none";
+    goldenAcornsPage.style.display = "block";
+    skillsPage.style.display = "none";
+
+    acornsTab.classList.remove("active");
+    goldenAcornsTab.classList.add("active");
+    skillsTab.classList.remove("active");
+
+    skillsResourceDisplay.style.display = "none";
+
+}
+else if (currentTab === "skills") {
+
+    resourceDisplay.style.display = "none";
+    goldenResourceDisplay.style.display = "none";
+
+    acornsPage.style.display = "none";
+    goldenAcornsPage.style.display = "none";
+    skillsPage.style.display = "block";
+
+    acornsTab.classList.remove("active");
+    goldenAcornsTab.classList.remove("active");
+    skillsTab.classList.add("active");
+
+    skillsResourceDisplay.style.display = "block";
+
+}
+else {
+
+    currentTab = "acorns";
+
+    resourceDisplay.style.display = "block";
+    goldenResourceDisplay.style.display = "none";
+
+    acornsPage.style.display = "block";
+    goldenAcornsPage.style.display = "none";
+    skillsPage.style.display = "none";
+
+    acornsTab.classList.add("active");
+    goldenAcornsTab.classList.remove("active");
+    skillsTab.classList.remove("active");
+
+    skillsResourceDisplay.style.display = "none";
+}
+
+
+saveGame();
+
+}
+
+function openSaveBank() {
+
+updateSaveBankDisplay();
+
+saveBankModal.style.display =
+    "flex";
+
+}
+
+function closeSaveBank() {
+
+saveBankModal.style.display =
+    "none";
+
+}
+
+function updateSaveBankDisplay() {
+
+saveBankList.innerHTML = "";
+
+if (savePoints.length === 0) {
+
+    const emptyMessage =
+        document.createElement("p");
+
+    emptyMessage.textContent =
+        "No save points have been added yet.";
+
+    emptyMessage.style.color =
+        "#bbbbbb";
+
+    saveBankList.appendChild(
+        emptyMessage
+    );
+
+    return;
+
+}
+
+savePoints.forEach(
+    function(savePoint) {
+
+        const saveElement =
+            document.createElement("div");
+
+        saveElement.className =
+            "save-point";
+
+
+        const infoElement =
+            document.createElement("div");
+
+        infoElement.className =
+            "save-point-info";
+
+
+        const titleElement =
+            document.createElement("div");
+
+        titleElement.className =
+            "save-point-title";
+
+        titleElement.textContent =
+            savePoint.title;
+
+
+        const acornsElement =
+            document.createElement("div");
+
+        acornsElement.className =
+            "save-point-acorns";
+
+
+        try {
+
+            const saveData =
+                JSON.parse(savePoint.data);
+
+            acornsElement.textContent =
+                "Acorns: " +
+                formatNumber(
+                    Math.floor(
+                        saveData.acorns
+                    )
+                );
+
+        }
+        catch (error) {
+
+            acornsElement.textContent =
+                "Acorns: Unknown";
+
+        }
+
+
+        infoElement.appendChild(
+            titleElement
+        );
+
+        infoElement.appendChild(
+            acornsElement
+        );
+
+
+        const loadButton =
+            document.createElement("button");
+
+        loadButton.className =
+            "load-save-button";
+
+        loadButton.textContent =
+            "Load save";
+
+
+        loadButton.addEventListener(
+            "click",
+            function() {
+
+                loadSavePoint(
+                    savePoint
+                );
+
+            }
+        );
+
+
+        saveElement.appendChild(
+            infoElement
+        );
+
+        saveElement.appendChild(
+            loadButton
+        );
+
+
+        saveBankList.appendChild(
+            saveElement
+        );
+
+    }
+);
+
+}
+
+function loadSavePoint(savePoint) {
+
+try {
+
+    const saveData =
+        JSON.parse(savePoint.data);
+
+    if (
+        !saveData ||
+        typeof saveData !== "object" ||
+        typeof saveData.acorns !== "number"
+    ) {
+        throw new Error(
+            "Invalid save point"
+        );
+    }
+
+    loadImportedGameData(
+        saveData
+    );
+
+    addLogMessage(
+        savePoint.title + " Loaded!",
+        "#eeeeee",
+        "load-" +
+        savePoint.title +
+        "-" +
+        Date.now()
+    );
+
+    closeSaveBank();
+
+    saveGame();
+
+}
+catch (error) {
+
+    console.error(
+        "Could not load save point:",
+        error
+    );
+
+    addLogMessage(
+        "Error: could not read game data",
+        "#ff6666",
+        "load-error-" + Date.now()
+    );
+
+}
+
+}
+
+exportDataButton.addEventListener(
+    "click",
+    exportGameData
+);
+
+importDataButton.addEventListener(
+    "click",
+    importGameData
+);
+
+saveBankButton.addEventListener(
+    "click",
+    openSaveBank
+);
+
+saveBankClose.addEventListener(
+    "click",
+    closeSaveBank
+);
+
+saveBankModal.addEventListener(
+    "click",
+    function(event) {
+
+        if (event.target === saveBankModal) {
+            closeSaveBank();
+        }
+
+    }
+);
 
 const hardResetButton =
     document.getElementById("hard-reset-button");
@@ -3081,6 +4044,7 @@ const newPrestigeMultiplier =
 
 const newPrestigeGoldenMultiplier =
     calculatePrestigeGoldenAcornMultiplier(acorns);
+    updateGoldenAcornDescription();
 
 const canPrestige =
     acorns >= 1e21 &&
@@ -4004,10 +4968,23 @@ if (upgrade.id !== 3) {
     document.getElementById("golden-acorn-description");
 
     function updateGoldenAcornDescription() {
-    goldenAcornDescription.textContent =
-        "Every time you gather, you have a " +
-        (goldenAcornChance * 100).toFixed(0) +
-        "% chance of gaining 1 golden acorn. You can spend your golden acorns on small bonuses in this shop!";
+
+const goldenAcornsPerGather =
+    forgingGoldenAcornMultiplier *
+    prestigeGoldenAcornMultiplier;
+
+goldenAcornDescription.textContent =
+    "Every time you gather, you have a " +
+    (goldenAcornChance * 100).toFixed(0) +
+    "% chance of gaining " +
+    formatNumber(goldenAcornsPerGather) +
+    " golden acorn" +
+    (
+        goldenAcornsPerGather === 1
+            ? ""
+            : "s"
+    ) +
+    ". You can spend your golden acorns on small bonuses in this shop!";
 }
 
         /* ============================================================
@@ -4164,6 +5141,72 @@ saveGame();
 
         }
 
+        function formatSkillTimer(totalSeconds) {
+
+totalSeconds =
+    Math.max(
+        0,
+        Math.floor(totalSeconds)
+    );
+
+const days =
+    Math.floor(
+        totalSeconds / 86400
+    );
+
+const hours =
+    Math.floor(
+        (totalSeconds % 86400) / 3600
+    );
+
+const minutes =
+    Math.floor(
+        (totalSeconds % 3600) / 60
+    );
+
+const seconds =
+    totalSeconds % 60;
+
+
+// 1 day or more
+if (days > 0) {
+
+    return (
+        days +
+        "d " +
+        hours +
+        ":" +
+        String(minutes).padStart(2, "0") +
+        ":" +
+        String(seconds).padStart(2, "0")
+    );
+
+}
+
+
+// 1 hour or more
+if (hours > 0) {
+
+    return (
+        hours +
+        ":" +
+        String(minutes).padStart(2, "0") +
+        ":" +
+        String(seconds).padStart(2, "0")
+    );
+
+}
+
+
+// Less than 1 hour
+return (
+    String(minutes).padStart(2, "0") +
+    ":" +
+    String(seconds).padStart(2, "0")
+);
+
+}
+
         function updateSkillsDisplay() {
 
 const gathering =
@@ -4233,18 +5276,10 @@ if (currentGatheringXPRate > 0) {
             )
         );
 
-    const gatheringMinutes =
-        Math.floor(
-            gatheringSecondsRemaining / 60
-        );
-
-    const gatheringSeconds =
-        gatheringSecondsRemaining % 60;
-
-    gatheringLevelUpTimer.textContent =
-        String(gatheringMinutes).padStart(2, "0") +
-        ":" +
-        String(gatheringSeconds).padStart(2, "0");
+        gatheringLevelUpTimer.textContent =
+    formatSkillTimer(
+        gatheringSecondsRemaining
+    );
 
 } else {
 
@@ -4316,18 +5351,10 @@ if (currentForgingXPRate > 0) {
             )
         );
 
-    const forgingMinutes =
-        Math.floor(
-            forgingSecondsRemaining / 60
-        );
-
-    const forgingSeconds =
-        forgingSecondsRemaining % 60;
-
-    forgingLevelUpTimer.textContent =
-        String(forgingMinutes).padStart(2, "0") +
-        ":" +
-        String(forgingSeconds).padStart(2, "0");
+        forgingLevelUpTimer.textContent =
+    formatSkillTimer(
+        forgingSecondsRemaining
+    );
 
 } else {
 
@@ -4758,6 +5785,11 @@ createUpgradeButtons();
         saveGame();
 
         setInterval(saveGame, 1000);
+
+        setInterval(
+    checkExportReminder,
+    1000
+);
 
         window.addEventListener("beforeunload", saveGame);
 
