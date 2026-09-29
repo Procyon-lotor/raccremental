@@ -69,12 +69,12 @@
         }
 
         #golden-acorn-description {
-            margin-top: 36px;
-            margin-bottom: 28px;
-            font-size: 18px;
-            color: #bbbbbb;
-        }
-
+    width: 600px;
+    justify-content: center;
+    margin: 36px auto 28px auto;
+    font-size: 18px;
+    color: #bbbbbb;
+}
 
         /* ============================================================
            RESOURCE TABS
@@ -370,7 +370,7 @@
            ============================================================ */
 
         #golden-upgrade-container {
-            width: 900px;
+            width: 860px;
             max-width: 90%;
 
             margin: 35px auto;
@@ -788,7 +788,7 @@
 
     cursor: pointer;
 
-    z-index: 100;
+    z-index: 10000;
 }
 
 #changelog-button:hover {
@@ -927,6 +927,316 @@
     color: #999999;
 }
 
+/* ============================================================
+   PRESTIGE
+   ============================================================ */
+
+   #prestige-container {
+    display: none;
+    margin: 20px auto 40px;
+    text-align: center;
+}
+
+#prestige-button {
+
+width: 360px;
+
+padding: 14px 30px;
+
+font-size: 20px;
+
+font-weight: bold;
+
+background: linear-gradient(
+    135deg,
+    #103810,
+    #338b33,
+    #103810
+);
+
+color: white;
+
+border: 2px solid black;
+
+border-radius: 8px;
+
+cursor: pointer;
+
+transition:
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+
+}
+
+#prestige-button:hover:not(:disabled) {
+
+background: linear-gradient(
+    135deg,
+    #145314,
+    #4ba44b,
+    #145314
+);
+
+box-shadow: 0 0 10px 3px #236b23;
+
+}
+
+#prestige-button:disabled {
+
+opacity: 0.4;
+
+cursor: not-allowed;
+
+}
+
+#prestige-button-title {
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+}
+
+#prestige-description {
+    margin-top: 6px;
+    font-size: 13px;
+    font-weight: normal;
+    color: white;
+}
+
+#prestige-golden-description {
+    margin-top: 8px;
+    font-size: 13px;
+    color: #ffffff;
+}
+
+#prestige-multiplier-display,
+#prestige-golden-multiplier-display {
+    margin-top: 10px;
+    font-size: 16px;
+    color: #eeeeee;
+}
+
+#prestige-golden-multiplier-display {
+    margin-top: 6px;
+}
+
+#prestige-arrow,
+#prestige-new-multiplier,
+#prestige-golden-arrow,
+#prestige-new-golden-multiplier {
+    color: #3fbf3f;
+    font-weight: bold;
+}
+
+#prestige-requirement {
+    margin-top: 6px;
+    font-size: 14px;
+    font-weight: bold;
+    color: white;
+}
+
+#prestige-confirmation-setting {
+    margin-top: 14px;
+    font-size: 14px;
+    color: #bbbbbb;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 42px;
+    height: 22px;
+    margin-left: 6px;
+    vertical-align: middle;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #555555;
+    border-radius: 22px;
+    transition: 0.2s;
+}
+
+.slider::before {
+    content: "";
+    position: absolute;
+    height: 16px;
+    width: 16px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    border-radius: 50%;
+    transition: 0.2s;
+}
+
+.switch input:checked + .slider {
+    background-color: #278f27;
+}
+
+.switch input:checked + .slider::before {
+    transform: translateX(20px);
+}
+
+#hard-reset-button {
+    position: fixed;
+    bottom: 15px;
+    left: 15px;
+    padding: 8px 14px;
+    font-size: 14px;
+    font-weight: bold;
+    background: #8b1a1a;
+    color: white;
+    border: 2px solid black;
+    border-radius: 6px;
+    cursor: pointer;
+    z-index: 1000;
+}
+
+#hard-reset-button:hover {
+    background: #b22222;
+}
+
+/* ============================================================
+   RESOURCE SIDEBAR
+   ============================================================ */
+
+   #resource-sidebar {
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: 240px;
+    height: 100vh;
+
+    padding: 25px 20px;
+
+    background-color: #181818;
+
+    border-right: 2px solid #444444;
+
+    text-align: left;
+
+    z-index: 1000;
+}
+
+.sidebar-resource {
+    margin-bottom: 4px;
+
+    font-size: 14px;
+    font-weight: bold;
+
+    line-height: 1.4;
+}
+
+.acorn-resource {
+    color: #eeeeee;
+}
+
+.acorn-resource strong {
+    color: #eeeeee;
+}
+
+.golden-acorn-resource {
+    color: #ffd700;
+}
+
+.golden-acorn-resource strong {
+    color: #ffd700;
+}
+
+.skill-point-resource {
+    color: #ff69b4;
+}
+
+.skill-point-resource > strong {
+    color: #ff69b4;
+}
+
+.available-skill-points {
+    font-size: 14px;
+    color: #bbbbbb;
+}
+
+.available-skill-points strong {
+    color: #bbbbbb;
+}
+
+/* ============================================================
+   LOG SIDEBAR
+   ============================================================ */
+
+   #log-sidebar {
+    position: fixed;
+
+    top: 0;
+    right: 0;
+
+    width: 240px;
+    height: 100vh;
+
+    box-sizing: border-box;
+
+    padding: 25px 20px;
+
+    background-color: #181818;
+
+    border-left: 2px solid #444444;
+
+    text-align: left;
+
+    z-index: 1000;
+
+    overflow-y: auto;
+}
+
+#log-title {
+    margin-bottom: 20px;
+
+    font-size: 20px;
+    font-weight: bold;
+
+    color: #eeeeee;
+
+    text-align: center;
+}
+
+.log-message {
+    margin-bottom: 12px;
+
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.log-number {
+    color: #999999;
+}
+
+.log-text {
+    color: #eeeeee;
+}
+
+#resource-title {
+    margin-bottom: 20px;
+
+    font-size: 20px;
+    font-weight: bold;
+
+    color: #eeeeee;
+
+    text-align: center;
+}
+
     </style>
 
 </head>
@@ -934,6 +1244,49 @@
 
 <body>
 
+    <!-- ============================================================
+     RESOURCE SIDEBAR
+     ============================================================ -->
+
+<div id="resource-sidebar">
+
+    <div id="resource-title">
+        Resources
+    </div>
+
+    <div class="sidebar-resource acorn-resource">
+        <span>Acorns:</span>
+        <strong id="sidebar-acorns">0</strong>
+    </div>
+
+    <div class="sidebar-resource golden-acorn-resource">
+        <span>Golden Acorns:</span>
+        <strong id="sidebar-golden-acorns">0</strong>
+    </div>
+
+    <div class="sidebar-resource skill-point-resource">
+        <span>Skill Points:</span>
+        <strong id="sidebar-skill-points">0</strong>
+        <span class="available-skill-points">
+            (<strong id="sidebar-available-skill-points">0</strong> available)
+        </span>
+    </div>
+
+</div>
+
+<!-- ============================================================
+     LOG SIDEBAR
+     ============================================================ -->
+
+     <div id="log-sidebar">
+
+        <div id="log-title">
+            Log
+        </div>
+    
+        <div id="log-messages"></div>
+    
+    </div>
 
     <!-- ============================================================
          RESOURCE DISPLAYS
@@ -1024,6 +1377,54 @@
 
 
         <div id="upgrade-container"></div>
+
+        <div id="prestige-container">
+
+            <button id="prestige-button">
+        
+                <div id="prestige-button-title">
+                    Prestige
+                </div>
+
+                <div id="prestige-requirement">
+                    You need at least 1e21 acorns to Prestige.
+                </div>
+        
+                <div id="prestige-description">
+                    Reset most regular upgrades and golden upgrades, and all skills...
+                </div>
+        
+                <div id="prestige-golden-description">
+                    for a 1x boost to regular acorn gain and a 1x boost to golden acorn gain.
+                </div>
+        
+            </button>
+        
+            <div id="prestige-multiplier-display">
+                Current Acorn multiplier:
+                <span id="prestige-current-multiplier">1x</span>
+                <span id="prestige-arrow">→</span>
+                <span id="prestige-new-multiplier">1x</span>
+            </div>
+        
+            <div id="prestige-golden-multiplier-display">
+                Current Golden Acorn multiplier:
+                <span id="prestige-current-golden-multiplier">1x</span>
+                <span id="prestige-golden-arrow">→</span>
+                <span id="prestige-new-golden-multiplier">1x</span>
+            </div>
+
+            <div id="prestige-confirmation-setting">
+                Prestige Confirmation:
+                <label class="switch">
+                    <input type="checkbox" id="prestige-confirmation-toggle" checked>
+                    <span class="slider"></span>
+                </label>
+            </div>
+        
+        </div>
+        
+        </div>
 
     </div>
 
@@ -1212,9 +1613,13 @@
 
     </div>
 
+    <button id="hard-reset-button">
+        Hard Reset
+    </button>
+
     <!-- CHANGELOG -->
 
-<button id="changelog-button">v1.1.1</button>
+<button id="changelog-button">v1.2</button>
 
 <div id="changelog-modal">
 
@@ -1225,6 +1630,13 @@
         <h1>Changelog</h1>
 
         <div id="changelog-entries">
+            <h2>v1.2</h2>
+            <p>- Added Acorn Upgrade 10 and Prestige</p>
+            <p>- Finally added local saving and a hard reset button for testing purposes</p>
+            <p>- Added an effect to the Acorn Upgrade 9 tooltip display and fixed text that was incorrect</p>
+            <p>- Added the Resources sidebar (left) and the Log sidebar (right)</p>
+            <p>- Added eight new log messages</p>
+            <p>- Really going to try to take more breaks because working for several hours in a row like I've been doing is actually driving me crazy</p>
             <h3>v1.1.1</h3>
             <p>- Changed starting XP requirement of Forging from 1e4 to 1e5</p>
             <p>- Fixed a typo on Acorn Upgrade 8</p>
@@ -1277,14 +1689,27 @@
         const acornsPerSecond = 0;
 
         let totalSkillPoints = 0;
-        let skillSpeedMultiplier = 1;
+let skillSpeedMultiplier = 1;
 
-        let goldenAcornTimerEnd = 0;
+let prestigeMultiplier = 1;
+let prestigeUnlocked = false;
+
+let highestAcorns = 0;
+let lastPrestigeAcorns = 0;
+
+let prestigeGoldenAcornMultiplier = 1;
+
+let goldenAcornTimerEnd = 0;
 let goldenAcornTimerActive = false;
 let skillXPMultiplier = 1;
 let gatheringXPAcornMultiplier = 1;
 let totalGatheringXP = 0;
 let forgingGoldenAcornMultiplier = 1;
+let currentTab = "acorns";
+let hardResetting = false;
+
+let logMessages = [];
+let nextLogNumber = 1;
 
 function updateForgingEffect() {
 
@@ -1319,9 +1744,24 @@ let remaining =
 
 if (remaining <= 0) {
 
-    goldenAcorns += forgingGoldenAcornMultiplier;
+    const wasFirstGoldenAcorn =
+    goldenAcorns === 0;
 
-    updateGoldenAcornDisplay();
+goldenAcorns +=
+    forgingGoldenAcornMultiplier *
+    prestigeGoldenAcornMultiplier;
+
+if (wasFirstGoldenAcorn) {
+
+    addLogMessage(
+        "You find a particularly shiny acorn. You examine it thoroughly, not for its beauty but because of its uncanny, almost synthetic quality. Nonetheless, you take a bite and feel stronger...perhaps you should check out the Golden Acorns tab?",
+        "#ffd700",
+        "first-golden-acorn"
+    );
+
+}
+
+updateGoldenAcornDisplay();
     updateGoldenUpgradeButtons();
 
     goldenAcornTimerEnd =
@@ -1329,6 +1769,8 @@ if (remaining <= 0) {
 
     remaining =
         goldenAcornTimerEnd - Date.now();
+
+saveGame();
 }
 
 const totalSeconds =
@@ -1374,6 +1816,9 @@ const skills = {
     }
 };
 
+const prestigeGoldenDescription =
+    document.getElementById("prestige-golden-description");
+
         /* ============================================================
            CALCULATED GATHER AMOUNT
            ============================================================ */
@@ -1383,7 +1828,8 @@ const skills = {
         acornsPerGather *
         goldenAcornMultiplier *
         skills.gathering.effectMultiplier *
-        gatheringXPAcornMultiplier
+        gatheringXPAcornMultiplier *
+        prestigeMultiplier
     );
 }
 
@@ -1504,8 +1950,15 @@ const skills = {
     maxPurchases: 1,
     purchases: 0,
     effect: function() {
-        skillsTab.style.display = "block";
-    }
+
+skillsTab.style.display = "block";
+
+addLogMessage(
+    "You're now somewhat accustomed to the raccoon lifestyle and realize...there's really not much to it. What you can remember of things like school, work, money, and human society seem completely irrelevant to you now. You decide to spend your time refining your gathering skills like all the other raccoons you've met so far...who knows, maybe you can even work with them!",
+    "#ff69b4",
+    "skills-unlocked"
+);
+}
 },
 {
     id: 5,
@@ -1553,13 +2006,27 @@ const skills = {
     id: 8,
     name: "Bribe the Skills Council",
     subtitle: "You're able to sway the council's vote with your signature charm.",
-    description: "Reduces the skill point cost multiplier by 5.",
+    description: "Reduces the skill point cost multiplier by 10.",
     baseCost: 5e18,
     costMultiplier: 100,
     maxPurchases: 5,
     purchases: 0,
     effect: function() {
         updateSkillsDisplay();
+    }
+},
+{
+    id: 9,
+    name: "Reach the Other Side",
+    subtitle: "It's time to see how difficult being a raccoon really is.",
+    description: "Unlocks a new feature that lets you reset your progress for benefits.",
+    baseCost: 3e21,
+    costMultiplier: 1,
+    maxPurchases: 1,
+    purchases: 0,
+    effect: function() {
+        prestigeUnlocked = true;
+        updatePrestigeDisplay();
     }
 },
 
@@ -1650,6 +2117,17 @@ const skills = {
         const goldenAcornRate =
             document.getElementById("golden-acorn-rate");
 
+            const sidebarAcorns =
+    document.getElementById("sidebar-acorns");
+
+const sidebarGoldenAcorns =
+    document.getElementById("sidebar-golden-acorns");
+
+const sidebarSkillPoints =
+    document.getElementById("sidebar-skill-points");
+
+const sidebarAvailableSkillPoints =
+    document.getElementById("sidebar-available-skill-points");
 
         const resourceDisplay =
             document.getElementById("resource-display");
@@ -1681,12 +2159,41 @@ const skills = {
         const cooldownText =
             document.getElementById("cooldown-text");
 
+            const upgradeContainer =
+    document.getElementById("upgrade-container");
 
-        const upgradeContainer =
-            document.getElementById("upgrade-container");
+const prestigeContainer =
+    document.getElementById("prestige-container");
 
-        const goldenUpgradeContainer =
-            document.getElementById("golden-upgrade-container");
+const prestigeButton =
+    document.getElementById("prestige-button");
+
+const prestigeButtonTitle =
+    document.getElementById("prestige-button-title");
+
+const prestigeDescription =
+    document.getElementById("prestige-description");
+
+const prestigeCurrentMultiplier =
+    document.getElementById("prestige-current-multiplier");
+
+const prestigeCurrentGoldenMultiplier =
+    document.getElementById("prestige-current-golden-multiplier");
+
+const prestigeNewGoldenMultiplier =
+    document.getElementById("prestige-new-golden-multiplier");
+
+const prestigeNewMultiplier =
+    document.getElementById("prestige-new-multiplier");
+
+const prestigeRequirement =
+    document.getElementById("prestige-requirement");
+
+const prestigeConfirmationToggle =
+    document.getElementById("prestige-confirmation-toggle");
+
+const goldenUpgradeContainer =
+    document.getElementById("golden-upgrade-container");
 
             const skillsTab =
     document.getElementById("skills-tab");
@@ -1830,6 +2337,231 @@ const forgingEffect =
 const forgingLevelUpTimer =
     document.getElementById("forging-level-up-timer");
 
+const logMessagesElement =
+    document.getElementById("log-messages");
+
+    const prestigeLogMessages = [
+    "After being absolutely pulverized by a moving vehicle, you find yourself back where you started.",
+    "After being devoured by a hungry coyote, you find yourself back where you started.",
+    "After being bitten by a rabid squirrel, you find yourself back where you started.",
+    "After being swept into a moving river while trying to wash your food, you find yourself back where you started.",
+    "After being taken in as an exotic pet, only to then be neglected to starvation, you find yourself back where you started."
+];
+
+function addPrestigeLogMessage() {
+
+const randomIndex =
+    Math.floor(
+        Math.random() *
+        prestigeLogMessages.length
+    );
+
+addLogMessage(
+    prestigeLogMessages[randomIndex],
+    "#3fbf3f",
+    "prestige-" + Date.now()
+);
+
+}
+
+        /* ============================================================
+           LOCAL STORAGE SAVE / LOAD
+           ============================================================ */
+
+        const SAVE_KEY = "acornIncrementalSave";
+
+        function saveGame() {
+
+            if (hardResetting) {
+        return;
+    }
+
+            const saveData = {
+                acorns,
+                acornsPerGather,
+                goldenAcorns,
+                goldenAcornMultiplier,
+                goldenAcornCostMultiplier,
+                goldenAcornChance,
+                upgrade1BaseMultiplier,
+                totalSkillPoints,
+                skillSpeedMultiplier,
+                prestigeMultiplier,
+                prestigeUnlocked,
+                highestAcorns,
+                lastPrestigeAcorns,
+                prestigeGoldenAcornMultiplier,
+                goldenAcornTimerEnd,
+                goldenAcornTimerActive,
+                skillXPMultiplier,
+                gatheringXPAcornMultiplier,
+                totalGatheringXP,
+                forgingGoldenAcornMultiplier,
+                gatherOnCooldown,
+                cooldownEndTime,
+                gatherCooldown,
+                currentTab,
+                prestigeConfirmation: prestigeConfirmationToggle.checked,
+                upgrades: upgrades.map(upgrade => ({ id: upgrade.id, purchases: upgrade.purchases })),
+                goldenUpgrades: goldenUpgrades.map(upgrade => ({ id: upgrade.id, purchases: upgrade.purchases })),
+                skills: {
+                    gathering: {
+                        points: skills.gathering.points,
+                        level: skills.gathering.level,
+                        xp: skills.gathering.xp,
+                        effectMultiplier: skills.gathering.effectMultiplier
+                    },
+                    forging: {
+                        points: skills.forging.points,
+                        level: skills.forging.level,
+                        xp: skills.forging.xp,
+                        effectMultiplier: skills.forging.effectMultiplier
+                    },
+                },
+                logMessages,
+                nextLogNumber,
+            };
+
+            localStorage.setItem(SAVE_KEY, JSON.stringify(saveData));
+        }
+
+        function loadGame() {
+
+            const saved = localStorage.getItem(SAVE_KEY);
+
+            if (!saved) {
+                return;
+            }
+
+            try {
+
+                const saveData = JSON.parse(saved);
+
+                if (typeof saveData.acorns === "number") acorns = saveData.acorns;
+                if (typeof saveData.acornsPerGather === "number") acornsPerGather = saveData.acornsPerGather;
+                if (typeof saveData.goldenAcorns === "number") goldenAcorns = saveData.goldenAcorns;
+                if (typeof saveData.goldenAcornMultiplier === "number") goldenAcornMultiplier = saveData.goldenAcornMultiplier;
+                if (typeof saveData.goldenAcornCostMultiplier === "number") goldenAcornCostMultiplier = saveData.goldenAcornCostMultiplier;
+                if (typeof saveData.goldenAcornChance === "number") goldenAcornChance = saveData.goldenAcornChance;
+                if (typeof saveData.upgrade1BaseMultiplier === "number") upgrade1BaseMultiplier = saveData.upgrade1BaseMultiplier;
+                if (typeof saveData.totalSkillPoints === "number") totalSkillPoints = saveData.totalSkillPoints;
+                if (typeof saveData.skillSpeedMultiplier === "number") skillSpeedMultiplier = saveData.skillSpeedMultiplier;
+                if (typeof saveData.prestigeMultiplier === "number") prestigeMultiplier = saveData.prestigeMultiplier;
+                if (typeof saveData.prestigeUnlocked === "boolean") prestigeUnlocked = saveData.prestigeUnlocked;
+                if (typeof saveData.highestAcorns === "number") highestAcorns = saveData.highestAcorns;
+                if (typeof saveData.lastPrestigeAcorns === "number") lastPrestigeAcorns = saveData.lastPrestigeAcorns;
+                if (typeof saveData.prestigeGoldenAcornMultiplier === "number") prestigeGoldenAcornMultiplier = saveData.prestigeGoldenAcornMultiplier;
+                if (typeof saveData.goldenAcornTimerEnd === "number") goldenAcornTimerEnd = saveData.goldenAcornTimerEnd;
+                if (typeof saveData.goldenAcornTimerActive === "boolean") goldenAcornTimerActive = saveData.goldenAcornTimerActive;
+                if (typeof saveData.skillXPMultiplier === "number") skillXPMultiplier = saveData.skillXPMultiplier;
+                if (typeof saveData.gatheringXPAcornMultiplier === "number") gatheringXPAcornMultiplier = saveData.gatheringXPAcornMultiplier;
+                if (typeof saveData.totalGatheringXP === "number") totalGatheringXP = saveData.totalGatheringXP;
+                if (typeof saveData.forgingGoldenAcornMultiplier === "number") forgingGoldenAcornMultiplier = saveData.forgingGoldenAcornMultiplier;
+                if (typeof saveData.gatherOnCooldown === "boolean") gatherOnCooldown = saveData.gatherOnCooldown;
+                if (typeof saveData.cooldownEndTime === "number") cooldownEndTime = saveData.cooldownEndTime;
+                if (typeof saveData.gatherCooldown === "number") gatherCooldown = saveData.gatherCooldown;
+
+                if (["acorns", "goldenAcorns", "skills"].includes(saveData.currentTab)) {
+                    currentTab = saveData.currentTab;
+                }
+
+                if (typeof saveData.prestigeConfirmation === "boolean") {
+                    prestigeConfirmationToggle.checked = saveData.prestigeConfirmation;
+                }
+
+                if (Array.isArray(saveData.upgrades)) {
+                    for (const savedUpgrade of saveData.upgrades) {
+                        const upgrade = upgrades.find(upgrade => upgrade.id === savedUpgrade.id);
+                        if (upgrade && typeof savedUpgrade.purchases === "number") {
+                            upgrade.purchases = savedUpgrade.purchases;
+                        }
+                    }
+                }
+
+                if (Array.isArray(saveData.goldenUpgrades)) {
+                    for (const savedUpgrade of saveData.goldenUpgrades) {
+                        const upgrade = goldenUpgrades.find(upgrade => upgrade.id === savedUpgrade.id);
+                        if (upgrade && typeof savedUpgrade.purchases === "number") {
+                            upgrade.purchases = savedUpgrade.purchases;
+                        }
+                    }
+                }
+
+                if (saveData.skills) {
+                    if (saveData.skills.gathering) {
+                        const savedSkill = saveData.skills.gathering;
+                        if (typeof savedSkill.points === "number") skills.gathering.points = savedSkill.points;
+                        if (typeof savedSkill.level === "number") skills.gathering.level = savedSkill.level;
+                        if (typeof savedSkill.xp === "number") skills.gathering.xp = savedSkill.xp;
+                        if (typeof savedSkill.effectMultiplier === "number") skills.gathering.effectMultiplier = savedSkill.effectMultiplier;
+                    }
+                    if (saveData.skills.forging) {
+                        const savedSkill = saveData.skills.forging;
+                        if (typeof savedSkill.points === "number") skills.forging.points = savedSkill.points;
+                        if (typeof savedSkill.level === "number") skills.forging.level = savedSkill.level;
+                        if (typeof savedSkill.xp === "number") skills.forging.xp = savedSkill.xp;
+                        if (typeof savedSkill.effectMultiplier === "number") skills.forging.effectMultiplier = savedSkill.effectMultiplier;
+                    }
+                }
+
+                upgrades[0].description =
+                    "Multiplies the number of acorns gathered per click by " +
+                    upgrade1BaseMultiplier.toFixed(1) +
+                    "x.";
+
+                if (upgrades[4].purchases > 0 || upgrades[7].purchases > 0) {
+                    skillsTab.style.display = "block";
+                }
+
+                if (upgrades[7].purchases > 0) {
+                    forgingSkill.style.display = "block";
+                }
+
+                if (goldenUpgrades[3].purchases > 0) {
+                    goldenAcornTimer.style.display = "block";
+                }
+
+                updateForgingEffect();
+
+                if (Array.isArray(saveData.logMessages)) {
+    logMessages = saveData.logMessages;
+}
+
+if (typeof saveData.nextLogNumber === "number") {
+    nextLogNumber = saveData.nextLogNumber;
+}
+
+            }
+            catch (error) {
+                console.error("Could not load saved game:", error);
+            }
+        }
+
+        function hardReset() {
+
+const confirmed = confirm(
+    "WARNING: This will permanently delete ALL of your progress. Are you sure you want to continue?"
+);
+
+if (!confirmed) {
+    return;
+}
+
+hardResetting = true;
+
+localStorage.removeItem(SAVE_KEY);
+
+location.reload();
+}
+
+const hardResetButton =
+    document.getElementById("hard-reset-button");
+
+hardResetButton.addEventListener(
+    "click",
+    hardReset
+);
+
         /* ============================================================
            RESOURCE DISPLAY
            ============================================================ */
@@ -1861,18 +2593,121 @@ return number.toFixed(2);
 
 }
 
-        function updateResourceDisplay() {
+/* ============================================================
+   LOG
+   ============================================================ */
 
-            // Always round displayed acorns to a whole number.
-            acornNumber.textContent =
-            formatNumber(Math.floor(acorns));
+   function addLogMessage(text, color, id) {
+
+// Don't add the same event twice.
+if (logMessages.some(message => message.id === id)) {
+    return;
+}
+
+logMessages.push({
+    id: id,
+    number: nextLogNumber,
+    text: text,
+    color: color
+});
+
+nextLogNumber++;
+
+updateLogDisplay();
+
+saveGame();
+}
 
 
-            acornRate.textContent =
-                acornsPerSecond;
+function updateLogDisplay() {
 
-        }
+logMessagesElement.innerHTML = "";
 
+// Newest messages appear first.
+for (
+    let i = logMessages.length - 1;
+    i >= 0;
+    i--
+) {
+
+    const message =
+        logMessages[i];
+
+    const messageElement =
+        document.createElement("div");
+
+    messageElement.className =
+        "log-message";
+
+    const numberElement =
+        document.createElement("span");
+
+    numberElement.className =
+        "log-number";
+
+    numberElement.textContent =
+        "[" + message.number + "] ";
+
+    const textElement =
+        document.createElement("span");
+
+    textElement.className =
+        "log-text";
+
+    textElement.textContent =
+        message.text;
+
+    textElement.style.color =
+        message.color;
+
+    messageElement.appendChild(
+        numberElement
+    );
+
+    messageElement.appendChild(
+        textElement
+    );
+
+    logMessagesElement.appendChild(
+        messageElement
+    );
+}
+}
+
+function updateResourceDisplay() {
+
+// Always round displayed acorns to a whole number.
+acornNumber.textContent =
+    formatNumber(Math.floor(acorns));
+
+
+acornRate.textContent =
+    acornsPerSecond;
+
+updatePrestigeDisplay();
+
+updateResourceSidebar();
+
+}
+
+function updateResourceSidebar() {
+
+sidebarAcorns.textContent =
+    formatNumber(Math.floor(acorns));
+
+sidebarGoldenAcorns.textContent =
+    formatNumber(Math.floor(goldenAcorns));
+
+sidebarSkillPoints.textContent =
+    formatNumber(totalSkillPoints);
+
+sidebarAvailableSkillPoints.textContent =
+    formatNumber(
+        totalSkillPoints -
+        skills.gathering.points -
+        skills.forging.points
+    );
+}
 
         function updateGoldenAcornDisplay() {
 
@@ -1883,6 +2718,8 @@ return number.toFixed(2);
             goldenAcornRate.textContent =
                 "0";
 
+                updateResourceSidebar();
+
         }
 
 
@@ -1891,6 +2728,8 @@ return number.toFixed(2);
            ============================================================ */
 
         acornsTab.addEventListener("click", function() {
+
+            currentTab = "acorns";
 
             resourceDisplay.style.display = "block";
             goldenResourceDisplay.style.display = "none";
@@ -1906,10 +2745,14 @@ return number.toFixed(2);
 skillsTab.classList.remove("active");
 skillsResourceDisplay.style.display = "none";
 
+
+            saveGame();
         });
 
 
         goldenAcornsTab.addEventListener("click", function() {
+
+            currentTab = "goldenAcorns";
 
             resourceDisplay.style.display = "none";
             goldenResourceDisplay.style.display = "block";
@@ -1925,9 +2768,12 @@ skillsResourceDisplay.style.display = "none";
 skillsTab.classList.remove("active");
 skillsResourceDisplay.style.display = "none";
 
+
+            saveGame();
         });
 
         skillsTab.addEventListener("click", function() {
+    currentTab = "skills";
     resourceDisplay.style.display = "none";
     goldenResourceDisplay.style.display = "none";
 
@@ -1939,6 +2785,8 @@ skillsResourceDisplay.style.display = "none";
     goldenAcornsTab.classList.remove("active");
     skillsTab.classList.add("active");
     skillsResourceDisplay.style.display = "block";
+
+    saveGame();
 });
 
         /* ============================================================
@@ -1970,14 +2818,28 @@ skillsResourceDisplay.style.display = "none";
                -------------------------------------------------------- */
 
                if (Math.random() < goldenAcornChance) {
-                goldenAcorns += forgingGoldenAcornMultiplier;
 
+const wasFirstGoldenAcorn =
+    goldenAcorns === 0;
 
-                updateGoldenAcornDisplay();
+goldenAcorns +=
+    forgingGoldenAcornMultiplier *
+    prestigeGoldenAcornMultiplier;
 
-                updateGoldenUpgradeButtons();
+if (wasFirstGoldenAcorn) {
 
-            }
+    addLogMessage(
+        "You find a particularly shiny acorn. You examine it thoroughly, not for its beauty but because of its uncanny, almost synthetic quality. Nonetheless, you take a bite and feel stronger...perhaps you should check out the Golden Acorns tab?",
+        "#ffd700",
+        "first-golden-acorn"
+    );
+
+}
+
+updateGoldenAcornDisplay();
+
+updateGoldenUpgradeButtons();
+}
 
 
             updateResourceDisplay();
@@ -2006,6 +2868,7 @@ skillsResourceDisplay.style.display = "none";
 
 
             updateCooldown();
+            saveGame();
 
         });
 
@@ -2156,6 +3019,303 @@ return upgrade.baseCost *
             updateGatherButtonText();
 
         }
+
+        /* ============================================================
+   PRESTIGE
+   ============================================================ */
+
+   function calculatePrestigeMultiplier(acornAmount) {
+
+if (acornAmount < 1e21) {
+    return 1;
+}
+
+return Math.pow(
+    Math.log2(acornAmount / 1e20),
+    1.5
+);
+}
+
+function calculatePrestigeGoldenAcornMultiplier(acornAmount) {
+
+if (acornAmount < 1e21) {
+    return 1;
+}
+
+return Math.pow(
+    Math.log10(acornAmount / 1e21),
+    0.8
+) + 1;
+}
+
+function getPrestigeMultiplier() {
+
+return calculatePrestigeMultiplier(
+    lastPrestigeAcorns
+);
+}
+
+function getPrestigeGoldenAcornMultiplier() {
+
+return calculatePrestigeGoldenAcornMultiplier(
+    lastPrestigeAcorns
+);
+}
+
+function updatePrestigeDisplay() {
+
+if (!prestigeUnlocked) {
+    prestigeContainer.style.display = "none";
+    return;
+}
+
+prestigeContainer.style.display = "block";
+
+const newPrestigeMultiplier =
+    calculatePrestigeMultiplier(acorns);
+
+const newPrestigeGoldenMultiplier =
+    calculatePrestigeGoldenAcornMultiplier(acorns);
+
+const canPrestige =
+    acorns >= 1e21 &&
+    acorns > lastPrestigeAcorns;
+
+prestigeButton.disabled = !canPrestige;
+
+
+/*
+ * Update the multiplier displays.
+ */
+
+prestigeCurrentMultiplier.textContent =
+    formatNumber(prestigeMultiplier) +
+    "x";
+
+prestigeNewMultiplier.textContent =
+    formatNumber(newPrestigeMultiplier) +
+    "x";
+
+prestigeCurrentGoldenMultiplier.textContent =
+    formatNumber(prestigeGoldenAcornMultiplier) +
+    "x";
+
+prestigeNewGoldenMultiplier.textContent =
+    formatNumber(newPrestigeGoldenMultiplier) +
+    "x";
+
+
+/*
+ * Below the Prestige threshold.
+ */
+
+if (acorns < 1e21) {
+
+    prestigeButtonTitle.textContent =
+        "Prestige";
+
+    prestigeRequirement.style.display =
+        "block";
+
+    prestigeDescription.style.display =
+        "none";
+
+    prestigeGoldenDescription.style.display =
+        "none";
+
+}
+
+
+/*
+ * At or above the Prestige threshold.
+ */
+
+else {
+
+    prestigeButtonTitle.textContent =
+        "Prestige";
+
+    prestigeRequirement.style.display =
+        "none";
+
+    prestigeDescription.style.display =
+        "block";
+
+    prestigeGoldenDescription.style.display =
+        "block";
+
+
+    const prestigeMultiplierGain =
+        newPrestigeMultiplier /
+        prestigeMultiplier;
+
+    const goldenMultiplierGain =
+        newPrestigeGoldenMultiplier /
+        prestigeGoldenAcornMultiplier;
+
+
+    prestigeDescription.textContent =
+        "Reset most regular upgrades and golden upgrades, and all skills...";
+
+    prestigeGoldenDescription.textContent =
+        "for a " +
+        formatNumber(prestigeMultiplierGain) +
+        "x boost to regular acorn gain and a " +
+        formatNumber(goldenMultiplierGain) +
+        "x boost to golden acorn gain.";
+
+}
+
+}
+
+function performPrestige() {
+
+if (!prestigeUnlocked) {
+    return;
+}
+
+if (acorns < 1e21) {
+    return;
+}
+
+if (acorns <= lastPrestigeAcorns) {
+    return;
+}
+
+// Record the acorn total at the moment of Prestige.
+lastPrestigeAcorns = acorns;
+highestAcorns = acorns;
+addPrestigeLogMessage();
+
+// Both Prestige multipliers are based on this Prestige amount.
+prestigeMultiplier =
+    getPrestigeMultiplier();
+
+prestigeGoldenAcornMultiplier =
+    getPrestigeGoldenAcornMultiplier();
+
+// Golden acorn multiplier is based on the
+// acorn total immediately before this Prestige.
+prestigeGoldenAcornMultiplier =
+    getPrestigeGoldenAcornMultiplier();
+
+// Reset regular acorns.
+acorns = 0;
+goldenAcorns = 0;
+
+updateGoldenAcornDisplay();
+
+// Reset regular upgrade effects.
+acornsPerGather = 1;
+gatherCooldown = 5;
+upgrade1BaseMultiplier = 1.4;
+goldenAcornChance = 0.10;
+skillXPMultiplier = 1;
+gatheringXPAcornMultiplier = 1;
+
+// Reset regular upgrades.
+for (const upgrade of upgrades) {
+
+    if (upgrade.id === 9) {
+        // Prestige itself remains permanently unlocked.
+        upgrade.purchases = 1;
+    }
+    else {
+        upgrade.purchases = 0;
+    }
+}
+
+// Reset skills.
+totalSkillPoints = 0;
+
+for (const skill of Object.values(skills)) {
+    skill.points = 0;
+    skill.level = 1;
+    skill.xp = 0;
+    skill.effectMultiplier = 1;
+}
+
+totalGatheringXP = 0;
+forgingGoldenAcornMultiplier = 1;
+
+lastSkillUpdateTime = Date.now();
+
+// Reset golden upgrades EXCEPT the fourth one.
+for (const upgrade of goldenUpgrades) {
+
+    if (upgrade.id !== 3) {
+        upgrade.purchases = 0;
+    }
+}
+
+// Recalculate the effects of the remaining golden upgrade.
+goldenAcornMultiplier = 1;
+goldenAcornCostMultiplier = 1;
+skillSpeedMultiplier = 1;
+
+// Apply the Prestige golden-acorn multiplier separately.
+// It remains after the golden upgrades are reset.
+// No other golden upgrade is preserved.
+
+// Reset Skills UI.
+skillsTab.style.display = "none";
+forgingSkill.style.display = "none";
+skillsPage.style.display = "none";
+skillsResourceDisplay.style.display = "none";
+
+currentTab = "acorns";
+
+resourceDisplay.style.display = "block";
+goldenResourceDisplay.style.display = "none";
+acornsPage.style.display = "block";
+goldenAcornsPage.style.display = "none";
+
+acornsTab.classList.add("active");
+goldenAcornsTab.classList.remove("active");
+skillsTab.classList.remove("active");
+
+updateAcornsPerGather();
+updateAcornGainMultiplier();
+updateResourceDisplay();
+updateSkillsDisplay();
+
+createUpgradeButtons();
+updateUpgradeButtons();
+createGoldenUpgradeButtons();
+updateGoldenUpgradeButtons();
+
+updatePrestigeDisplay();
+updateTabGlows();
+saveGame();
+}
+
+prestigeButton.addEventListener(
+    "click",
+    function() {
+
+        if (prestigeConfirmationToggle.checked) {
+
+            const confirmed = confirm(
+                "Attention: You are about to Prestige! This will reset almost all your previous content for a boost to acorns and golden acorns. Are you sure you want to proceed?"
+            );
+
+            if (!confirmed) {
+                return;
+            }
+
+        }
+
+        performPrestige();
+
+    }
+);
+
+prestigeConfirmationToggle.addEventListener(
+    "change",
+    function() {
+        saveGame();
+    }
+);
 
         function updateAcornGainMultiplier() {
 
@@ -2383,12 +3543,19 @@ if (totalGatheringXP > 1) {
 
            function updateTooltip(tooltip, upgrade) {
 
-let currentEffectText = "";
+            let currentEffectText = "";
 
 if (upgrade.id === 6) {
     currentEffectText =
         "Currently: " +
         formatNumber(gatheringXPAcornMultiplier.toFixed(2)) +
+        "x";
+}
+
+if (upgrade.id === 8) {
+    currentEffectText =
+        "Currently: " +
+        (100 - (10 * upgrade.purchases)) +
         "x";
 }
 
@@ -2501,6 +3668,7 @@ tooltip.innerHTML =
             createUpgradeButtons();
 
             updateUpgradeButtons();
+            saveGame();
 
         }
 
@@ -2872,6 +4040,7 @@ if (upgrade.effect) {
 updateGoldenAcornDisplay();
 updateGoldenUpgradeButtons();
 updateTabGlows();
+saveGame();
 }
 
         /* ============================================================
@@ -3203,6 +4372,8 @@ gatheringMinus.disabled =
 forgingMinus.disabled =
     forging.points <= 0;
 
+    updateResourceSidebar();
+
 }
 
 setInterval(updateSkillsDisplay, 1000);
@@ -3226,6 +4397,7 @@ learnSkillPointButton.addEventListener(
         updateUpgradeButtons();
         updateSkillsDisplay();
         updateTabGlows();
+        saveGame();
     }
 );
 
@@ -3243,6 +4415,7 @@ gatheringPlus.addEventListener(
         gathering.points++;
 
         updateSkillsDisplay();
+        saveGame();
     }
 );
 
@@ -3260,6 +4433,7 @@ gatheringMinus.addEventListener(
         gathering.points--;
 
         updateSkillsDisplay();
+        saveGame();
     }
 );
 
@@ -3277,6 +4451,7 @@ forgingPlus.addEventListener(
         forging.points++;
 
         updateSkillsDisplay();
+        saveGame();
     }
 );
 
@@ -3294,6 +4469,7 @@ forgingMinus.addEventListener(
         forging.points--;
 
         updateSkillsDisplay();
+        saveGame();
     }
 );
 
@@ -3516,6 +4692,22 @@ else {
            INITIALIZE
            ============================================================ */
 
+        loadGame();
+
+        loadGame();
+
+if (logMessages.length === 0) {
+
+    addLogMessage(
+        "You wake up one day to find that you have transformed into a raccoon overnight. After overcoming the initial shock, you realize that you've retained very little memory from your previous human life, only remembering basic things like what constitutes as food, and potential threats of the outside. You start to look around and notice you're deep in a deciduous forest, as the sunlight peeks through tree branches, spotting your dark gray fur with light patches. You don't know how this happened, but you know one thing's for sure: you're pretty darn hungry right now. After stumbling for a few minutes in your new raccoon form looking for food, you hear a hard crunch under your paw. You look down and see a small acorn that fell off of an oak tree from above. Surely enough, there's plenty more where it came from, and you start to gather them. They're not the best-tasting, but they should sustain you for a while.",
+        "#eeeeee",
+        "welcome"
+    );
+
+}
+
+createUpgradeButtons();
+
         createUpgradeButtons();
 
         createGoldenUpgradeButtons();
@@ -3539,6 +4731,30 @@ else {
         updateSkillsDisplay();
         
         updateSkillXP();
+
+        updatePrestigeDisplay();
+
+        updateResourceSidebar();
+
+        updateLogDisplay();
+
+        if (goldenAcornTimerActive) {
+            goldenAcornTimer.style.display = "block";
+            updateGoldenAcornTimer();
+        }
+
+        if (currentTab === "goldenAcorns") {
+            goldenAcornsTab.click();
+        }
+        else if (currentTab === "skills") {
+            skillsTab.click();
+        }
+
+        saveGame();
+
+        setInterval(saveGame, 1000);
+
+        window.addEventListener("beforeunload", saveGame);
 
     </script>
 
