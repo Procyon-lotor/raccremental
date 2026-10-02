@@ -1821,7 +1821,7 @@ cursor: not-allowed;
 
     <!-- CHANGELOG -->
 
-<button id="changelog-button">v1.4</button>
+<button id="changelog-button">v1.4.1</button>
 
 <div id="changelog-modal">
 
@@ -1832,6 +1832,9 @@ cursor: not-allowed;
         <h1>Changelog</h1>
 
         <div id="changelog-entries">
+            <h3>v1.4.1</h3>
+            <p>- Changed Acorn Upgrade 11 starting cost from 1e26 acorns to 5e25 acorns</p>
+            <p>- Changed Acorn Upgrade 15 cost from 5e42 acorns to 2e42 acorns</p>
             <h2>v1.4</h2>
             <p>- Added five more Acorn upgrades, bringing the total to 15</p>
             <p>- Added two more Golden Acorn upgrades, bringing the total to 6</p>
@@ -2296,7 +2299,7 @@ addLogMessage(
     subtitle: "You find that this is much more effective than just \"winging it\".",
     description:
         "Multiplies all acorn gain and skill speed by 3x.",
-    baseCost: 1e26,
+    baseCost: 5e25,
     costMultiplier: 5,
     maxPurchases: 10,
     purchases: 0,
@@ -2362,7 +2365,7 @@ addLogMessage(
     subtitle: "You start to wonder what to do with the two seconds you saved not manually picking up that acorn.",
     description:
         "Activates the Gather button whenever it's ready without needing to click on it!",
-    baseCost: 5e42,
+    baseCost: 2e42,
     costMultiplier: 1,
     maxPurchases: 1,
     purchases: 0,
@@ -2378,7 +2381,7 @@ addLogMessage(
 // Future upgrades go here.
 
             // Future upgrades go here.
-            // Note: Upgrade 16 should have starting cost 5e46 (I tested this)
+            // Note: Upgrade 16 should have starting cost 2e46 (I tested this)
 
         ];
 
@@ -4038,7 +4041,6 @@ updateGoldenUpgradeButtons();
 
             updateUpgradeButtons();
 
-
             /* --------------------------------------------------------
                Start cooldown
                -------------------------------------------------------- */
@@ -4049,15 +4051,12 @@ updateGoldenUpgradeButtons();
                 Date.now() +
                 gatherCooldown * 1000;
 
-
             gatherButton.disabled = true;
-
 
             gatherButton.style.setProperty(
                 "--cooldown-progress",
                 "0%"
             );
-
 
             updateCooldown();
             saveGame();
