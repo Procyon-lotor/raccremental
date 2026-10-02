@@ -1375,6 +1375,30 @@ cursor: not-allowed;
     background-color: #444444;
 }
 
+#prestige-tooltip {
+    display: none;
+
+    position: fixed;
+
+    width: 300px;
+    padding: 14px 16px;
+
+    background-color: #181818;
+    color: #eeeeee;
+
+    border: 1px solid #555555;
+    border-radius: 6px;
+
+    font-size: 12px;
+    line-height: 1.5;
+
+    text-align: center;
+
+    z-index: 2000;
+
+    pointer-events: none;
+}
+
     </style>
 
 </head>
@@ -1518,6 +1542,8 @@ cursor: not-allowed;
 
         <div id="prestige-container">
 
+            <div id="prestige-tooltip"></div>
+
             <button id="prestige-button">
         
                 <div id="prestige-button-title">
@@ -1571,11 +1597,19 @@ cursor: not-allowed;
          GOLDEN ACORNS PAGE
          ============================================================ -->
 
-    <div id="golden-acorns-page">
-        <div id="golden-acorn-description"></div>
-        <div id="golden-upgrade-container"></div>
-
-    </div>
+         <div id="golden-acorns-page">
+            <div id="golden-acorn-description"></div>
+        
+            <div id="golden-autobuy-setting">
+                Automatically Buy Golden Upgrades:
+                <label class="switch">
+                    <input type="checkbox" id="golden-autobuy-toggle" checked>
+                    <span class="slider"></span>
+                </label>
+            </div>
+        
+            <div id="golden-upgrade-container"></div>
+        </div>
 
     <div id="skills-page">
 
@@ -1787,7 +1821,7 @@ cursor: not-allowed;
 
     <!-- CHANGELOG -->
 
-<button id="changelog-button">v1.3</button>
+<button id="changelog-button">v1.4</button>
 
 <div id="changelog-modal">
 
@@ -1798,6 +1832,10 @@ cursor: not-allowed;
         <h1>Changelog</h1>
 
         <div id="changelog-entries">
+            <h2>v1.4</h2>
+            <p>- Added five more Acorn upgrades, bringing the total to 15</p>
+            <p>- Added two more Golden Acorn upgrades, bringing the total to 6</p>
+            <p>- Did a bunch of other small stuff that I can't remember</p>
             <h2>v1.3</h2>
             <p>- Improved saving by adding Export Data, Import Data, and Save Bank buttons (also for the sake of my own playtesting)</p>
             <p>- Added log message that encourages players to export their game data every 24 hours</p>
@@ -1858,14 +1896,28 @@ cursor: not-allowed;
         // Base multiplier for Upgrade 1.
         let upgrade1BaseMultiplier = 1.4;
 
-        // There is currently no passive production.
-        const acornsPerSecond = 0;
+        function getAcornsPerSecond() {
+
+if (
+    upgrades &&
+    upgrades[14] &&
+    upgrades[14].purchases > 0
+) {
+    return (
+        getAcornsPerGather() /
+        gatherCooldown
+    );
+}
+
+return 0;
+}
 
         let totalSkillPoints = 0;
 let skillSpeedMultiplier = 1;
 
 let prestigeMultiplier = 1;
 let prestigeUnlocked = false;
+let hasPrestiged = false;
 
 let highestAcorns = 0;
 let lastPrestigeAcorns = 0;
@@ -2011,13 +2063,35 @@ const prestigeGoldenDescription =
            ============================================================ */
 
            function getAcornsPerGather() {
-    return (
-        acornsPerGather *
-        goldenAcornMultiplier *
-        skills.gathering.effectMultiplier *
-        gatheringXPAcornMultiplier *
-        prestigeMultiplier
+
+const doubleDownMultiplier =
+    Math.pow(
+        3,
+        upgrades[10].purchases
     );
+
+const goldenAcornForgingMultiplier =
+    Math.max(
+        1,
+        Math.sqrt(goldenAcorns) *
+        Math.sqrt(skills.forging.level)
+    );
+
+const preciousMetalMultiplier =
+    Math.pow(
+        goldenAcornForgingMultiplier,
+        upgrades[13].purchases
+    );
+
+return (
+    acornsPerGather *
+    goldenAcornMultiplier *
+    skills.gathering.effectMultiplier *
+    gatheringXPAcornMultiplier *
+    prestigeMultiplier *
+    doubleDownMultiplier *
+    preciousMetalMultiplier
+);
 }
 
         /* ============================================================
@@ -2074,7 +2148,7 @@ const prestigeGoldenDescription =
 
                 effect: function() {
 
-                    gatherCooldown -= 0.5;
+                    updateGatherCooldown();
 
                 }
             },
@@ -2206,7 +2280,7 @@ addLogMessage(
     id: 9,
     name: "Reach the Other Side",
     subtitle: "It's time to see how difficult being a raccoon really is.",
-    description: "Unlocks a new feature that lets you reset your progress for benefits.",
+    description: "Unlocks a new feature that lets you reset your progress for benefits, and some more acorn upgrades.",
     baseCost: 3e21,
     costMultiplier: 1,
     maxPurchases: 1,
@@ -2216,12 +2290,97 @@ addLogMessage(
         updatePrestigeDisplay();
     }
 },
+{
+    id: 10,
+    name: "Develop Strategic Diagrams for Your Heists",
+    subtitle: "You find that this is much more effective than just \"winging it\".",
+    description:
+        "Multiplies all acorn gain and skill speed by 3x.",
+    baseCost: 1e26,
+    costMultiplier: 5,
+    maxPurchases: 10,
+    purchases: 0,
+    effect: function() {
+
+        skillSpeedMultiplier *= 3;
+
+        updateAcornsPerGather();
+        updateSkillsDisplay();
+
+    }
+},
+{
+    id: 11,
+    name: "Acquire a Tolerance for Pain",
+    subtitle: "Those moving vehicles have nothing on you now!",
+    description:
+        "Adds 0.01 to the exponent of the Prestige multiplier formula for regular acorns each skill level.",
+    baseCost: 5e27,
+    costMultiplier: 1,
+    maxPurchases: 1,
+    purchases: 0,
+    effect: function() {
+        updatePrestigeDisplay();
+    }
+},
+{
+    id: 12,
+    name: "Invade a Precious Metal Factory",
+    subtitle: "It's about time the developer threw some automation into this game!",
+    description:
+        "Automatically purchases the first three Golden Acorn upgrades whenever you can afford them, and unlocks two more Golden Acorn upgrades.",
+    baseCost: 1e38,
+    costMultiplier: 1,
+    maxPurchases: 1,
+    purchases: 0,
+    effect: function() {
+
+        createGoldenUpgradeButtons();
+        updateGoldenUpgradeButtons();
+
+    }
+},
+{
+    id: 13,
+    name: "Practice Embezzlement",
+    subtitle: "Not golden? Umm, I don't know, they seem pretty golden to me...",
+    description:
+        "Multiplies acorns based on your Golden Acorns and Forging skill level.",
+    baseCost: 3e39,
+    costMultiplier: 10000,
+    maxPurchases: 5,
+    purchases: 0,
+    effect: function() {
+
+        updateAcornsPerGather();
+
+    }
+},
+{
+    id: 14,
+    name: "Invent an Acorn Magnet",
+    subtitle: "You start to wonder what to do with the two seconds you saved not manually picking up that acorn.",
+    description:
+        "Activates the Gather button whenever it's ready without needing to click on it!",
+    baseCost: 5e42,
+    costMultiplier: 1,
+    maxPurchases: 1,
+    purchases: 0,
+    effect: function() {
+
+        if (!gatherOnCooldown) {
+            gatherButton.click();
+        }
+
+    }
+},
+
+// Future upgrades go here.
 
             // Future upgrades go here.
-            // Note: Upgrade 11 should have starting cost 1e26 (I tested this)
+            // Note: Upgrade 16 should have starting cost 5e46 (I tested this)
 
         ];
-
 
         /* ============================================================
            GOLDEN UPGRADE DATA
@@ -2280,6 +2439,40 @@ addLogMessage(
     costMultiplier: 1,
     maxPurchases: 1,
     purchases: 0
+},
+{
+    id: 4,
+    name: "Improve Gathering Gloves",
+    description:
+        "Reduces the Gather cooldown by 5%, multiplicatively.",
+    baseCost: 1000,
+    costMultiplier: 1.2,
+    effectMultiplier: 0.95,
+    purchases: 0,
+    effect: function() {
+
+        updateGatherCooldown();
+
+if (!gatherOnCooldown) {
+    gatherButton.disabled = false;
+}
+
+}
+},
+{
+    id: 5,
+    name: "Consult with a Spiritualist",
+    description:
+        "Adds 0.02 to the Prestige regular acorn multiplier.",
+    baseCost: 2000,
+    costMultiplier: 1.25,
+    effectMultiplier: 0.02,
+    purchases: 0,
+    effect: function() {
+
+        updatePrestigeDisplay();
+
+    }
 },
 
             // Future Golden Acorn upgrades go here.
@@ -2382,7 +2575,13 @@ const prestigeConfirmationToggle =
 const goldenUpgradeContainer =
     document.getElementById("golden-upgrade-container");
 
-            const skillsTab =
+const goldenAutobuyToggle =
+    document.getElementById("golden-autobuy-toggle");
+
+const goldenAutobuySetting =
+    document.getElementById("golden-autobuy-setting");
+
+const skillsTab =
     document.getElementById("skills-tab");
 
 const skillsPage =
@@ -2545,6 +2744,9 @@ const saveBankClose =
 const saveBankList =
     document.getElementById("save-bank-list");
 
+const prestigeTooltip =
+    document.getElementById("prestige-tooltip");
+
     const prestigeLogMessages = [
     "After being absolutely pulverized by a moving vehicle, you find yourself back where you started.",
     "After being devoured by a hungry coyote, you find yourself back where you started.",
@@ -2594,6 +2796,8 @@ return {
 
     prestigeMultiplier,
     prestigeUnlocked,
+    hasPrestiged,
+
     highestAcorns,
     lastPrestigeAcorns,
     prestigeGoldenAcornMultiplier,
@@ -2613,7 +2817,11 @@ return {
     currentTab,
 
     prestigeConfirmation:
-        prestigeConfirmationToggle.checked,
+    prestigeConfirmationToggle.checked,
+
+    goldenAutobuy:
+    goldenAutobuyToggle.checked,
+    
 
     upgrades:
         upgrades.map(
@@ -2715,6 +2923,7 @@ localStorage.setItem(
                 if (typeof saveData.skillSpeedMultiplier === "number") skillSpeedMultiplier = saveData.skillSpeedMultiplier;
                 if (typeof saveData.prestigeMultiplier === "number") prestigeMultiplier = saveData.prestigeMultiplier;
                 if (typeof saveData.prestigeUnlocked === "boolean") prestigeUnlocked = saveData.prestigeUnlocked;
+                if (typeof saveData.hasPrestiged === "boolean") hasPrestiged = saveData.hasPrestiged;
                 if (typeof saveData.highestAcorns === "number") highestAcorns = saveData.highestAcorns;
                 if (typeof saveData.lastPrestigeAcorns === "number") lastPrestigeAcorns = saveData.lastPrestigeAcorns;
                 if (typeof saveData.prestigeGoldenAcornMultiplier === "number") prestigeGoldenAcornMultiplier = saveData.prestigeGoldenAcornMultiplier;
@@ -2735,6 +2944,9 @@ localStorage.setItem(
                 if (typeof saveData.prestigeConfirmation === "boolean") {
                     prestigeConfirmationToggle.checked = saveData.prestigeConfirmation;
                 }
+                if (typeof saveData.goldenAutobuy === "boolean") {
+    goldenAutobuyToggle.checked = saveData.goldenAutobuy;
+}
 
                 if (Array.isArray(saveData.upgrades)) {
                     for (const savedUpgrade of saveData.upgrades) {
@@ -2753,6 +2965,8 @@ localStorage.setItem(
                         }
                     }
                 }
+
+                updateGatherCooldown();
 
                 if (saveData.skills) {
                     if (saveData.skills.gathering) {
@@ -2802,6 +3016,7 @@ if (typeof saveData.nextLogNumber === "number") {
             catch (error) {
                 console.error("Could not load saved game:", error);
             }
+            updateGatherCooldown();
         }
 
         function hardReset() {
@@ -2816,8 +3031,13 @@ if (!confirmed) {
 
 hardResetting = true;
 
+// Reset Prestige-related upgrade visibility state.
+hasPrestiged = false;
+
+// Remove the saved game.
 localStorage.removeItem(SAVE_KEY);
 
+// Reload so the game is reconstructed from its default state.
 location.reload();
 }
 
@@ -2837,7 +3057,7 @@ addLogMessage(
 );
 
 nextExportReminderTime =
-    Date.now() + (3 * 1000);
+    Date.now() + (24 * 60 * 60 * 1000);
 
 saveGame();
 }
@@ -2970,8 +3190,18 @@ skillSpeedMultiplier =
 prestigeMultiplier =
     saveData.prestigeMultiplier;
 
-prestigeUnlocked =
+    prestigeUnlocked =
     saveData.prestigeUnlocked;
+
+if (
+    typeof saveData.hasPrestiged === "boolean"
+) {
+    hasPrestiged =
+        saveData.hasPrestiged;
+}
+
+highestAcorns =
+    saveData.highestAcorns;
 
 highestAcorns =
     saveData.highestAcorns;
@@ -3030,27 +3260,11 @@ if (
 
 }
 
-function checkExportReminder() {
+/* ------------------------------------------------------------
+   Regular upgrades
+   ------------------------------------------------------------ */
 
-if (
-    Date.now() <
-    nextExportReminderTime
-) {
-    return;
-}
-
-addLogMessage(
-    "Attention: You haven't exported your game data in a while! You can save your game data by clicking the \"Export Data\" button in the bottom left corner, then pasting the text that was copied into a document or text file. Then, if your data ever gets lost, you can import that string and pick up right where you left off!",
-    "#ff4444",
-    "export-reminder-" + Date.now()
-);
-
-nextExportReminderTime =
-    Date.now() +
-    (24 * 60 * 60 * 1000);
-
-saveGame();
-}
+   if (Array.isArray(saveData.upgrades)) {
 
 /* ------------------------------------------------------------
    Regular upgrades
@@ -3061,17 +3275,17 @@ saveGame();
 saveData.upgrades.forEach(
     (upgradeData, index) => {
 
-        if (upgrades[index]) {
+        if (!upgrades[index]) {
+            return;
+        }
 
-            if (
-                typeof upgradeData === "object" &&
-                typeof upgradeData.purchases === "number"
-            ) {
+        if (
+            typeof upgradeData === "object" &&
+            typeof upgradeData.purchases === "number"
+        ) {
 
-                upgrades[index].purchases =
-                    upgradeData.purchases;
-
-            }
+            upgrades[index].purchases =
+                upgradeData.purchases;
 
         }
 
@@ -3080,26 +3294,32 @@ saveData.upgrades.forEach(
 
 }
 
+}
+
 /* ------------------------------------------------------------
    Golden upgrades
    ------------------------------------------------------------ */
 
-if (Array.isArray(saveData.goldenUpgrades)) {
+/* ------------------------------------------------------------
+   Golden upgrades
+   ------------------------------------------------------------ */
+
+   if (Array.isArray(saveData.goldenUpgrades)) {
 
 saveData.goldenUpgrades.forEach(
     (upgradeData, index) => {
 
-        if (goldenUpgrades[index]) {
+        if (!goldenUpgrades[index]) {
+            return;
+        }
 
-            if (
-                typeof upgradeData === "object" &&
-                typeof upgradeData.purchases === "number"
-            ) {
+        if (
+            typeof upgradeData === "object" &&
+            typeof upgradeData.purchases === "number"
+        ) {
 
-                goldenUpgrades[index].purchases =
-                    upgradeData.purchases;
-
-            }
+            goldenUpgrades[index].purchases =
+                upgradeData.purchases;
 
         }
 
@@ -3456,6 +3676,11 @@ try {
         );
     }
 
+    if (savePoint.title === "Pre-Prestige") {
+    saveData.hasPrestiged = false;
+
+}
+
     loadImportedGameData(
         saveData
     );
@@ -3649,8 +3874,8 @@ acornNumber.textContent =
     formatNumber(Math.floor(acorns));
 
 
-acornRate.textContent =
-    acornsPerSecond;
+    acornRate.textContent =
+    formatNumber(getAcornsPerSecond());
 
 updatePrestigeDisplay();
 
@@ -3677,19 +3902,18 @@ sidebarAvailableSkillPoints.textContent =
     );
 }
 
-        function updateGoldenAcornDisplay() {
+function updateGoldenAcornDisplay() {
 
-            goldenAcornNumber.textContent =
-            formatNumber(Math.floor(goldenAcorns));
+goldenAcornNumber.textContent =
+    formatNumber(Math.floor(goldenAcorns));
 
+goldenAcornRate.textContent =
+    "0";
 
-            goldenAcornRate.textContent =
-                "0";
+updateResourceSidebar();
+updateUpgradeButtons();
 
-                updateResourceSidebar();
-
-        }
-
+}
 
         /* ============================================================
            TAB SWITCHING
@@ -3868,24 +4092,28 @@ updateGoldenUpgradeButtons();
                Cooldown finished
                -------------------------------------------------------- */
 
-            if (remaining <= 0) {
+               if (remaining <= 0) {
 
-                gatherOnCooldown = false;
+gatherOnCooldown = false;
 
-                gatherButton.disabled = false;
+gatherButton.disabled = false;
 
-                cooldownText.textContent = "";
+cooldownText.textContent = "";
 
+gatherButton.style.setProperty(
+    "--cooldown-progress",
+    "100%"
+);
 
-                gatherButton.style.setProperty(
-                    "--cooldown-progress",
-                    "100%"
-                );
+if (
+    upgrades[14] &&
+    upgrades[14].purchases > 0
+) {
+    gatherButton.click();
+}
 
-
-                return;
-            }
-
+return;
+}
 
             /* --------------------------------------------------------
                Display remaining time
@@ -3914,13 +4142,29 @@ updateGoldenUpgradeButtons();
                 );
 
 
-            gatherButton.style.setProperty(
-                "--cooldown-progress",
-                Math.min(
-                    100,
-                    Math.max(0, progress)
-                ) + "%"
-            );
+                if (
+    upgrades[14] &&
+    upgrades[14].purchases > 0 &&
+    gatherCooldown < 0.1
+) {
+
+    gatherButton.style.setProperty(
+        "--cooldown-progress",
+        "0%"
+    );
+
+}
+else {
+
+    gatherButton.style.setProperty(
+        "--cooldown-progress",
+        Math.min(
+            100,
+            Math.max(0, progress)
+        ) + "%"
+    );
+
+}
 
 
             requestAnimationFrame(updateCooldown);
@@ -3971,6 +4215,31 @@ return upgrade.baseCost *
     goldenAcornCostMultiplier;
 }
 
+function updateGatherCooldown() {
+
+const regularCooldown =
+    5 -
+    (
+        upgrades.find(
+            upgrade => upgrade.id === 1
+        ).purchases * 0.5
+    );
+
+const goldenCooldownMultiplier =
+    Math.pow(
+        0.95,
+        goldenUpgrades.find(
+            upgrade => upgrade.id === 4
+        ).purchases
+    );
+
+gatherCooldown =
+    regularCooldown *
+    goldenCooldownMultiplier;
+
+    updateResourceDisplay();
+}
+
         function updateAcornsPerGather() {
 
             const upgrade1Purchases =
@@ -3992,15 +4261,121 @@ return upgrade.baseCost *
    PRESTIGE
    ============================================================ */
 
+   let prestigeTooltipTimer = null;
+
+prestigeButton.addEventListener(
+    "mouseenter",
+    function() {
+
+        if (!prestigeButton.disabled) {
+            return;
+        }
+
+        prestigeTooltipTimer = setTimeout(
+            function() {
+
+                if (!prestigeButton.disabled) {
+                    return;
+                }
+
+                if (hasPrestiged) {
+
+                    prestigeTooltip.innerHTML =
+
+"Prestige is only available when your acorns are greater than " +
+
+"that at which you last Prestiged, AND your acorn multiplier is " +
+
+"above 1.00x." +
+
+"<br><span style=\"display: inline-block; margin-top: 6px;\">" +
+
+"You last Prestiged at " +
+
+formatNumber(lastPrestigeAcorns) +
+
+" acorns." +
+
+"</span>";
+
+}
+else {
+
+prestigeTooltip.innerHTML =
+
+"Prestige is only available when your acorns are greater than " +
+
+"that at which you last Prestiged, AND your acorn multiplier is " +
+
+"above 1.00x." +
+
+"<br><span style=\"display: inline-block; margin-top: 6px;\">" +
+
+"You have not Prestiged yet." +
+
+"</span>";
+
+}
+
+                prestigeTooltip.style.display =
+                    "block";
+
+                const buttonRect =
+                    prestigeButton.getBoundingClientRect();
+
+                prestigeTooltip.style.left =
+                    (
+                        buttonRect.left +
+                        buttonRect.width / 2 -
+                        prestigeTooltip.offsetWidth / 2
+                    ) +
+                    "px";
+
+                    prestigeTooltip.style.top =
+    (
+        buttonRect.top -
+        prestigeTooltip.offsetHeight -
+        8
+    ) +
+    "px";
+
+            },
+            1000
+        );
+
+    }
+);
+
+prestigeButton.addEventListener(
+    "mouseleave",
+    function() {
+
+        clearTimeout(prestigeTooltipTimer);
+
+        prestigeTooltip.style.display =
+            "none";
+
+    }
+);
    function calculatePrestigeMultiplier(acornAmount) {
 
 if (acornAmount < 1e21) {
     return 1;
 }
 
+const prestigeExponent =
+    1.5 +
+    (
+        skills.gathering.level +
+        skills.forging.level
+    ) *
+    0.01 *
+    upgrades[11].purchases +
+    goldenUpgrades[5].purchases * 0.02;
+
 return Math.pow(
     Math.log2(acornAmount / 1e20),
-    1.5
+    prestigeExponent
 );
 }
 
@@ -4046,12 +4421,16 @@ const newPrestigeGoldenMultiplier =
     calculatePrestigeGoldenAcornMultiplier(acorns);
     updateGoldenAcornDescription();
 
+    const prestigeMultiplierGain =
+    newPrestigeMultiplier /
+    prestigeMultiplier;
+
 const canPrestige =
     acorns >= 1e21 &&
-    acorns > lastPrestigeAcorns;
+    acorns > lastPrestigeAcorns &&
+    prestigeMultiplierGain > 1;
 
 prestigeButton.disabled = !canPrestige;
-
 
 /*
  * Update the multiplier displays.
@@ -4072,7 +4451,6 @@ prestigeCurrentGoldenMultiplier.textContent =
 prestigeNewGoldenMultiplier.textContent =
     formatNumber(newPrestigeGoldenMultiplier) +
     "x";
-
 
 /*
  * Below the Prestige threshold.
@@ -4113,11 +4491,6 @@ else {
     prestigeGoldenDescription.style.display =
         "block";
 
-
-    const prestigeMultiplierGain =
-        newPrestigeMultiplier /
-        prestigeMultiplier;
-
     const goldenMultiplierGain =
         newPrestigeGoldenMultiplier /
         prestigeGoldenAcornMultiplier;
@@ -4151,6 +4524,17 @@ if (acorns <= lastPrestigeAcorns) {
     return;
 }
 
+const newPrestigeMultiplier =
+    calculatePrestigeMultiplier(acorns);
+
+const prestigeMultiplierGain =
+    newPrestigeMultiplier /
+    prestigeMultiplier;
+
+if (prestigeMultiplierGain <= 1) {
+    return;
+}
+
 // Record the acorn total at the moment of Prestige.
 lastPrestigeAcorns = acorns;
 highestAcorns = acorns;
@@ -4181,6 +4565,8 @@ upgrade1BaseMultiplier = 1.4;
 goldenAcornChance = 0.10;
 skillXPMultiplier = 1;
 gatheringXPAcornMultiplier = 1;
+
+hasPrestiged = true;
 
 // Reset regular upgrades.
 for (const upgrade of upgrades) {
@@ -4286,6 +4672,13 @@ prestigeConfirmationToggle.addEventListener(
     }
 );
 
+goldenAutobuyToggle.addEventListener(
+    "change",
+    function() {
+        saveGame();
+    }
+);
+
         function updateAcornGainMultiplier() {
 
 const upgrade = upgrades.find(
@@ -4327,22 +4720,43 @@ if (totalGatheringXP > 1) {
            ============================================================ */
 
            function getVisibleUpgradeCount() {
-    const purchasedUpgrades = upgrades.filter(
+
+const purchasedUpgrades =
+    upgrades.filter(
         upgrade => upgrade.purchases > 0
     );
 
-    if (purchasedUpgrades.length === 0) {
-        return Math.min(3, upgrades.length);
-    }
-
-    const furthestPurchased = Math.max(
-        ...purchasedUpgrades.map(upgrade => upgrade.id)
-    );
-
+if (purchasedUpgrades.length === 0) {
     return Math.min(
-        upgrades.length,
-        furthestPurchased + 4
+        3,
+        upgrades.length
     );
+}
+
+const furthestPurchased =
+    Math.max(
+        ...purchasedUpgrades.map(
+            upgrade => upgrade.id
+        )
+    );
+
+const normalVisibleCount =
+    furthestPurchased + 4;
+
+// Before the first Prestige, upgrade 11
+// and everything after it remains hidden.
+if (!hasPrestiged) {
+    return Math.min(
+        10,
+        upgrades.length,
+        normalVisibleCount
+    );
+}
+
+return Math.min(
+    upgrades.length,
+    normalVisibleCount
+);
 }
 
         /* ============================================================
@@ -4526,6 +4940,42 @@ if (upgrade.id === 8) {
         "Currently: " +
         (100 - (10 * upgrade.purchases)) +
         "x";
+}
+
+if (upgrade.id === 11) {
+
+const prestigeExponentIncrease =
+    (
+        skills.gathering.level +
+        skills.forging.level
+    ) *
+    0.01 *
+    upgrade.purchases;
+
+currentEffectText =
+    "Currently: +" +
+    prestigeExponentIncrease.toFixed(2);
+}
+
+if (upgrade.id === 13) {
+
+    const goldenAcornForgingMultiplier =
+    Math.max(
+        1,
+        Math.sqrt(goldenAcorns) *
+        Math.sqrt(skills.forging.level)
+    );
+
+const currentMultiplier =
+    Math.pow(
+        goldenAcornForgingMultiplier,
+        upgrade.purchases
+    );
+
+currentEffectText =
+    "Currently: " +
+    formatNumber(currentMultiplier) +
+    "x";
 }
 
 const currentEffectHTML =
@@ -4835,9 +5285,16 @@ if (upgrade.purchases >= upgrade.maxPurchases) {
                 "";
 
 
-            for (
-                const upgrade of goldenUpgrades
-            ) {
+                for (
+    const upgrade of goldenUpgrades
+) {
+
+    if (
+        upgrade.id >= 4 &&
+        upgrades[12].purchases <= 0
+    ) {
+        continue;
+    }
 
                 const button =
                     document.createElement("button");
@@ -4889,16 +5346,42 @@ if (upgrade.purchases >= upgrade.maxPurchases) {
 current.className =
     "golden-upgrade-current";
 
-if (upgrade.id !== 3) {
+if (upgrade.id === 4) {
+
     current.textContent =
         "Currently: " +
-        Math.pow(
-            upgrade.effectMultiplier,
-            upgrade.purchases
-        ).toFixed(2) +
+        formatNumber(
+            Math.pow(
+                upgrade.effectMultiplier,
+                upgrade.purchases
+            )
+        ) +
         "x";
-}
 
+}
+else if (upgrade.id === 5) {
+
+    current.textContent =
+        "Currently: +" +
+        formatNumber(
+            upgrade.effectMultiplier *
+            upgrade.purchases
+        );
+
+}
+else if (upgrade.id !== 3) {
+
+    current.textContent =
+        "Currently: " +
+        formatNumber(
+            Math.pow(
+                upgrade.effectMultiplier,
+                upgrade.purchases
+            )
+        ) +
+        "x";
+
+}
 
                 /* ----------------------------------------------------
                    Cost
@@ -4991,6 +5474,73 @@ goldenAcornDescription.textContent =
            PURCHASE GOLDEN UPGRADE
            ============================================================ */
 
+/* ============================================================
+   AUTOMATIC GOLDEN UPGRADE PURCHASES
+   ============================================================ */
+
+   function updateGoldenAutobuyVisibility() {
+
+const automationUpgrade =
+    upgrades.find(
+        upgrade => upgrade.id === 12
+    );
+
+if (
+    automationUpgrade &&
+    automationUpgrade.purchases > 0
+) {
+    goldenAutobuySetting.style.display = "block";
+}
+else {
+    goldenAutobuySetting.style.display = "none";
+}
+
+}
+
+   function autoPurchaseGoldenUpgrades() {
+
+if (!goldenAutobuyToggle.checked) {
+    return;
+}
+
+const automationUpgrade =
+    upgrades.find(
+        upgrade => upgrade.id === 12
+    );
+
+if (
+    !automationUpgrade ||
+    automationUpgrade.purchases <= 0
+) {
+    return;
+}
+
+for (let i = 0; i <= 2; i++) {
+
+    const upgrade =
+        goldenUpgrades[i];
+
+    if (!upgrade) {
+        continue;
+    }
+
+    while (
+        (
+            upgrade.maxPurchases === undefined ||
+            upgrade.purchases < upgrade.maxPurchases
+        ) &&
+        goldenAcorns >=
+            getGoldenUpgradeCost(upgrade)
+    ) {
+
+        purchaseGoldenUpgrade(upgrade);
+
+    }
+
+}
+
+}
+
            function purchaseGoldenUpgrade(upgrade) {
 
 if (
@@ -5030,6 +5580,8 @@ saveGame();
            ============================================================ */
 
         function updateGoldenUpgradeButtons() {
+            updateGoldenAutobuyVisibility();
+            autoPurchaseGoldenUpgrades();
 
             const buttons =
                 goldenUpgradeContainer.querySelectorAll(
@@ -5096,19 +5648,33 @@ saveGame();
                         ".golden-upgrade-current"
                     );
 
+                    if (currentElement) {
 
-                if (currentElement) {
+if (upgrade.id === 5) {
 
-                    currentElement.textContent =
-                        "Currently: " +
-                        Math.pow(
-    upgrade.effectMultiplier,
-    upgrade.purchases
-).toFixed(2) +
-                        "x";
+    currentElement.textContent =
+        "Currently +" +
+        formatNumber(
+            upgrade.effectMultiplier *
+            upgrade.purchases
+        );
 
-                }
+}
+else {
 
+    currentElement.textContent =
+        "Currently: " +
+        formatNumber(
+            Math.pow(
+                upgrade.effectMultiplier,
+                upgrade.purchases
+            )
+        ) +
+        "x";
+
+}
+
+}
 
                 /* ----------------------------------------------------
                    Cost
@@ -5296,9 +5862,8 @@ document.querySelector(
     gathering.level;
 
 gatheringEffect.textContent =
-    gathering.effectMultiplier.toFixed(2) +
+    formatNumber(gathering.effectMultiplier) +
     "x";
-
 
 /* ============================================================
    FORGING
@@ -5371,7 +5936,7 @@ document.querySelectorAll(
     forging.level;
 
 forgingEffect.textContent =
-    forging.level.toFixed(2) +
+    formatNumber(forging.level) +
     "x";
 
 
@@ -5405,6 +5970,7 @@ forgingMinus.disabled =
     forging.points <= 0;
 
     updateResourceSidebar();
+    updateUpgradeButtons();
 
 }
 
@@ -5526,6 +6092,7 @@ const elapsed =
 
 lastSkillUpdateTime = now;
 
+let skillLeveledUp = false;
 
 for (const skill of Object.values(skills)) {
 
@@ -5555,20 +6122,20 @@ for (const skill of Object.values(skills)) {
         getSkillXPNeeded(skill);
 
 
-    while (skill.xp >= xpNeeded) {
+        while (skill.xp >= xpNeeded) {
 
-        skill.xp -= xpNeeded;
+skill.xp -= xpNeeded;
 
-        skill.level++;
+skill.level++;
 
-        skill.effectMultiplier *=
-            skill.effectPerLevel;
+skill.effectMultiplier *=
+    skill.effectPerLevel;
 
-        xpNeeded =
-            getSkillXPNeeded(skill);
+skillLeveledUp = true;
 
-    }
+xpNeeded = getSkillXPNeeded(skill);
 
+}
 
     /*
      * Update Forging's golden-acorn effect
@@ -5592,6 +6159,10 @@ updateGatherButtonText();
 updateUpgradeButtons();
 
 requestAnimationFrame(updateSkillXP);
+
+if (skillLeveledUp) {
+    updatePrestigeDisplay();
+}
 
 }
 
