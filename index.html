@@ -1399,6 +1399,43 @@ cursor: not-allowed;
     pointer-events: none;
 }
 
+/* ============================================================
+   SURVIVAL SKILL
+   ============================================================ */
+
+   .survival-skill {
+    border-color: #338b33;
+}
+
+.survival-skill .skill-header {
+    color: #3fbf3f;
+}
+
+.survival-skill .skill-effect strong {
+    color: #3fbf3f;
+}
+
+.survival-skill .skill-xp-fill {
+    background: #338b33;
+}
+
+.survival-skill button {
+    border-color: #338b33;
+}
+
+.survival-skill button:hover:not(:disabled) {
+    background: #145314;
+}
+
+#skills-hold-tip {
+    margin: 15px auto 0;
+    margin-bottom: 30px;
+
+    font-size: 14px;
+
+    color: #dddddd;
+}
+
     </style>
 
 </head>
@@ -1780,7 +1817,112 @@ cursor: not-allowed;
                 </div>
         
             </div>
+
+            <!-- ============================================================
+     SURVIVAL
+     ============================================================ -->
+
+<div
+class="skill survival-skill"
+id="survival-skill"
+style="display: none;"
+>
+
+<div class="skill-header">
+    <strong>Survival: Level 1</strong>
+
+    <div class="skill-subtitle">
+        "Alright class, you see that big metal thing passing by? Don't get hit by that thing."
+    </div>
+</div>
+
+<div class="skill-content">
+
+    <div class="skill-points-controls">
+
+        <button id="survival-minus">
+            −
+        </button>
+
+        <div id="survival-points">
+            0
+        </div>
+
+        <button id="survival-plus">
+            +
+        </button>
+
+    </div>
+
+    <div class="skill-progress-section">
+
+        <div class="skill-xp-text">
+
+            <span id="survival-xp">
+                0
+            </span>
+
+            /
+
+            <span id="survival-xp-needed">
+                1e14
+            </span>
+
+            XP
+
+        </div>
+
+        <div class="skill-xp-bar">
+
+            <div
+                id="survival-xp-fill"
+                class="skill-xp-fill"
+            ></div>
+
+        </div>
+
+        <div class="skill-effect">
+
+            Effect:
+
+            <strong id="survival-effect">
+                1.00x
+            </strong>
+
+            to Upgrade 12's effect
+
+        </div>
+
+        <div class="skill-xp-rate">
+
+            <span id="survival-xp-rate">
+                0
+            </span>
+
+            XP/sec
+
+        </div>
+
+        <div class="skill-level-up-timer">
+
+            Next level-up in
+
+            <span id="survival-level-up-timer">
+                --:--
+            </span>
+
+        </div>
+
+    </div>
+
+</div>
+
+</div>
         
+        </div>
+
+        <div id="skills-hold-tip">
+            Tip: You can hold down the + and - buttons to rapidly assign/design skill points!
         </div>
 
     </div>
@@ -1821,7 +1963,7 @@ cursor: not-allowed;
 
     <!-- CHANGELOG -->
 
-<button id="changelog-button">v1.4.1</button>
+<button id="changelog-button">v1.5</button>
 
 <div id="changelog-modal">
 
@@ -1832,12 +1974,19 @@ cursor: not-allowed;
         <h1>Changelog</h1>
 
         <div id="changelog-entries">
+            <h2>v1.5</h2>
+            <p>- Added two more Acorn upgrades, bringing the total to 17</p>
+            <p>- Added the third skill: Survival</p>
+            <p>- Changed the passive gain text on the Golden Acorns tab to be accurate</p>
+            <p>- Made it so that players can rapidly assign/design skill points by holding the + and - buttons</p>
+            <p>- Changed one of the Prestige log messages</p>
             <h3>v1.4.1</h3>
             <p>- Changed Acorn Upgrade 11 starting cost from 1e26 acorns to 5e25 acorns</p>
             <p>- Changed Acorn Upgrade 15 cost from 5e42 acorns to 2e42 acorns</p>
             <h2>v1.4</h2>
             <p>- Added five more Acorn upgrades, bringing the total to 15</p>
             <p>- Added two more Golden Acorn upgrades, bringing the total to 6</p>
+            <p>- Changed the code for the Gather button so it doesn't flicker when it goes too fast</p>
             <p>- Did a bunch of other small stuff that I can't remember</p>
             <h2>v1.3</h2>
             <p>- Improved saving by adding Export Data, Import Data, and Save Bank buttons (also for the sake of my own playtesting)</p>
@@ -1946,6 +2095,10 @@ const savePoints = [
         {
             title: "Pre-Prestige",
             data: `{"acorns":3.635826041749309e+22,"acornsPerGather":59049.00000000009,"goldenAcorns":46,"goldenAcornMultiplier":8.954302432552389,"goldenAcornCostMultiplier":0.6302494097246091,"goldenAcornChance":0.20000000000000007,"upgrade1BaseMultiplier":3.0000000000000004,"totalSkillPoints":9,"skillSpeedMultiplier":3.797498335832415,"prestigeMultiplier":1,"prestigeUnlocked":true,"highestAcorns":0,"lastPrestigeAcorns":0,"prestigeGoldenAcornMultiplier":1,"goldenAcornTimerEnd":0,"goldenAcornTimerActive":false,"skillXPMultiplier":3325.256730079651,"gatheringXPAcornMultiplier":2037098947377.312,"totalGatheringXP":274544766.7985769,"forgingGoldenAcornMultiplier":10,"gatherOnCooldown":false,"cooldownEndTime":1790694807524,"gatherCooldown":1,"currentTab":"acorns","prestigeConfirmation":false,"upgrades":[{"id":0,"purchases":10},{"id":1,"purchases":8},{"id":2,"purchases":8},{"id":3,"purchases":10},{"id":4,"purchases":1},{"id":5,"purchases":20},{"id":6,"purchases":9},{"id":7,"purchases":1},{"id":8,"purchases":2},{"id":9,"purchases":1}],"goldenUpgrades":[{"id":0,"purchases":23},{"id":1,"purchases":9},{"id":2,"purchases":14},{"id":3,"purchases":0}],"skills":{"gathering":{"points":9,"level":41,"xp":53398140.37975573,"effectMultiplier":1469.7715679690846},"forging":{"points":0,"level":10,"xp":19264.56052500019,"effectMultiplier":1}},"logMessages":[{"id":"welcome","number":1,"text":"You wake up one day to find that you have transformed into a raccoon overnight. After overcoming the initial shock, you realize that you've retained very little memory from your previous human life, only remembering basic things like what constitutes as food, and potential threats of the outside. You start to look around and notice you're deep in a deciduous forest, as the sunlight peeks through tree branches, spotting your dark gray fur with light patches. You don't know how this happened, but you know one thing's for sure: you're pretty darn hungry right now. After stumbling for a few minutes in your new raccoon form looking for food, you hear a hard crunch under your paw. You look down and see a small acorn that fell off of an oak tree from above. Surely enough, there's plenty more where it came from, and you start to gather them. They're not the best-tasting, but they should sustain you for a while.","color":"#eeeeee"},{"id":"first-golden-acorn","number":2,"text":"You find a particularly shiny acorn. You examine it thoroughly, not for its beauty but because of its uncanny, almost synthetic quality. Nonetheless, you take a bite and feel stronger...perhaps you should check out the Golden Acorns tab?","color":"#ffd700"},{"id":"skills-unlocked","number":3,"text":"You're now somewhat accustomed to the raccoon lifestyle and realize...there's really not much to it. What you can remember of things like school, work, money, and human society seem completely irrelevant to you now. You decide to spend your time refining your gathering skills like all the other raccoons you've met so far...who knows, maybe you can even work with them!","color":"#ff69b4"}],"nextLogNumber":4,"nextExportReminderTime":1790779608236}`
+        },
+        {
+            title: "Pre-Upgrade 16",
+            data: `{"acorns":2.336158921293482e+46,"acornsPerGather":59049.00000000009,"goldenAcorns":37898.361916728616,"goldenAcornMultiplier":54.76369923749306,"goldenAcornCostMultiplier":0.48767497911552943,"goldenAcornChance":0.20000000000000007,"upgrade1BaseMultiplier":3.0000000000000004,"totalSkillPoints":23,"skillSpeedMultiplier":703756.4063762553,"prestigeMultiplier":74600.7691590841,"prestigeUnlocked":true,"hasPrestiged":true,"highestAcorns":6.294254275298769e+41,"lastPrestigeAcorns":6.294254275298769e+41,"prestigeGoldenAcornMultiplier":12.335300380317245,"goldenAcornTimerEnd":1791158522395,"goldenAcornTimerActive":true,"skillXPMultiplier":3325.256730079651,"gatheringXPAcornMultiplier":11729671976424628,"totalGatheringXP":436196620326734.8,"forgingGoldenAcornMultiplier":37,"gatherOnCooldown":true,"cooldownEndTime":1791156309722,"gatherCooldown":1,"currentTab":"acorns","prestigeConfirmation":false,"goldenAutobuy":false,"upgrades":[{"id":0,"purchases":10},{"id":1,"purchases":8},{"id":2,"purchases":8},{"id":3,"purchases":10},{"id":4,"purchases":1},{"id":5,"purchases":20},{"id":6,"purchases":10},{"id":7,"purchases":1},{"id":8,"purchases":5},{"id":9,"purchases":1},{"id":10,"purchases":10},{"id":11,"purchases":1},{"id":12,"purchases":1},{"id":13,"purchases":2},{"id":14,"purchases":1}],"goldenUpgrades":[{"id":0,"purchases":42},{"id":1,"purchases":14},{"id":2,"purchases":26},{"id":3,"purchases":1},{"id":4,"purchases":0},{"id":5,"purchases":0}],"skills":{"gathering":{"points":23,"level":76,"xp":114182864130936.28,"effectMultiplier":868147.3693135533},"forging":{"points":0,"level":37,"xp":120437155406475.9,"effectMultiplier":1}},"logMessages":[{"id":"welcome","number":1,"text":"You wake up one day to find that you have transformed into a raccoon overnight. After overcoming the initial shock, you realize that you've retained very little memory from your previous human life, only remembering basic things like what constitutes as food, and potential threats of the outside. You start to look around and notice you're deep in a deciduous forest, as the sunlight peeks through tree branches, spotting your dark gray fur with light patches. You don't know how this happened, but you know one thing's for sure: you're pretty darn hungry right now. After stumbling for a few minutes in your new raccoon form looking for food, you hear a hard crunch under your paw. You look down and see a small acorn that fell off of an oak tree from above. Surely enough, there's plenty more where it came from, and you start to gather them. They're not the best-tasting, but they should sustain you for a while.","color":"#eeeeee"},{"id":"first-golden-acorn","number":2,"text":"You find a particularly shiny acorn. You examine it thoroughly, not for its beauty but because of its uncanny, almost synthetic quality. Nonetheless, you take a bite and feel stronger...perhaps you should check out the Golden Acorns tab?","color":"#ffd700"},{"id":"skills-unlocked","number":3,"text":"You're now somewhat accustomed to the raccoon lifestyle and realize...there's really not much to it. What you can remember of things like school, work, money, and human society seem completely irrelevant to you now. You decide to spend your time refining your gathering skills like all the other raccoons you've met so far...who knows, maybe you can even work with them!","color":"#ff69b4"},{"id":"load-Pre-Prestige-1791153625267","number":4,"text":"Pre-Prestige Loaded!","color":"#eeeeee"},{"id":"export-reminder-1791153625487","number":5,"text":"Attention: You haven't exported your game data in a while! You can save your game data by clicking the \\\"Export Data\\\" button in the bottom left corner, then pasting the text that was copied into a document or text file. Then, if your data ever gets lost, you can import that string and pick up right where you left off!","color":"#ff4444"},{"id":"prestige-1791153627317","number":6,"text":"After being devoured by a hungry coyote, you find yourself back where you started.","color":"#3fbf3f"},{"id":"prestige-1791154637060","number":7,"text":"After being devoured by a hungry coyote, you find yourself back where you started.","color":"#3fbf3f"},{"id":"prestige-1791155413866","number":8,"text":"After being swept into a moving river while trying to wash your food, you find yourself back where you started.","color":"#3fbf3f"}],"nextLogNumber":9,"nextExportReminderTime":1791240025487}`
         }
 
 
@@ -1959,7 +2112,9 @@ const forging =
 forgingGoldenAcornMultiplier =
     forging.level;
 
-    updateGoldenAcornDescription();
+updateGoldenAcornDescription();
+updateGoldenAcornDisplay();
+
 }
 
 function startGoldenAcornTimer() {
@@ -2054,8 +2209,18 @@ const skills = {
         effectMultiplier: 1,
         effectPerLevel: 1,
         xpBase: 100000,
-        xpMultiplier: 1.8
-    }
+        xpMultiplier: 1.75
+    },
+    survival: {
+    name: "Survival",
+    points: 0,
+    level: 1,
+    xp: 0,
+    effectMultiplier: 1,
+    effectPerLevel: 0.05,
+    xpBase: 1e14,
+    xpMultiplier: 2
+},
 };
 
 const prestigeGoldenDescription =
@@ -2377,11 +2542,47 @@ addLogMessage(
 
     }
 },
+{
+    id: 15,
+    name: "Enroll in a Survival Camp",
+    subtitle: "The age requirement of 12-16 is just a suggestion to you.",
+    description:
+        "Unlocks a new skill.",
+    baseCost: 2e46,
+    costMultiplier: 1,
+    maxPurchases: 1,
+    purchases: 0,
+    effect: function() {
+
+        survivalSkill.style.display = "block";
+        updateSkillsDisplay();
+
+    }
+
+},
+{
+    id: 16,
+    name: "Diversify Your Acorn Portfolio",
+    subtitle: "Wait...there's strategy in this game now? Does the developer actually know what he's doing?",
+    description:
+        "Multiplies skill XP gain by the product of skill points invested into all skills.",
+    baseCost: 2e46,
+    costMultiplier: 1e8,
+    maxPurchases: 3,
+    purchases: 0,
+    effect: function() {
+
+        updateSkillsDisplay();
+
+    }
+
+},
 
 // Future upgrades go here.
 
             // Future upgrades go here.
-            // Note: Upgrade 16 should have starting cost 2e46 (I tested this)
+            // Note: Upgrade 18 should keep one Acorn upgrade on Prestige for each purchase. It should have starting cost 1e60 and go up 100x in price each time.
+            // Note: Upgrade 19 should have starting cost 1e68 (I tested this). It should unlock the Ascend feature in skills, which resets capped skills for benefits.
 
         ];
 
@@ -2726,6 +2927,36 @@ const forgingEffect =
 const forgingLevelUpTimer =
     document.getElementById("forging-level-up-timer");
 
+const survivalSkill =
+    document.getElementById("survival-skill");
+
+const survivalMinus =
+    document.getElementById("survival-minus");
+
+const survivalPlus =
+    document.getElementById("survival-plus");
+
+const survivalPoints =
+    document.getElementById("survival-points");
+
+const survivalXPElement =
+    document.getElementById("survival-xp");
+
+const survivalXPNeeded =
+    document.getElementById("survival-xp-needed");
+
+const survivalXPFill =
+    document.getElementById("survival-xp-fill");
+
+const survivalXPRate =
+    document.getElementById("survival-xp-rate");
+
+const survivalEffect =
+    document.getElementById("survival-effect");
+
+const survivalLevelUpTimer =
+    document.getElementById("survival-level-up-timer");
+
 const logMessagesElement =
     document.getElementById("log-messages");
 
@@ -2754,7 +2985,7 @@ const prestigeTooltip =
     "After being absolutely pulverized by a moving vehicle, you find yourself back where you started.",
     "After being devoured by a hungry coyote, you find yourself back where you started.",
     "After being bitten by a rabid squirrel, you find yourself back where you started.",
-    "After being swept into a moving river while trying to wash your food, you find yourself back where you started.",
+    "After being clipped by a professional hunter, you find yourself back where you started.",
     "After being taken in as an exotic pet, only to then be neglected to starvation, you find yourself back where you started."
 ];
 
@@ -2874,7 +3105,22 @@ return {
             effectMultiplier:
                 skills.forging.effectMultiplier
 
-        }
+        },
+        survival: {
+
+points:
+    skills.survival.points,
+
+level:
+    skills.survival.level,
+
+xp:
+    skills.survival.xp,
+
+effectMultiplier:
+    skills.survival.effectMultiplier
+
+},
 
     },
 
@@ -2972,21 +3218,113 @@ localStorage.setItem(
                 updateGatherCooldown();
 
                 if (saveData.skills) {
-                    if (saveData.skills.gathering) {
-                        const savedSkill = saveData.skills.gathering;
-                        if (typeof savedSkill.points === "number") skills.gathering.points = savedSkill.points;
-                        if (typeof savedSkill.level === "number") skills.gathering.level = savedSkill.level;
-                        if (typeof savedSkill.xp === "number") skills.gathering.xp = savedSkill.xp;
-                        if (typeof savedSkill.effectMultiplier === "number") skills.gathering.effectMultiplier = savedSkill.effectMultiplier;
-                    }
-                    if (saveData.skills.forging) {
-                        const savedSkill = saveData.skills.forging;
-                        if (typeof savedSkill.points === "number") skills.forging.points = savedSkill.points;
-                        if (typeof savedSkill.level === "number") skills.forging.level = savedSkill.level;
-                        if (typeof savedSkill.xp === "number") skills.forging.xp = savedSkill.xp;
-                        if (typeof savedSkill.effectMultiplier === "number") skills.forging.effectMultiplier = savedSkill.effectMultiplier;
-                    }
-                }
+
+if (saveData.skills.gathering) {
+
+    const savedSkill =
+        saveData.skills.gathering;
+
+    if (
+        typeof savedSkill.points === "number"
+    ) {
+        skills.gathering.points =
+            savedSkill.points;
+    }
+
+    if (
+        typeof savedSkill.level === "number"
+    ) {
+        skills.gathering.level =
+            savedSkill.level;
+    }
+
+    if (
+        typeof savedSkill.xp === "number"
+    ) {
+        skills.gathering.xp =
+            savedSkill.xp;
+    }
+
+    if (
+        typeof savedSkill.effectMultiplier === "number"
+    ) {
+        skills.gathering.effectMultiplier =
+            savedSkill.effectMultiplier;
+    }
+
+}
+
+if (saveData.skills.forging) {
+
+    const savedSkill =
+        saveData.skills.forging;
+
+    if (
+        typeof savedSkill.points === "number"
+    ) {
+        skills.forging.points =
+            savedSkill.points;
+    }
+
+    if (
+        typeof savedSkill.level === "number"
+    ) {
+        skills.forging.level =
+            savedSkill.level;
+    }
+
+    if (
+        typeof savedSkill.xp === "number"
+    ) {
+        skills.forging.xp =
+            savedSkill.xp;
+    }
+
+    if (
+        typeof savedSkill.effectMultiplier === "number"
+    ) {
+        skills.forging.effectMultiplier =
+            savedSkill.effectMultiplier;
+    }
+
+}
+
+if (saveData.skills.survival) {
+
+    const savedSkill =
+        saveData.skills.survival;
+
+    if (
+        typeof savedSkill.points === "number"
+    ) {
+        skills.survival.points =
+            savedSkill.points;
+    }
+
+    if (
+        typeof savedSkill.level === "number"
+    ) {
+        skills.survival.level =
+            savedSkill.level;
+    }
+
+    if (
+        typeof savedSkill.xp === "number"
+    ) {
+        skills.survival.xp =
+            savedSkill.xp;
+    }
+
+    if (
+        typeof savedSkill.effectMultiplier === "number"
+    ) {
+        skills.survival.effectMultiplier =
+            savedSkill.effectMultiplier;
+    }
+
+}
+
+}
 
                 upgrades[0].description =
                     "Multiplies the number of acorns gathered per click by " +
@@ -3255,6 +3593,22 @@ if (
 }
 
 if (
+    typeof saveData.goldenAutobuy === "boolean"
+) {
+
+    goldenAutobuyToggle.checked =
+        saveData.goldenAutobuy;
+
+}
+
+if (
+    typeof saveData.nextExportReminderTime === "number"
+) {
+    nextExportReminderTime =
+        saveData.nextExportReminderTime;
+}
+
+if (
     typeof saveData.nextExportReminderTime === "number"
 ) {
 
@@ -3275,19 +3629,21 @@ if (
 
    if (Array.isArray(saveData.upgrades)) {
 
-saveData.upgrades.forEach(
-    (upgradeData, index) => {
+    saveData.upgrades.forEach(
+    (upgradeData) => {
 
-        if (!upgrades[index]) {
-            return;
-        }
+        const upgrade =
+            upgrades.find(
+                upgrade =>
+                    upgrade.id === upgradeData.id
+            );
 
         if (
-            typeof upgradeData === "object" &&
+            upgrade &&
             typeof upgradeData.purchases === "number"
         ) {
 
-            upgrades[index].purchases =
+            upgrade.purchases =
                 upgradeData.purchases;
 
         }
@@ -3309,19 +3665,21 @@ saveData.upgrades.forEach(
 
    if (Array.isArray(saveData.goldenUpgrades)) {
 
-saveData.goldenUpgrades.forEach(
-    (upgradeData, index) => {
+    saveData.goldenUpgrades.forEach(
+    (upgradeData) => {
 
-        if (!goldenUpgrades[index]) {
-            return;
-        }
+        const upgrade =
+            goldenUpgrades.find(
+                upgrade =>
+                    upgrade.id === upgradeData.id
+            );
 
         if (
-            typeof upgradeData === "object" &&
+            upgrade &&
             typeof upgradeData.purchases === "number"
         ) {
 
-            goldenUpgrades[index].purchases =
+            upgrade.purchases =
                 upgradeData.purchases;
 
         }
@@ -3369,6 +3727,22 @@ if (saveData.skills) {
 
     }
 
+    if (saveData.skills.survival) {
+
+skills.survival.points =
+    saveData.skills.survival.points;
+
+skills.survival.level =
+    saveData.skills.survival.level;
+
+skills.survival.xp =
+    saveData.skills.survival.xp;
+
+skills.survival.effectMultiplier =
+    saveData.skills.survival.effectMultiplier;
+
+}
+
 }
 
 
@@ -3399,7 +3773,10 @@ if (
 lastSkillUpdateTime =
     Date.now();
 
-    updateAcornsPerGather();
+    updateGatherCooldown();
+updateForgingEffect();
+
+updateAcornsPerGather();
 updateAcornGainMultiplier();
 
 updateResourceDisplay();
@@ -3417,6 +3794,7 @@ updateTabGlows();
 
 updateLogDisplay();
 
+updateCooldown();
 
 /* ------------------------------------------------------------
    Restore unlocked tabs
@@ -3897,11 +4275,9 @@ sidebarGoldenAcorns.textContent =
 sidebarSkillPoints.textContent =
     formatNumber(totalSkillPoints);
 
-sidebarAvailableSkillPoints.textContent =
+    sidebarAvailableSkillPoints.textContent =
     formatNumber(
-        totalSkillPoints -
-        skills.gathering.points -
-        skills.forging.points
+        getAvailableSkillPoints()
     );
 }
 
@@ -3910,8 +4286,32 @@ function updateGoldenAcornDisplay() {
 goldenAcornNumber.textContent =
     formatNumber(Math.floor(goldenAcorns));
 
+
+let goldenAcornsPerSecond = 0;
+
+
+if (
+    upgrades[14] &&
+    upgrades[14].purchases > 0
+) {
+
+    const goldenAcornsPerGather =
+        forgingGoldenAcornMultiplier *
+        prestigeGoldenAcornMultiplier;
+
+    goldenAcornsPerSecond =
+        (
+            goldenAcornsPerGather /
+            gatherCooldown
+        ) *
+        goldenAcornChance;
+
+}
+
+
 goldenAcornRate.textContent =
-    "0";
+    formatNumber(goldenAcornsPerSecond);
+
 
 updateResourceSidebar();
 updateUpgradeButtons();
@@ -4362,14 +4762,20 @@ if (acornAmount < 1e21) {
     return 1;
 }
 
+const survivalMultiplier =
+    skills.survival.effectMultiplier;
+
 const prestigeExponent =
     1.5 +
     (
-        skills.gathering.level +
-        skills.forging.level
-    ) *
-    0.01 *
-    upgrades[11].purchases +
+        (
+            skills.gathering.level +
+            skills.forging.level
+        ) *
+        0.01 *
+        upgrades[11].purchases *
+        survivalMultiplier
+    ) +
     goldenUpgrades[5].purchases * 0.02;
 
 return Math.pow(
@@ -4555,8 +4961,6 @@ prestigeGoldenAcornMultiplier =
 acorns = 0;
 goldenAcorns = 0;
 
-updateGoldenAcornDisplay();
-
 // Reset regular upgrade effects.
 acornsPerGather = 1;
 gatherCooldown = 5;
@@ -4578,6 +4982,8 @@ for (const upgrade of upgrades) {
         upgrade.purchases = 0;
     }
 }
+
+updateGoldenAcornDisplay();
 
 // Reset skills.
 totalSkillPoints = 0;
@@ -4616,6 +5022,7 @@ skillsTab.style.display = "none";
 forgingSkill.style.display = "none";
 skillsPage.style.display = "none";
 skillsResourceDisplay.style.display = "none";
+survivalSkill.style.display = "none";
 
 currentTab = "acorns";
 
@@ -4943,13 +5350,17 @@ if (upgrade.id === 8) {
 
 if (upgrade.id === 11) {
 
+const survivalMultiplier =
+    skills.survival.effectMultiplier;
+
 const prestigeExponentIncrease =
     (
         skills.gathering.level +
         skills.forging.level
     ) *
     0.01 *
-    upgrade.purchases;
+    upgrade.purchases *
+    survivalMultiplier;
 
 currentEffectText =
     "Currently: +" +
@@ -4970,6 +5381,17 @@ const currentMultiplier =
         goldenAcornForgingMultiplier,
         upgrade.purchases
     );
+
+currentEffectText =
+    "Currently: " +
+    formatNumber(currentMultiplier) +
+    "x";
+}
+
+if (upgrade.id === 16) {
+
+const currentMultiplier =
+    getSkillPointProductMultiplier();
 
 currentEffectText =
     "Currently: " +
@@ -5780,6 +6202,9 @@ const gathering =
 const forging =
     skills.forging;
 
+const survival =
+    skills.survival;
+
 skillPointNumber.textContent =
     formatNumber(
         getAvailableSkillPoints()
@@ -5806,27 +6231,33 @@ gatheringXPElement.textContent =
 gatheringXPNeeded.textContent =
     formatNumber(gatheringXPNeededAmount);
 
-const gatheringProgress =
-    Math.min(
-        100,
-        (
-            gathering.xp /
-            gatheringXPNeededAmount
-        ) * 100
-    );
+    const gatheringProgress =
+    gathering.level >= 100
+        ? 100
+        : Math.min(
+            100,
+            (
+                gathering.xp /
+                gatheringXPNeededAmount
+            ) * 100
+        );
 
 gatheringXPFill.style.width =
     gatheringProgress + "%";
 
-const currentGatheringXPRate =
+    const currentGatheringXPRate =
     Math.pow(gathering.points, 2) *
     skillSpeedMultiplier *
-    skillXPMultiplier;
+    skillXPMultiplier *
+    getSkillPointProductMultiplier();
 
 gatheringXPRate.textContent =
     formatNumber(currentGatheringXPRate);
 
-if (currentGatheringXPRate > 0) {
+    if (
+    gathering.level < 100 &&
+    currentGatheringXPRate > 0
+) {
 
     const gatheringXPRemaining =
         gatheringXPNeededAmount -
@@ -5853,12 +6284,17 @@ if (currentGatheringXPRate > 0) {
 
 }
 
-document.querySelector(
+document.querySelectorAll(
     ".skill-header strong"
-).textContent =
+)[0].textContent =
     gathering.name +
     ": Level " +
-    gathering.level;
+    gathering.level +
+    (
+        gathering.level >= 100
+            ? " (Capped)"
+            : ""
+    );
 
 gatheringEffect.textContent =
     formatNumber(gathering.effectMultiplier) +
@@ -5880,27 +6316,33 @@ forgingXPElement.textContent =
 forgingXPNeeded.textContent =
     formatNumber(forgingXPNeededAmount);
 
-const forgingProgress =
-    Math.min(
-        100,
-        (
-            forging.xp /
-            forgingXPNeededAmount
-        ) * 100
-    );
+    const forgingProgress =
+    forging.level >= 100
+        ? 100
+        : Math.min(
+            100,
+            (
+                forging.xp /
+                forgingXPNeededAmount
+            ) * 100
+        );
 
 forgingXPFill.style.width =
     forgingProgress + "%";
 
-const currentForgingXPRate =
+    const currentForgingXPRate =
     Math.pow(forging.points, 2) *
     skillSpeedMultiplier *
-    skillXPMultiplier;
+    skillXPMultiplier *
+    getSkillPointProductMultiplier();
 
 forgingXPRate.textContent =
     formatNumber(currentForgingXPRate);
 
-if (currentForgingXPRate > 0) {
+    if (
+    forging.level < 100 &&
+    currentForgingXPRate > 0
+) {
 
     const forgingXPRemaining =
         forgingXPNeededAmount -
@@ -5932,12 +6374,104 @@ document.querySelectorAll(
 )[1].textContent =
     forging.name +
     ": Level " +
-    forging.level;
+    forging.level +
+    (
+        forging.level >= 100
+            ? " (Capped)"
+            : ""
+    );
 
 forgingEffect.textContent =
     formatNumber(forging.level) +
     "x";
 
+    /* ============================================================
+   SURVIVAL
+   ============================================================ */
+
+survivalPoints.textContent =
+    survival.points;
+
+const survivalXPNeededAmount =
+    getSkillXPNeeded(survival);
+
+survivalXPElement.textContent =
+    formatNumber(survival.xp);
+
+survivalXPNeeded.textContent =
+    formatNumber(survivalXPNeededAmount);
+
+    const survivalProgress =
+    survival.level >= 100
+        ? 100
+        : Math.min(
+            100,
+            (
+                survival.xp /
+                survivalXPNeededAmount
+            ) * 100
+        );
+
+survivalXPFill.style.width =
+    survivalProgress + "%";
+
+    const currentSurvivalXPRate =
+    Math.pow(survival.points, 2) *
+    skillSpeedMultiplier *
+    skillXPMultiplier *
+    getSkillPointProductMultiplier();
+
+survivalXPRate.textContent =
+    formatNumber(currentSurvivalXPRate);
+
+    if (
+    survival.level < 100 &&
+    currentSurvivalXPRate > 0
+) {
+
+    const survivalXPRemaining =
+        survivalXPNeededAmount -
+        survival.xp;
+
+    const survivalSecondsRemaining =
+        Math.max(
+            0,
+            Math.ceil(
+                survivalXPRemaining /
+                currentSurvivalXPRate
+            )
+        );
+
+    survivalLevelUpTimer.textContent =
+        formatSkillTimer(
+            survivalSecondsRemaining
+        );
+
+}
+else {
+
+    survivalLevelUpTimer.textContent =
+        "--:--";
+
+}
+
+document.querySelectorAll(
+    ".skill-header strong"
+)[2].textContent =
+    survival.name +
+    ": Level " +
+    survival.level +
+    (
+        survival.level >= 100
+            ? " (Capped)"
+            : ""
+    );
+
+survivalEffect.textContent =
+    formatNumber(
+        survival.effectMultiplier
+    ) +
+    "x";
 
 /* ============================================================
    SKILL POINT BUTTONS
@@ -5967,6 +6501,12 @@ gatheringMinus.disabled =
 
 forgingMinus.disabled =
     forging.points <= 0;
+
+survivalPlus.disabled =
+    availableSkillPoints <= 0;
+
+survivalMinus.disabled =
+    survival.points <= 0;
 
     updateResourceSidebar();
     updateUpgradeButtons();
@@ -5998,76 +6538,171 @@ learnSkillPointButton.addEventListener(
     }
 );
 
-gatheringPlus.addEventListener(
-    "click",
-    function() {
+function changeSkillPoints(
+    skill,
+    amount
+) {
 
-        const gathering =
-            skills.gathering;
+    if (amount > 0) {
 
-        if (getAvailableSkillPoints() <= 0) {
-            return;
+        const availableSkillPoints =
+            getAvailableSkillPoints();
+
+        if (availableSkillPoints <= 0) {
+            return false;
         }
 
-        gathering.points++;
+        skill.points +=
+            Math.min(
+                amount,
+                availableSkillPoints
+            );
 
-        updateSkillsDisplay();
-        saveGame();
     }
+    else {
+
+        if (skill.points <= 0) {
+            return false;
+        }
+
+        skill.points +=
+            Math.max(
+                amount,
+                -skill.points
+            );
+
+    }
+
+    updateSkillsDisplay();
+
+    return true;
+}
+
+
+function setupSkillPointHoldButton(
+    button,
+    skill,
+    amount
+) {
+
+    let holdTimer = null;
+    let repeatTimer = null;
+
+    let isHolding = false;
+
+
+    function stopHolding() {
+
+        isHolding = false;
+
+        clearTimeout(holdTimer);
+        clearInterval(repeatTimer);
+
+        holdTimer = null;
+        repeatTimer = null;
+
+    }
+
+
+    button.addEventListener(
+        "pointerdown",
+        function(event) {
+
+            event.preventDefault();
+
+            isHolding = true;
+
+            changeSkillPoints(
+                skill,
+                amount
+            );
+
+            holdTimer =
+                setTimeout(
+                    function() {
+
+                        if (!isHolding) {
+                            return;
+                        }
+
+                        repeatTimer =
+                            setInterval(
+                                function() {
+
+                                    const changed =
+                                        changeSkillPoints(
+                                            skill,
+                                            amount
+                                        );
+
+                                    if (!changed) {
+                                        stopHolding();
+                                    }
+
+                                },
+                                20
+                            );
+
+                    },
+                    500
+                );
+
+        }
+    );
+
+
+    button.addEventListener(
+        "pointerup",
+        stopHolding
+    );
+
+    button.addEventListener(
+        "pointerleave",
+        stopHolding
+    );
+
+    button.addEventListener(
+        "pointercancel",
+        stopHolding
+    );
+
+}
+
+
+setupSkillPointHoldButton(
+    gatheringPlus,
+    skills.gathering,
+    1
 );
 
-gatheringMinus.addEventListener(
-    "click",
-    function() {
-
-        const gathering =
-            skills.gathering;
-
-        if (gathering.points <= 0) {
-            return;
-        }
-
-        gathering.points--;
-
-        updateSkillsDisplay();
-        saveGame();
-    }
+setupSkillPointHoldButton(
+    gatheringMinus,
+    skills.gathering,
+    -1
 );
 
-forgingPlus.addEventListener(
-    "click",
-    function() {
-
-        const forging =
-            skills.forging;
-
-        if (getAvailableSkillPoints() <= 0) {
-            return;
-        }
-
-        forging.points++;
-
-        updateSkillsDisplay();
-        saveGame();
-    }
+setupSkillPointHoldButton(
+    forgingPlus,
+    skills.forging,
+    1
 );
 
-forgingMinus.addEventListener(
-    "click",
-    function() {
+setupSkillPointHoldButton(
+    forgingMinus,
+    skills.forging,
+    -1
+);
 
-        const forging =
-            skills.forging;
+setupSkillPointHoldButton(
+    survivalPlus,
+    skills.survival,
+    1
+);
 
-        if (forging.points <= 0) {
-            return;
-        }
-
-        forging.points--;
-
-        updateSkillsDisplay();
-        saveGame();
-    }
+setupSkillPointHoldButton(
+    survivalMinus,
+    skills.survival,
+    -1
 );
 
 function getAvailableSkillPoints() {
@@ -6078,6 +6713,36 @@ function getAvailableSkillPoints() {
     }
 
     return totalSkillPoints - assignedPoints;
+}
+
+function getSkillPointProductMultiplier() {
+
+const upgrade =
+    upgrades.find(
+        upgrade => upgrade.id === 16
+    );
+
+if (
+    !upgrade ||
+    upgrade.purchases <= 0
+) {
+    return 1;
+}
+
+let skillPointProduct = 1;
+
+for (const skill of Object.values(skills)) {
+
+    skillPointProduct *=
+        skill.points + 1;
+
+}
+
+return Math.pow(
+    skillPointProduct,
+    upgrade.purchases
+);
+
 }
 
 let lastSkillUpdateTime = Date.now();
@@ -6095,16 +6760,25 @@ let skillLeveledUp = false;
 
 for (const skill of Object.values(skills)) {
 
-    const xpPerSecond =
-        Math.pow(skill.points, 2) *
-        skillSpeedMultiplier *
-        skillXPMultiplier;
+    if (skill.level >= 100) {
 
-    const xpGained =
-        xpPerSecond * elapsed;
+skill.level = 100;
+skill.xp = 0;
 
-    skill.xp += xpGained;
+continue;
 
+}
+
+const xpPerSecond =
+Math.pow(skill.points, 2) *
+skillSpeedMultiplier *
+skillXPMultiplier *
+getSkillPointProductMultiplier();
+
+const xpGained =
+xpPerSecond * elapsed;
+
+skill.xp += xpGained;
 
     /*
      * Only Gathering XP counts toward
@@ -6121,14 +6795,27 @@ for (const skill of Object.values(skills)) {
         getSkillXPNeeded(skill);
 
 
-        while (skill.xp >= xpNeeded) {
+        while (
+            skill.level < 100 &&
+            skill.xp >= xpNeeded
+        ) {
 
 skill.xp -= xpNeeded;
 
 skill.level++;
 
+if (skill === skills.survival) {
+
+skill.effectMultiplier +=
+    skill.effectPerLevel;
+
+}
+else {
+
 skill.effectMultiplier *=
     skill.effectPerLevel;
+
+}
 
 skillLeveledUp = true;
 
@@ -6344,6 +7031,23 @@ createUpgradeButtons();
             goldenAcornTimer.style.display = "block";
             updateGoldenAcornTimer();
         }
+
+        /* ------------------------------------------------------------
+   Restore Survival skill visibility
+   ------------------------------------------------------------ */
+
+if (upgrades[15].purchases > 0) {
+
+survivalSkill.style.display =
+    "block";
+
+}
+else {
+
+survivalSkill.style.display =
+    "none";
+
+}
 
         if (currentTab === "goldenAcorns") {
             goldenAcornsTab.click();
