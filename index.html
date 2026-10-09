@@ -577,6 +577,7 @@
 }
 
 .skill {
+    position: relative;
     text-align: left;
 }
 
@@ -1436,6 +1437,82 @@ cursor: not-allowed;
     color: #dddddd;
 }
 
+
+.skill-ascend-button {
+    position: absolute;
+    right: 15px;
+    bottom: 15px;
+
+    padding: 8px 12px;
+
+    background-color: #333333;
+    color: #eeeeee;
+
+    border: 2px solid #add8e6;
+    border-radius: 6px;
+
+    font-size: 13px;
+    font-weight: bold;
+
+    cursor: pointer;
+    text-align: center;
+}
+
+.skill-ascend-button:hover:not(:disabled) {
+    background-color: #444444;
+}
+
+.skill-ascend-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.skill-ascend-button span {
+    display: block;
+    margin-top: 4px;
+    font-size: 11px;
+    font-weight: normal;
+}
+
+/* Forging Ascend button theme */
+#forging-skill .skill-ascend-button {
+    border-color: #ffd700;
+}
+
+#forging-skill .skill-ascend-button:hover:not(:disabled) {
+    background-color: #4a4020;
+}
+
+/* Apples tab */
+
+#apples-tab {
+    color: #ff002f;
+}
+
+#apples-tab.active {
+    border-color: #ff002f;
+}
+
+#apples-tab.upgrade-available {
+    box-shadow: 0 0 10px 3px #ff002f;
+}
+
+#apples-resource-display {
+    display: none;
+    margin-top: 30px;
+    font-size: 32px;
+    color: #ff002f;
+}
+
+#apples-resource-display strong {
+    color: #ff002f;
+}
+
+#apples-page {
+    display: none;
+    margin-top: 25px;
+}
+
     </style>
 
 </head>
@@ -1530,6 +1607,10 @@ cursor: not-allowed;
         You have <strong id="skill-point-number">0</strong> skill points
     </div>
 
+    <div id="apples-resource-display">
+        You have <strong id="apple-number">0</strong> apples
+    </div>
+
     <!-- ============================================================
          RESOURCE TABS
          ============================================================ -->
@@ -1553,6 +1634,14 @@ cursor: not-allowed;
         <button id="skills-tab" class="resource-tab">
             Skills
         </button>
+
+        <button
+    id="apples-tab"
+    class="resource-tab"
+    style="display: none;"
+>
+    Apples
+</button>
 
     </div>
 
@@ -1927,6 +2016,12 @@ style="display: none;"
 
     </div>
 
+    <!-- ============================================================
+     APPLES PAGE
+     ============================================================ -->
+
+    <div id="apples-page" style="display: none;"></div>
+
     <div id="save-controls">
 
         <button id="export-data-button" class="save-control-button">
@@ -1963,7 +2058,7 @@ style="display: none;"
 
     <!-- CHANGELOG -->
 
-<button id="changelog-button">v1.5</button>
+<button id="changelog-button">v1.6</button>
 
 <div id="changelog-modal">
 
@@ -1974,6 +2069,12 @@ style="display: none;"
         <h1>Changelog</h1>
 
         <div id="changelog-entries">
+            <h2>v1.6</h2>
+            <p>- Added three more Acorn upgrades, bringing the total to 20</p>
+            <p>- Added the Ascension feature to Skills</p>
+            <p>- Added Apples tab and corresponding HTML, but no content for Apples yet</p>
+            <p>- Changed scaling of Forging skill from 1.8x to 1.75x</p>
+            <p>- Fixed an importing bug where the Survival skill didn't load even if Upgrade 16 had been purchased</p>
             <h2>v1.5</h2>
             <p>- Added two more Acorn upgrades, bringing the total to 17</p>
             <p>- Added the third skill: Survival</p>
@@ -2039,6 +2140,7 @@ style="display: none;"
 
         // Golden Acorn currency.
         let goldenAcorns = 0;
+        let apples = 0;
 
         // Multiplier applied to all regular acorn gain.
         let goldenAcornMultiplier = 1;
@@ -2099,8 +2201,11 @@ const savePoints = [
         {
             title: "Pre-Upgrade 16",
             data: `{"acorns":2.336158921293482e+46,"acornsPerGather":59049.00000000009,"goldenAcorns":37898.361916728616,"goldenAcornMultiplier":54.76369923749306,"goldenAcornCostMultiplier":0.48767497911552943,"goldenAcornChance":0.20000000000000007,"upgrade1BaseMultiplier":3.0000000000000004,"totalSkillPoints":23,"skillSpeedMultiplier":703756.4063762553,"prestigeMultiplier":74600.7691590841,"prestigeUnlocked":true,"hasPrestiged":true,"highestAcorns":6.294254275298769e+41,"lastPrestigeAcorns":6.294254275298769e+41,"prestigeGoldenAcornMultiplier":12.335300380317245,"goldenAcornTimerEnd":1791158522395,"goldenAcornTimerActive":true,"skillXPMultiplier":3325.256730079651,"gatheringXPAcornMultiplier":11729671976424628,"totalGatheringXP":436196620326734.8,"forgingGoldenAcornMultiplier":37,"gatherOnCooldown":true,"cooldownEndTime":1791156309722,"gatherCooldown":1,"currentTab":"acorns","prestigeConfirmation":false,"goldenAutobuy":false,"upgrades":[{"id":0,"purchases":10},{"id":1,"purchases":8},{"id":2,"purchases":8},{"id":3,"purchases":10},{"id":4,"purchases":1},{"id":5,"purchases":20},{"id":6,"purchases":10},{"id":7,"purchases":1},{"id":8,"purchases":5},{"id":9,"purchases":1},{"id":10,"purchases":10},{"id":11,"purchases":1},{"id":12,"purchases":1},{"id":13,"purchases":2},{"id":14,"purchases":1}],"goldenUpgrades":[{"id":0,"purchases":42},{"id":1,"purchases":14},{"id":2,"purchases":26},{"id":3,"purchases":1},{"id":4,"purchases":0},{"id":5,"purchases":0}],"skills":{"gathering":{"points":23,"level":76,"xp":114182864130936.28,"effectMultiplier":868147.3693135533},"forging":{"points":0,"level":37,"xp":120437155406475.9,"effectMultiplier":1}},"logMessages":[{"id":"welcome","number":1,"text":"You wake up one day to find that you have transformed into a raccoon overnight. After overcoming the initial shock, you realize that you've retained very little memory from your previous human life, only remembering basic things like what constitutes as food, and potential threats of the outside. You start to look around and notice you're deep in a deciduous forest, as the sunlight peeks through tree branches, spotting your dark gray fur with light patches. You don't know how this happened, but you know one thing's for sure: you're pretty darn hungry right now. After stumbling for a few minutes in your new raccoon form looking for food, you hear a hard crunch under your paw. You look down and see a small acorn that fell off of an oak tree from above. Surely enough, there's plenty more where it came from, and you start to gather them. They're not the best-tasting, but they should sustain you for a while.","color":"#eeeeee"},{"id":"first-golden-acorn","number":2,"text":"You find a particularly shiny acorn. You examine it thoroughly, not for its beauty but because of its uncanny, almost synthetic quality. Nonetheless, you take a bite and feel stronger...perhaps you should check out the Golden Acorns tab?","color":"#ffd700"},{"id":"skills-unlocked","number":3,"text":"You're now somewhat accustomed to the raccoon lifestyle and realize...there's really not much to it. What you can remember of things like school, work, money, and human society seem completely irrelevant to you now. You decide to spend your time refining your gathering skills like all the other raccoons you've met so far...who knows, maybe you can even work with them!","color":"#ff69b4"},{"id":"load-Pre-Prestige-1791153625267","number":4,"text":"Pre-Prestige Loaded!","color":"#eeeeee"},{"id":"export-reminder-1791153625487","number":5,"text":"Attention: You haven't exported your game data in a while! You can save your game data by clicking the \\\"Export Data\\\" button in the bottom left corner, then pasting the text that was copied into a document or text file. Then, if your data ever gets lost, you can import that string and pick up right where you left off!","color":"#ff4444"},{"id":"prestige-1791153627317","number":6,"text":"After being devoured by a hungry coyote, you find yourself back where you started.","color":"#3fbf3f"},{"id":"prestige-1791154637060","number":7,"text":"After being devoured by a hungry coyote, you find yourself back where you started.","color":"#3fbf3f"},{"id":"prestige-1791155413866","number":8,"text":"After being swept into a moving river while trying to wash your food, you find yourself back where you started.","color":"#3fbf3f"}],"nextLogNumber":9,"nextExportReminderTime":1791240025487}`
-        }
-
+        },
+        {
+            title: "Apples Unlocked",
+            data: `{"acorns":8.515568261243288e+79,"apples":0,"acornsPerGather":59049.00000000009,"goldenAcorns":291461.82777019276,"goldenAcornMultiplier":72.89048368510328,"goldenAcornCostMultiplier":0.44012666865176525,"goldenAcornChance":0.20000000000000007,"upgrade1BaseMultiplier":3.0000000000000004,"totalSkillPoints":43,"skillSpeedMultiplier":1030369.7545754757,"prestigeMultiplier":77244082130623.89,"prestigeUnlocked":true,"hasPrestiged":true,"highestAcorns":4.523793009967951e+65,"lastPrestigeAcorns":4.523793009967951e+65,"prestigeGoldenAcornMultiplier":21.888150424363346,"goldenAcornTimerEnd":1791574521030,"goldenAcornTimerActive":true,"skillXPMultiplier":3325.256730079651,"gatheringXPAcornMultiplier":2676513441782601000,"totalGatheringXP":1.5763338331287522e+25,"forgingGoldenAcornMultiplier":83,"gatherOnCooldown":true,"cooldownEndTime":1791572867319.3374,"gatherCooldown":0.6983372960937497,"currentTab":"acorns","prestigeConfirmation":false,"goldenAutobuy":false,"upgrades":[{"id":0,"purchases":10},{"id":1,"purchases":8},{"id":2,"purchases":8},{"id":3,"purchases":10},{"id":4,"purchases":1},{"id":5,"purchases":20},{"id":6,"purchases":10},{"id":7,"purchases":1},{"id":8,"purchases":5},{"id":9,"purchases":1},{"id":10,"purchases":10},{"id":11,"purchases":1},{"id":12,"purchases":1},{"id":13,"purchases":5},{"id":14,"purchases":1},{"id":15,"purchases":1},{"id":16,"purchases":3},{"id":17,"purchases":11},{"id":18,"purchases":1},{"id":19,"purchases":1}],"goldenUpgrades":[{"id":0,"purchases":45},{"id":1,"purchases":16},{"id":2,"purchases":30},{"id":3,"purchases":1},{"id":4,"purchases":7},{"id":5,"purchases":0}],"skills":{"gathering":{"points":15,"level":81,"tier":2,"xp":3.67407372435621e+24,"xpMultiplier":2,"effectMultiplier":6858816903929000},"forging":{"points":14,"level":83,"tier":1,"xp":3.458616132926137e+24,"xpMultiplier":1.75,"effectMultiplier":1},"survival":{"points":14,"level":38,"tier":1,"xp":1.0382808354613807e+24,"xpMultiplier":2,"effectMultiplier":2.849999999999998}},"logMessages":[{"id":"welcome","number":1,"text":"You wake up one day to find that you have transformed into a raccoon overnight. After overcoming the initial shock, you realize that you've retained very little memory from your previous human life, only remembering basic things like what constitutes as food, and potential threats of the outside. You start to look around and notice you're deep in a deciduous forest, as the sunlight peeks through tree branches, spotting your dark gray fur with light patches. You don't know how this happened, but you know one thing's for sure: you're pretty darn hungry right now. After stumbling for a few minutes in your new raccoon form looking for food, you hear a hard crunch under your paw. You look down and see a small acorn that fell off of an oak tree from above. Surely enough, there's plenty more where it came from, and you start to gather them. They're not the best-tasting, but they should sustain you for a while.","color":"#eeeeee"},{"id":"first-golden-acorn","number":2,"text":"You find a particularly shiny acorn. You examine it thoroughly, not for its beauty but because of its uncanny, almost synthetic quality. Nonetheless, you take a bite and feel stronger...perhaps you should check out the Golden Acorns tab?","color":"#ffd700"},{"id":"skills-unlocked","number":3,"text":"You're now somewhat accustomed to the raccoon lifestyle and realize...there's really not much to it. What you can remember of things like school, work, money, and human society seem completely irrelevant to you now. You decide to spend your time refining your gathering skills like all the other raccoons you've met so far...who knows, maybe you can even work with them!","color":"#ff69b4"},{"id":"load-Pre-Prestige-1791153625267","number":4,"text":"Pre-Prestige Loaded!","color":"#eeeeee"},{"id":"export-reminder-1791153625487","number":5,"text":"Attention: You haven't exported your game data in a while! You can save your game data by clicking the \\\"Export Data\\\" button in the bottom left corner, then pasting the text that was copied into a document or text file. Then, if your data ever gets lost, you can import that string and pick up right where you left off!","color":"#ff4444"},{"id":"prestige-1791153627317","number":6,"text":"After being devoured by a hungry coyote, you find yourself back where you started.","color":"#3fbf3f"},{"id":"prestige-1791154637060","number":7,"text":"After being devoured by a hungry coyote, you find yourself back where you started.","color":"#3fbf3f"},{"id":"prestige-1791155413866","number":8,"text":"After being swept into a moving river while trying to wash your food, you find yourself back where you started.","color":"#3fbf3f"},{"id":"load-Pre-Upgrade 16-1791570807526","number":9,"text":"Pre-Upgrade 16 Loaded!","color":"#eeeeee"},{"id":"export-reminder-1791570807846","number":10,"text":"Attention: You haven't exported your game data in a while! You can save your game data by clicking the \\\"Export Data\\\" button in the bottom left corner, then pasting the text that was copied into a document or text file. Then, if your data ever gets lost, you can import that string and pick up right where you left off!","color":"#ff4444"},{"id":"prestige-1791571443082","number":11,"text":"After being bitten by a rabid squirrel, you find yourself back where you started.","color":"#3fbf3f"},{"id":"prestige-1791572018975","number":12,"text":"After being taken in as an exotic pet, only to then be neglected to starvation, you find yourself back where you started.","color":"#3fbf3f"},{"id":"apples-unlocked","number":13,"text":"It's been a few weeks now, and you've become fully accustomed to your new lifestyle. You had no idea that raccoons were so social, intelligent, and apparently inspired by human corporate lifestyle. You've also come to accept that death is a part of life, and the pain that come with it is becoming slowly and slowly more tolerable, although you do wonder why your friends don't keep respawning like you do. Every time you come back, you feel a strange, internal feeling of hollowness, a sense of digitization, almost like you're living vicariously through someone else in a simulation, but figure that might just be a side effect of the constant respawning. After venturing a little further into the forest in attempts to expand your acorn market, you stumble across a bright, red, round object. You apprehensively approach the foreign object, your fur puffed up in defense, until you gently place your paw over it to feel. With care, you take a small bite, and your tail gives off a small flick of excitement as you taste the sweet, rich flavor of the apple. Your eyes dart to other nearby trees and find yourself surrounded with the new food source, though the gathering process quickly proves itself to be trickier to what you were using before. \\\"Wait until my friends hear about this\\\" you purr to yourself...","color":"#ff002f"}],"nextLogNumber":14,"nextExportReminderTime":1791657207846}`
+        },
 
 ];
 
@@ -2190,36 +2295,49 @@ requestAnimationFrame(updateGoldenAcornTimer);
 }
 
 const skills = {
+
     gathering: {
-        name: "Gathering",
-        points: 0,
-        level: 1,
-        xp: 0,
-        effectMultiplier: 1,
-        effectPerLevel: 1.2,
-        xpBase: 10,
-        xpMultiplier: 1.5
+    name: "Gathering",
+    points: 0,
+    level: 1,
+    tier: 1,
+    xp: 0,
+    effectMultiplier: 1,
+    effectPerLevel: 1.2,
+    xpBase: 10,
+    xpMultiplier: 1.5,
+
+    tiers: {
+        2: {
+            xpMultiplier: 2,
+            effectPower: 2.5
+        }
     },
+},
 
     forging: {
         name: "Forging",
         points: 0,
         level: 1,
+        tier: 1,
         xp: 0,
         effectMultiplier: 1,
         effectPerLevel: 1,
         xpBase: 100000,
-        xpMultiplier: 1.75
+        xpMultiplier: 1.75,
+        tiers: {},
     },
     survival: {
     name: "Survival",
     points: 0,
     level: 1,
+    tier: 1,
     xp: 0,
     effectMultiplier: 1,
     effectPerLevel: 0.05,
     xpBase: 1e14,
-    xpMultiplier: 2
+    xpMultiplier: 2,
+    tiers: {},
 },
 };
 
@@ -2578,6 +2696,57 @@ addLogMessage(
 
 },
 
+{
+    id: 17,
+    name: "Preserve Previous Realities",
+    subtitle: "You now have so many acorns that your past lives are starting to overlap with your current one.",
+    description:
+        "Keeps one acorn upgrade on Prestige for each purchase of this upgrade.",
+    baseCost: 1e60,
+    costMultiplier: 100,
+    maxPurchases: 30,
+    purchases: 0,
+    effect: function() {
+        updateUpgradeButtons();
+    }
+},
+
+{
+    id: 18,
+    name: "Transform your Companies into Corporations",
+    subtitle: "Your net worth is so high you can subsidize any acorn company you want.",
+    description:
+        "Unlocks Ascension (Skills tab) which allows you to reset your capped skills for a much larger effect.",
+    baseCost: 1e68,
+    costMultiplier: 1,
+    maxPurchases: 1,
+    purchases: 0,
+    effect: function() {
+        updateSkillsDisplay();
+    }
+},
+{
+    id: 19,
+    name: "Discover Apples",
+    subtitle: "Wait...there's something other than acorns?",
+    description: "Unlocks the Apples tab.",
+    baseCost: 1e80,
+    costMultiplier: 1,
+    maxPurchases: 1,
+    purchases: 0,
+    effect: function() {
+    applesTab.style.display = "block";
+
+    addLogMessage(
+        "It's been a few weeks now, and you've become fully accustomed to your new lifestyle. You had no idea that raccoons were so social, intelligent, and evidently inspired by human corporate lifestyle. You've also come to accept that death is a part of life, as well as the pain that comes with it (although you do wonder why your friends don't keep respawning like you do). Each time you come back, you feel more of a strange, internal feeling of hollowness, a sense of digitization even, almost like you're living vicariously through someone else in a simulation, but figure that might just be a side effect of the constant respawning. After venturing a little further into the forest with the intent of expanding your acorn market, you stumble across a bright, red, round entity. You apprehensively approach the foreign object, your fur puffed up in defense, until you gently place your paw over it to feel. With care, you take a small bite, and your tail gives off a small flick of excitement as you taste the sweet, rich flavor of the apple. Your eyes dart to other nearby trees and find yourself surrounded with the new food source, though the gathering process quickly proves itself to be trickier to what you were using before, since most of them reside in the trees overhead. \"Wait until my friends hear about this\", you purr to yourself...",
+        "#ff002f",
+        "apples-unlocked"
+    );
+
+    updateUpgradeButtons();
+}
+},
+
 // Future upgrades go here.
 
             // Future upgrades go here.
@@ -2791,6 +2960,20 @@ const skillsTab =
 const skillsPage =
     document.getElementById("skills-page");
 
+const applesTab =
+    document.getElementById("apples-tab");
+
+const applesPage =
+    document.getElementById("apples-page");
+
+const applesResourceDisplay =
+    document.getElementById("apples-resource-display");
+
+const appleNumber =
+    document.getElementById("apple-number");
+
+applesTab.style.display = "none";
+
     skillsTab.style.display = "none";
 
     const skillsResourceDisplay =
@@ -2843,6 +3026,11 @@ return (
 );
 }
 
+
+function getSkillMaxLevel(skill) {
+    return 100 * Math.pow(2, skill.tier - 1);
+}
+
 function getSkillXPNeeded(skill) {
     return (
         skill.xpBase *
@@ -2851,6 +3039,51 @@ function getSkillXPNeeded(skill) {
             skill.level - 1
         )
     );
+}
+
+function canAscendSkill(skill) {
+    const nextTier = skill.tier + 1;
+    const tierData = skill.tiers[nextTier];
+
+    return (
+        upgrades[18].purchases > 0 &&
+        skill.level >= getSkillMaxLevel(skill) &&
+        tierData !== undefined
+    );
+}
+
+function ascendSkill(skill) {
+    if (!canAscendSkill(skill)) {
+        return;
+    }
+
+    const nextTier = skill.tier + 1;
+    const tierData = skill.tiers[nextTier];
+
+    // Apply the new tier's effect scaling.
+    skill.effectMultiplier = 1;
+
+    // Move the skill to its new tier.
+    skill.tier = nextTier;
+    skill.level = 1;
+    skill.xp = 0;
+
+    // Apply the new tier's XP scaling.
+    skill.xpMultiplier = tierData.xpMultiplier;
+
+    // Refresh effects that depend on skill level.
+    if (skill === skills.gathering) {
+        updateAcornsPerGather();
+    }
+
+    if (skill === skills.forging) {
+        updateForgingEffect();
+        updateGoldenAcornDisplay();
+    }
+
+    updateSkillsDisplay();
+    updatePrestigeDisplay();
+    saveGame();
 }
 
 const gatheringEffect =
@@ -3016,6 +3249,7 @@ addLogMessage(
 return {
 
     acorns,
+    apples,
     acornsPerGather,
 
     goldenAcorns,
@@ -3073,56 +3307,20 @@ return {
             })
         ),
 
-    skills: {
 
-        gathering: {
-
-            points:
-                skills.gathering.points,
-
-            level:
-                skills.gathering.level,
-
-            xp:
-                skills.gathering.xp,
-
-            effectMultiplier:
-                skills.gathering.effectMultiplier
-
-        },
-
-        forging: {
-
-            points:
-                skills.forging.points,
-
-            level:
-                skills.forging.level,
-
-            xp:
-                skills.forging.xp,
-
-            effectMultiplier:
-                skills.forging.effectMultiplier
-
-        },
-        survival: {
-
-points:
-    skills.survival.points,
-
-level:
-    skills.survival.level,
-
-xp:
-    skills.survival.xp,
-
-effectMultiplier:
-    skills.survival.effectMultiplier
-
-},
-
-    },
+        skills: Object.fromEntries(
+    Object.entries(skills).map(([skillName, skill]) => [
+        skillName,
+        {
+            points: skill.points,
+            level: skill.level,
+            tier: skill.tier,
+            xp: skill.xp,
+            xpMultiplier: skill.xpMultiplier,
+            effectMultiplier: skill.effectMultiplier
+        }
+    ])
+),
 
     logMessages,
     nextLogNumber,
@@ -3149,216 +3347,258 @@ localStorage.setItem(
 
 }
 
-        function loadGame() {
 
-            const saved = localStorage.getItem(SAVE_KEY);
+function loadGame() {
 
-            if (!saved) {
-                return;
+const saved = localStorage.getItem(SAVE_KEY);
+
+if (!saved) {
+    return;
+}
+
+try {
+
+    const saveData = JSON.parse(saved);
+
+    // Keep each skill's original XP multiplier as its default.
+    // This prevents an incorrect saved multiplier from changing
+    // the requirements for a skill that is still at Tier 1.
+    const defaultSkillXPMultipliers = {};
+
+    for (const [skillName, skill] of Object.entries(skills)) {
+        defaultSkillXPMultipliers[skillName] =
+            skill.xpMultiplier;
+    }
+
+    // Restore general game values.
+    if (typeof saveData.acorns === "number") acorns = saveData.acorns;
+    if (typeof saveData.apples === "number") {
+    apples = saveData.apples;
+}
+    if (typeof saveData.acornsPerGather === "number") acornsPerGather = saveData.acornsPerGather;
+    if (typeof saveData.goldenAcorns === "number") goldenAcorns = saveData.goldenAcorns;
+    if (typeof saveData.goldenAcornMultiplier === "number") goldenAcornMultiplier = saveData.goldenAcornMultiplier;
+    if (typeof saveData.goldenAcornCostMultiplier === "number") goldenAcornCostMultiplier = saveData.goldenAcornCostMultiplier;
+    if (typeof saveData.goldenAcornChance === "number") goldenAcornChance = saveData.goldenAcornChance;
+    if (typeof saveData.upgrade1BaseMultiplier === "number") upgrade1BaseMultiplier = saveData.upgrade1BaseMultiplier;
+
+    if (typeof saveData.totalSkillPoints === "number") totalSkillPoints = saveData.totalSkillPoints;
+    if (typeof saveData.skillSpeedMultiplier === "number") skillSpeedMultiplier = saveData.skillSpeedMultiplier;
+    if (typeof saveData.skillXPMultiplier === "number") skillXPMultiplier = saveData.skillXPMultiplier;
+    if (typeof saveData.gatheringXPAcornMultiplier === "number") gatheringXPAcornMultiplier = saveData.gatheringXPAcornMultiplier;
+    if (typeof saveData.totalGatheringXP === "number") totalGatheringXP = saveData.totalGatheringXP;
+    if (typeof saveData.forgingGoldenAcornMultiplier === "number") forgingGoldenAcornMultiplier = saveData.forgingGoldenAcornMultiplier;
+
+    if (typeof saveData.prestigeMultiplier === "number") prestigeMultiplier = saveData.prestigeMultiplier;
+    if (typeof saveData.prestigeUnlocked === "boolean") prestigeUnlocked = saveData.prestigeUnlocked;
+    if (typeof saveData.hasPrestiged === "boolean") hasPrestiged = saveData.hasPrestiged;
+    if (typeof saveData.highestAcorns === "number") highestAcorns = saveData.highestAcorns;
+    if (typeof saveData.lastPrestigeAcorns === "number") lastPrestigeAcorns = saveData.lastPrestigeAcorns;
+    if (typeof saveData.prestigeGoldenAcornMultiplier === "number") prestigeGoldenAcornMultiplier = saveData.prestigeGoldenAcornMultiplier;
+
+    if (typeof saveData.goldenAcornTimerEnd === "number") goldenAcornTimerEnd = saveData.goldenAcornTimerEnd;
+    if (typeof saveData.goldenAcornTimerActive === "boolean") goldenAcornTimerActive = saveData.goldenAcornTimerActive;
+
+    if (typeof saveData.gatherOnCooldown === "boolean") gatherOnCooldown = saveData.gatherOnCooldown;
+    if (typeof saveData.cooldownEndTime === "number") cooldownEndTime = saveData.cooldownEndTime;
+    if (typeof saveData.gatherCooldown === "number") gatherCooldown = saveData.gatherCooldown;
+
+    if (
+        ["acorns", "goldenAcorns", "skills", "apples"].includes(
+            saveData.currentTab
+        )
+    ) {
+        currentTab = saveData.currentTab;
+    }
+
+    // Restore settings.
+    if (typeof saveData.prestigeConfirmation === "boolean") {
+        prestigeConfirmationToggle.checked =
+            saveData.prestigeConfirmation;
+    }
+
+    if (typeof saveData.goldenAutobuy === "boolean") {
+        goldenAutobuyToggle.checked =
+            saveData.goldenAutobuy;
+    }
+
+    // Restore regular upgrades by ID.
+    if (Array.isArray(saveData.upgrades)) {
+
+        for (const savedUpgrade of saveData.upgrades) {
+
+            const upgrade = upgrades.find(
+                upgrade => upgrade.id === savedUpgrade.id
+            );
+
+            if (
+                upgrade &&
+                typeof savedUpgrade.purchases === "number"
+            ) {
+                upgrade.purchases = savedUpgrade.purchases;
             }
-
-            try {
-
-                const saveData = JSON.parse(saved);
-
-                if (typeof saveData.acorns === "number") acorns = saveData.acorns;
-                if (typeof saveData.acornsPerGather === "number") acornsPerGather = saveData.acornsPerGather;
-                if (typeof saveData.goldenAcorns === "number") goldenAcorns = saveData.goldenAcorns;
-                if (typeof saveData.goldenAcornMultiplier === "number") goldenAcornMultiplier = saveData.goldenAcornMultiplier;
-                if (typeof saveData.goldenAcornCostMultiplier === "number") goldenAcornCostMultiplier = saveData.goldenAcornCostMultiplier;
-                if (typeof saveData.goldenAcornChance === "number") goldenAcornChance = saveData.goldenAcornChance;
-                if (typeof saveData.upgrade1BaseMultiplier === "number") upgrade1BaseMultiplier = saveData.upgrade1BaseMultiplier;
-                if (typeof saveData.totalSkillPoints === "number") totalSkillPoints = saveData.totalSkillPoints;
-                if (typeof saveData.skillSpeedMultiplier === "number") skillSpeedMultiplier = saveData.skillSpeedMultiplier;
-                if (typeof saveData.prestigeMultiplier === "number") prestigeMultiplier = saveData.prestigeMultiplier;
-                if (typeof saveData.prestigeUnlocked === "boolean") prestigeUnlocked = saveData.prestigeUnlocked;
-                if (typeof saveData.hasPrestiged === "boolean") hasPrestiged = saveData.hasPrestiged;
-                if (typeof saveData.highestAcorns === "number") highestAcorns = saveData.highestAcorns;
-                if (typeof saveData.lastPrestigeAcorns === "number") lastPrestigeAcorns = saveData.lastPrestigeAcorns;
-                if (typeof saveData.prestigeGoldenAcornMultiplier === "number") prestigeGoldenAcornMultiplier = saveData.prestigeGoldenAcornMultiplier;
-                if (typeof saveData.goldenAcornTimerEnd === "number") goldenAcornTimerEnd = saveData.goldenAcornTimerEnd;
-                if (typeof saveData.goldenAcornTimerActive === "boolean") goldenAcornTimerActive = saveData.goldenAcornTimerActive;
-                if (typeof saveData.skillXPMultiplier === "number") skillXPMultiplier = saveData.skillXPMultiplier;
-                if (typeof saveData.gatheringXPAcornMultiplier === "number") gatheringXPAcornMultiplier = saveData.gatheringXPAcornMultiplier;
-                if (typeof saveData.totalGatheringXP === "number") totalGatheringXP = saveData.totalGatheringXP;
-                if (typeof saveData.forgingGoldenAcornMultiplier === "number") forgingGoldenAcornMultiplier = saveData.forgingGoldenAcornMultiplier;
-                if (typeof saveData.gatherOnCooldown === "boolean") gatherOnCooldown = saveData.gatherOnCooldown;
-                if (typeof saveData.cooldownEndTime === "number") cooldownEndTime = saveData.cooldownEndTime;
-                if (typeof saveData.gatherCooldown === "number") gatherCooldown = saveData.gatherCooldown;
-
-                if (["acorns", "goldenAcorns", "skills"].includes(saveData.currentTab)) {
-                    currentTab = saveData.currentTab;
-                }
-
-                if (typeof saveData.prestigeConfirmation === "boolean") {
-                    prestigeConfirmationToggle.checked = saveData.prestigeConfirmation;
-                }
-                if (typeof saveData.goldenAutobuy === "boolean") {
-    goldenAutobuyToggle.checked = saveData.goldenAutobuy;
-}
-
-                if (Array.isArray(saveData.upgrades)) {
-                    for (const savedUpgrade of saveData.upgrades) {
-                        const upgrade = upgrades.find(upgrade => upgrade.id === savedUpgrade.id);
-                        if (upgrade && typeof savedUpgrade.purchases === "number") {
-                            upgrade.purchases = savedUpgrade.purchases;
-                        }
-                    }
-                }
-
-                if (Array.isArray(saveData.goldenUpgrades)) {
-                    for (const savedUpgrade of saveData.goldenUpgrades) {
-                        const upgrade = goldenUpgrades.find(upgrade => upgrade.id === savedUpgrade.id);
-                        if (upgrade && typeof savedUpgrade.purchases === "number") {
-                            upgrade.purchases = savedUpgrade.purchases;
-                        }
-                    }
-                }
-
-                updateGatherCooldown();
-
-                if (saveData.skills) {
-
-if (saveData.skills.gathering) {
-
-    const savedSkill =
-        saveData.skills.gathering;
-
-    if (
-        typeof savedSkill.points === "number"
-    ) {
-        skills.gathering.points =
-            savedSkill.points;
-    }
-
-    if (
-        typeof savedSkill.level === "number"
-    ) {
-        skills.gathering.level =
-            savedSkill.level;
-    }
-
-    if (
-        typeof savedSkill.xp === "number"
-    ) {
-        skills.gathering.xp =
-            savedSkill.xp;
-    }
-
-    if (
-        typeof savedSkill.effectMultiplier === "number"
-    ) {
-        skills.gathering.effectMultiplier =
-            savedSkill.effectMultiplier;
-    }
-
-}
-
-if (saveData.skills.forging) {
-
-    const savedSkill =
-        saveData.skills.forging;
-
-    if (
-        typeof savedSkill.points === "number"
-    ) {
-        skills.forging.points =
-            savedSkill.points;
-    }
-
-    if (
-        typeof savedSkill.level === "number"
-    ) {
-        skills.forging.level =
-            savedSkill.level;
-    }
-
-    if (
-        typeof savedSkill.xp === "number"
-    ) {
-        skills.forging.xp =
-            savedSkill.xp;
-    }
-
-    if (
-        typeof savedSkill.effectMultiplier === "number"
-    ) {
-        skills.forging.effectMultiplier =
-            savedSkill.effectMultiplier;
-    }
-
-}
-
-if (saveData.skills.survival) {
-
-    const savedSkill =
-        saveData.skills.survival;
-
-    if (
-        typeof savedSkill.points === "number"
-    ) {
-        skills.survival.points =
-            savedSkill.points;
-    }
-
-    if (
-        typeof savedSkill.level === "number"
-    ) {
-        skills.survival.level =
-            savedSkill.level;
-    }
-
-    if (
-        typeof savedSkill.xp === "number"
-    ) {
-        skills.survival.xp =
-            savedSkill.xp;
-    }
-
-    if (
-        typeof savedSkill.effectMultiplier === "number"
-    ) {
-        skills.survival.effectMultiplier =
-            savedSkill.effectMultiplier;
-    }
-
-}
-
-}
-
-                upgrades[0].description =
-                    "Multiplies the number of acorns gathered per click by " +
-                    upgrade1BaseMultiplier.toFixed(1) +
-                    "x.";
-
-                if (upgrades[4].purchases > 0 || upgrades[7].purchases > 0) {
-                    skillsTab.style.display = "block";
-                }
-
-                if (upgrades[7].purchases > 0) {
-                    forgingSkill.style.display = "block";
-                }
-
-                if (goldenUpgrades[3].purchases > 0) {
-                    goldenAcornTimer.style.display = "block";
-                }
-
-                updateForgingEffect();
-
-                if (Array.isArray(saveData.logMessages)) {
-    logMessages = saveData.logMessages;
-}
-
-if (typeof saveData.nextLogNumber === "number") {
-    nextLogNumber = saveData.nextLogNumber;
-}
-
-            }
-            catch (error) {
-                console.error("Could not load saved game:", error);
-            }
-            updateGatherCooldown();
         }
+    }
+
+    // Restore Golden Upgrades by ID.
+    if (Array.isArray(saveData.goldenUpgrades)) {
+
+        for (const savedUpgrade of saveData.goldenUpgrades) {
+
+            const upgrade = goldenUpgrades.find(
+                upgrade => upgrade.id === savedUpgrade.id
+            );
+
+            if (
+                upgrade &&
+                typeof savedUpgrade.purchases === "number"
+            ) {
+                upgrade.purchases = savedUpgrade.purchases;
+            }
+        }
+    }
+
+    // Restore EVERY skill automatically.
+    // New skills added to the skills object will be handled here too.
+    if (
+        saveData.skills &&
+        typeof saveData.skills === "object"
+    ) {
+
+        for (const [skillName, skill] of Object.entries(skills)) {
+
+            const savedSkill = saveData.skills[skillName];
+
+            // Leave newly added skills at their default values
+            // if they do not exist in an older save.
+            if (
+                !savedSkill ||
+                typeof savedSkill !== "object"
+            ) {
+                continue;
+            }
+
+            // Restore each skill's progress.
+            const skillProperties = [
+                "points",
+                "level",
+                "tier",
+                "xp",
+                "effectMultiplier"
+            ];
+
+            for (const property of skillProperties) {
+
+                if (typeof savedSkill[property] === "number") {
+                    skill[property] = savedSkill[property];
+                }
+            }
+
+            // Restore XP scaling without letting a corrupted
+            // Tier 1 multiplier override the skill's default.
+            const savedTier = skill.tier;
+            const tierData = skill.tiers
+                ? skill.tiers[savedTier]
+                : undefined;
+
+                // Recalculate tier-scaled effects so older saves
+// cannot retain an oversized multiplier.
+if (
+    tierData &&
+    typeof tierData.effectPower === "number" &&
+    typeof skill.effectPerLevel === "number"
+) {
+
+    skill.effectMultiplier = Math.pow(
+        skill.effectPerLevel,
+        (skill.level - 1) * tierData.effectPower
+    );
+
+}
+
+            if (tierData && typeof tierData.xpMultiplier === "number") {
+
+                // Use the multiplier configured for this tier.
+                skill.xpMultiplier = tierData.xpMultiplier;
+
+            } else if (savedTier === 1) {
+
+                // Tier 1 uses the skill's original XP multiplier.
+                skill.xpMultiplier =
+                    defaultSkillXPMultipliers[skillName];
+
+            } else if (typeof savedSkill.xpMultiplier === "number") {
+
+                // Preserve saved scaling for higher tiers that
+                // do not define a specific multiplier.
+                skill.xpMultiplier = savedSkill.xpMultiplier;
+
+            } else {
+
+                skill.xpMultiplier =
+                    defaultSkillXPMultipliers[skillName];
+            }
+        }
+    }
+
+    // Restore log history.
+    if (Array.isArray(saveData.logMessages)) {
+        logMessages = saveData.logMessages;
+    }
+
+    if (typeof saveData.nextLogNumber === "number") {
+        nextLogNumber = saveData.nextLogNumber;
+    }
+
+    if (typeof saveData.nextExportReminderTime === "number") {
+        nextExportReminderTime = saveData.nextExportReminderTime;
+    }
+
+    // Refresh descriptions and unlock visibility.
+    if (upgrades[0]) {
+        upgrades[0].description =
+            "Multiplies the number of acorns gathered per click by " +
+            upgrade1BaseMultiplier.toFixed(1) +
+            "x.";
+    }
+
+    if (
+        upgrades[4]?.purchases > 0 ||
+        upgrades[7]?.purchases > 0
+    ) {
+        skillsTab.style.display = "block";
+    }
+
+    if (upgrades[7]?.purchases > 0) {
+        forgingSkill.style.display = "block";
+    }
+
+    if (goldenUpgrades[3]?.purchases > 0) {
+        goldenAcornTimer.style.display = "block";
+    }
+
+    if (upgrades[19].purchases > 0) {
+    applesTab.style.display = "block";
+}
+else {
+    applesTab.style.display = "none";
+}
+
+    // Recalculate and refresh derived values.
+    updateGatherCooldown();
+    updateForgingEffect();
+    updateAcornsPerGather();
+    updateSkillsDisplay();
+
+} catch (error) {
+
+    console.error("Could not load saved game:", error);
+
+}
+
+// Keep the cooldown display accurate after loading.
+updateGatherCooldown();
+}
 
         function hardReset() {
 
@@ -3503,6 +3743,11 @@ function loadImportedGameData(saveData) {
 
 acorns =
     saveData.acorns;
+
+    apples =
+    typeof saveData.apples === "number"
+        ? saveData.apples
+        : 0;
 
 acornsPerGather =
     saveData.acornsPerGather;
@@ -3689,62 +3934,112 @@ if (
 
 }
 
+
 /* ------------------------------------------------------------
    Skills
    ------------------------------------------------------------ */
 
-if (saveData.skills) {
+   const defaultSkillXPMultipliers = {
+    gathering: 1.5,
+    forging: 1.75,
+    survival: 2
+};
 
-    if (saveData.skills.gathering) {
+if (
+    saveData.skills &&
+    typeof saveData.skills === "object"
+) {
 
-        skills.gathering.points =
-            saveData.skills.gathering.points;
+    for (
+        const [skillName, skill]
+        of Object.entries(skills)
+    ) {
 
-        skills.gathering.level =
-            saveData.skills.gathering.level;
+        const savedSkill =
+            saveData.skills[skillName];
 
-        skills.gathering.xp =
-            saveData.skills.gathering.xp;
+        if (
+            !savedSkill ||
+            typeof savedSkill !== "object"
+        ) {
+            continue;
+        }
 
-        skills.gathering.effectMultiplier =
-            saveData.skills.gathering.effectMultiplier;
+        // Restore basic skill progress.
+        for (const property of [
+            "points",
+            "level",
+            "xp",
+            "effectMultiplier"
+        ]) {
+
+            if (
+                typeof savedSkill[property] === "number"
+            ) {
+                skill[property] =
+                    savedSkill[property];
+            }
+
+        }
+
+        // Older saves without a tier are treated as Tier 1.
+        skill.tier =
+            typeof savedSkill.tier === "number"
+                ? savedSkill.tier
+                : 1;
+
+        const tierData =
+            skill.tiers
+                ? skill.tiers[skill.tier]
+                : undefined;
+
+        // Restore the correct XP scaling for this tier.
+        if (
+            tierData &&
+            typeof tierData.xpMultiplier === "number"
+        ) {
+
+            skill.xpMultiplier =
+                tierData.xpMultiplier;
+
+        }
+        else if (skill.tier === 1) {
+
+            skill.xpMultiplier =
+                defaultSkillXPMultipliers[skillName]
+                ?? skill.xpMultiplier;
+
+        }
+        else if (
+            typeof savedSkill.xpMultiplier === "number"
+        ) {
+
+            skill.xpMultiplier =
+                savedSkill.xpMultiplier;
+
+        }
+
+        // Recalculate tier-scaled effects.
+        // Gathering Tier 2 should equal its Tier 1
+        // effect at the same level, raised to power 2.
+        if (
+            tierData &&
+            typeof tierData.effectPower === "number" &&
+            typeof skill.effectPerLevel === "number"
+        ) {
+
+            skill.effectMultiplier =
+                Math.pow(
+                    skill.effectPerLevel,
+                    (skill.level - 1) *
+                        tierData.effectPower
+                );
+
+        }
 
     }
 
-    if (saveData.skills.forging) {
-
-        skills.forging.points =
-            saveData.skills.forging.points;
-
-        skills.forging.level =
-            saveData.skills.forging.level;
-
-        skills.forging.xp =
-            saveData.skills.forging.xp;
-
-        skills.forging.effectMultiplier =
-            saveData.skills.forging.effectMultiplier;
-
-    }
-
-    if (saveData.skills.survival) {
-
-skills.survival.points =
-    saveData.skills.survival.points;
-
-skills.survival.level =
-    saveData.skills.survival.level;
-
-skills.survival.xp =
-    saveData.skills.survival.xp;
-
-skills.survival.effectMultiplier =
-    saveData.skills.survival.effectMultiplier;
-
 }
-
-}
-
 
 /* ------------------------------------------------------------
    Log
@@ -3817,6 +4112,13 @@ else {
     forgingSkill.style.display = "none";
 }
 
+if (upgrades[15].purchases > 0) {
+    survivalSkill.style.display = "block";
+}
+else {
+    survivalSkill.style.display = "none";
+}
+
 if (goldenUpgrades[3].purchases > 0) {
     goldenAcornTimer.style.display = "block";
 }
@@ -3841,57 +4143,22 @@ if (
    Display the saved tab
    ------------------------------------------------------------ */
 
-if (currentTab === "goldenAcorns") {
+// Restore Apples unlock visibility.
+applesTab.style.display =
+    upgrades[19].purchases > 0
+        ? "block"
+        : "none";
 
-    resourceDisplay.style.display = "none";
-    goldenResourceDisplay.style.display = "block";
-
-    acornsPage.style.display = "none";
-    goldenAcornsPage.style.display = "block";
-    skillsPage.style.display = "none";
-
-    acornsTab.classList.remove("active");
-    goldenAcornsTab.classList.add("active");
-    skillsTab.classList.remove("active");
-
-    skillsResourceDisplay.style.display = "none";
-
-}
-else if (currentTab === "skills") {
-
-    resourceDisplay.style.display = "none";
-    goldenResourceDisplay.style.display = "none";
-
-    acornsPage.style.display = "none";
-    goldenAcornsPage.style.display = "none";
-    skillsPage.style.display = "block";
-
-    acornsTab.classList.remove("active");
-    goldenAcornsTab.classList.remove("active");
-    skillsTab.classList.add("active");
-
-    skillsResourceDisplay.style.display = "block";
-
-}
-else {
-
+// Make sure the saved tab is unlocked.
+if (
+    currentTab === "apples" &&
+    upgrades[19].purchases <= 0
+) {
     currentTab = "acorns";
-
-    resourceDisplay.style.display = "block";
-    goldenResourceDisplay.style.display = "none";
-
-    acornsPage.style.display = "block";
-    goldenAcornsPage.style.display = "none";
-    skillsPage.style.display = "none";
-
-    acornsTab.classList.add("active");
-    goldenAcornsTab.classList.remove("active");
-    skillsTab.classList.remove("active");
-
-    skillsResourceDisplay.style.display = "none";
 }
 
-
+// Restore the selected tab and hide all others.
+switchTab(currentTab);
 saveGame();
 
 }
@@ -4318,70 +4585,99 @@ updateUpgradeButtons();
 
 }
 
-        /* ============================================================
-           TAB SWITCHING
-           ============================================================ */
+appleNumber.textContent =
+    formatNumber(Math.floor(apples));
 
-        acornsTab.addEventListener("click", function() {
+/* ============================================================
+   TAB SWITCHING
+   ============================================================ */
 
-            currentTab = "acorns";
+   function switchTab(tabName) {
 
-            resourceDisplay.style.display = "block";
-            goldenResourceDisplay.style.display = "none";
+// Prevent opening locked tabs.
+if (
+    tabName === "skills" &&
+    skillsTab.style.display === "none"
+) {
+    return;
+}
 
-            acornsPage.style.display = "block";
-            goldenAcornsPage.style.display = "none";
+if (
+    tabName === "apples" &&
+    upgrades[19].purchases <= 0
+) {
+    return;
+}
 
+currentTab = tabName;
 
-            acornsTab.classList.add("active");
-            goldenAcornsTab.classList.remove("active");
-
-            skillsPage.style.display = "none";
-skillsTab.classList.remove("active");
+// Hide every resource display.
+resourceDisplay.style.display = "none";
+goldenResourceDisplay.style.display = "none";
 skillsResourceDisplay.style.display = "none";
+applesResourceDisplay.style.display = "none";
 
+// Hide every page.
+acornsPage.style.display = "none";
+goldenAcornsPage.style.display = "none";
+skillsPage.style.display = "none";
+applesPage.style.display = "none";
 
-            saveGame();
-        });
-
-
-        goldenAcornsTab.addEventListener("click", function() {
-
-            currentTab = "goldenAcorns";
-
-            resourceDisplay.style.display = "none";
-            goldenResourceDisplay.style.display = "block";
-
-            acornsPage.style.display = "none";
-            goldenAcornsPage.style.display = "block";
-
-
-            acornsTab.classList.remove("active");
-            goldenAcornsTab.classList.add("active");
-
-            skillsPage.style.display = "none";
+// Deactivate every tab.
+acornsTab.classList.remove("active");
+goldenAcornsTab.classList.remove("active");
 skillsTab.classList.remove("active");
-skillsResourceDisplay.style.display = "none";
+applesTab.classList.remove("active");
 
+// Activate only the selected tab.
+if (tabName === "acorns") {
 
-            saveGame();
-        });
+    resourceDisplay.style.display = "block";
+    acornsPage.style.display = "block";
+    acornsTab.classList.add("active");
 
-        skillsTab.addEventListener("click", function() {
-    currentTab = "skills";
-    resourceDisplay.style.display = "none";
-    goldenResourceDisplay.style.display = "none";
+}
+else if (tabName === "goldenAcorns") {
 
-    acornsPage.style.display = "none";
-    goldenAcornsPage.style.display = "none";
-    skillsPage.style.display = "block";
+    goldenResourceDisplay.style.display = "block";
+    goldenAcornsPage.style.display = "block";
+    goldenAcornsTab.classList.add("active");
 
-    acornsTab.classList.remove("active");
-    goldenAcornsTab.classList.remove("active");
-    skillsTab.classList.add("active");
+}
+else if (tabName === "skills") {
+
     skillsResourceDisplay.style.display = "block";
+    skillsPage.style.display = "block";
+    skillsTab.classList.add("active");
 
-    saveGame();
+}
+else if (tabName === "apples") {
+
+    applesResourceDisplay.style.display = "block";
+    applesPage.style.display = "block";
+    applesTab.classList.add("active");
+
+}
+
+saveGame();
+}
+
+// Tab click handlers.
+
+acornsTab.addEventListener("click", function() {
+switchTab("acorns");
+});
+
+goldenAcornsTab.addEventListener("click", function() {
+switchTab("goldenAcorns");
+});
+
+skillsTab.addEventListener("click", function() {
+switchTab("skills");
+});
+
+applesTab.addEventListener("click", function() {
+switchTab("apples");
 });
 
         /* ============================================================
@@ -4940,6 +5236,11 @@ if (prestigeMultiplierGain <= 1) {
     return;
 }
 
+// Determine how many regular upgrades to preserve
+// before any Prestige resets occur.
+const upgradesToPreserve =
+    upgrades.find(upgrade => upgrade.id === 17).purchases;
+
 // Record the acorn total at the moment of Prestige.
 lastPrestigeAcorns = acorns;
 highestAcorns = acorns;
@@ -4971,16 +5272,19 @@ gatheringXPAcornMultiplier = 1;
 
 hasPrestiged = true;
 
-// Reset regular upgrades.
+// Reset regular upgrades, preserving the first N upgrades.
 for (const upgrade of upgrades) {
 
-    if (upgrade.id === 9) {
-        // Prestige itself remains permanently unlocked.
-        upgrade.purchases = 1;
-    }
-    else {
-        upgrade.purchases = 0;
-    }
+if (upgrade.id === 9) {
+    // Prestige itself remains permanently unlocked.
+    upgrade.purchases = 1;
+}
+else if (upgrade.id < upgradesToPreserve) {
+    // Keep this upgrade at its current purchase count.
+}
+else {
+    upgrade.purchases = 0;
+}
 }
 
 updateGoldenAcornDisplay();
@@ -4988,11 +5292,24 @@ updateGoldenAcornDisplay();
 // Reset skills.
 totalSkillPoints = 0;
 
+
 for (const skill of Object.values(skills)) {
     skill.points = 0;
     skill.level = 1;
+    skill.tier = 1;
     skill.xp = 0;
     skill.effectMultiplier = 1;
+
+    // Restore the original Tier 1 XP scaling.
+    if (skill === skills.gathering) {
+        skill.xpMultiplier = 1.5;
+    }
+    else if (skill === skills.forging) {
+        skill.xpMultiplier = 1.75;
+    }
+    else if (skill === skills.survival) {
+        skill.xpMultiplier = 2;
+    }
 }
 
 totalGatheringXP = 0;
@@ -5017,12 +5334,51 @@ skillSpeedMultiplier = 1;
 // It remains after the golden upgrades are reset.
 // No other golden upgrade is preserved.
 
-// Reset Skills UI.
-skillsTab.style.display = "none";
-forgingSkill.style.display = "none";
+
+ // Restore the effects of upgrades that survived Prestige.
+
+ upgrade1BaseMultiplier =
+    1.4 + (0.2 * upgrades[2].purchases);
+
+upgrades[0].description =
+    "Multiplies the number of acorns gathered per click by " +
+    upgrade1BaseMultiplier.toFixed(1) +
+    "x.";
+
+goldenAcornChance =
+    0.10 + (0.01 * upgrades[3].purchases);
+
+skillXPMultiplier =
+    Math.pow(1.5, upgrades[5].purchases);
+
+skillSpeedMultiplier =
+    Math.pow(3, upgrades[10].purchases);
+
+updateGatherCooldown();
+updateAcornsPerGather();
+updateAcornGainMultiplier();
+
+
+ // Restore Skills UI based on the upgrades that survived Prestige.
+
+ skillsTab.style.display =
+    upgrades[4].purchases > 0 ||
+    upgrades[7].purchases > 0
+        ? "block"
+        : "none";
+
+forgingSkill.style.display =
+    upgrades[7].purchases > 0
+        ? "block"
+        : "none";
+
+survivalSkill.style.display =
+    upgrades[15].purchases > 0
+        ? "block"
+        : "none";
+
 skillsPage.style.display = "none";
 skillsResourceDisplay.style.display = "none";
-survivalSkill.style.display = "none";
 
 currentTab = "acorns";
 
@@ -6194,6 +6550,55 @@ return (
 
 }
 
+
+function updateSkillAscendButton(skill) {
+    const skillContainer = document.querySelector(
+        "#" + skill.name.toLowerCase() + "-skill"
+    ) || document.querySelector(
+        "#skills-container > .skill:not(#forging-skill):not(#survival-skill)"
+    );
+
+    if (!skillContainer) {
+        return;
+    }
+
+    let button = skillContainer.querySelector(
+        ".skill-ascend-button"
+    );
+
+    if (!button) {
+        button = document.createElement("button");
+        button.className = "skill-ascend-button";
+
+        button.addEventListener("click", function() {
+            ascendSkill(skill);
+        });
+
+        skillContainer.appendChild(button);
+    }
+
+    const nextTier = skill.tier + 1;
+    const tierData = skill.tiers[nextTier];
+    const maxLevel = getSkillMaxLevel(skill);
+
+    button.innerHTML =
+        "Ascend to Tier " + nextTier +
+        "<span>Requires Level " + maxLevel + "</span>";
+
+    // Show the button only after Upgrade 19 is purchased.
+    button.style.display =
+        upgrades[18].purchases > 0
+            ? "block"
+            : "none";
+
+    // Keep the button disabled until this skill has
+    // a defined next tier and has reached its level cap.
+    button.disabled = !(
+        tierData &&
+        skill.level >= maxLevel
+    );
+}
+
         function updateSkillsDisplay() {
 
 const gathering =
@@ -6232,7 +6637,7 @@ gatheringXPNeeded.textContent =
     formatNumber(gatheringXPNeededAmount);
 
     const gatheringProgress =
-    gathering.level >= 100
+    gathering.level >= getSkillMaxLevel(gathering)
         ? 100
         : Math.min(
             100,
@@ -6255,7 +6660,7 @@ gatheringXPRate.textContent =
     formatNumber(currentGatheringXPRate);
 
     if (
-    gathering.level < 100 &&
+    gathering.level < getSkillMaxLevel(gathering) &&
     currentGatheringXPRate > 0
 ) {
 
@@ -6291,7 +6696,12 @@ document.querySelectorAll(
     ": Level " +
     gathering.level +
     (
-        gathering.level >= 100
+        gathering.tier > 1
+            ? ", Tier " + gathering.tier
+            : ""
+    ) +
+    (
+        gathering.level >= getSkillMaxLevel(gathering)
             ? " (Capped)"
             : ""
     );
@@ -6317,7 +6727,7 @@ forgingXPNeeded.textContent =
     formatNumber(forgingXPNeededAmount);
 
     const forgingProgress =
-    forging.level >= 100
+    forging.level >= getSkillMaxLevel(forging)
         ? 100
         : Math.min(
             100,
@@ -6340,7 +6750,7 @@ forgingXPRate.textContent =
     formatNumber(currentForgingXPRate);
 
     if (
-    forging.level < 100 &&
+    forging.level < getSkillMaxLevel(forging) &&
     currentForgingXPRate > 0
 ) {
 
@@ -6376,13 +6786,19 @@ document.querySelectorAll(
     ": Level " +
     forging.level +
     (
-        forging.level >= 100
+        forging.tier > 1
+            ? ", Tier " + forging.tier
+            : ""
+    ) +
+    (
+        forging.level >= getSkillMaxLevel(forging)
             ? " (Capped)"
             : ""
     );
 
+
 forgingEffect.textContent =
-    formatNumber(forging.level) +
+    formatNumber(forgingGoldenAcornMultiplier) +
     "x";
 
     /* ============================================================
@@ -6402,7 +6818,7 @@ survivalXPNeeded.textContent =
     formatNumber(survivalXPNeededAmount);
 
     const survivalProgress =
-    survival.level >= 100
+    survival.level >= getSkillMaxLevel(survival)
         ? 100
         : Math.min(
             100,
@@ -6425,7 +6841,7 @@ survivalXPRate.textContent =
     formatNumber(currentSurvivalXPRate);
 
     if (
-    survival.level < 100 &&
+    survival.level < getSkillMaxLevel(survival) &&
     currentSurvivalXPRate > 0
 ) {
 
@@ -6462,7 +6878,12 @@ document.querySelectorAll(
     ": Level " +
     survival.level +
     (
-        survival.level >= 100
+        survival.tier > 1
+            ? ", Tier " + survival.tier
+            : ""
+    ) +
+    (
+        survival.level >= getSkillMaxLevel(survival)
             ? " (Capped)"
             : ""
     );
@@ -6510,6 +6931,9 @@ survivalMinus.disabled =
 
     updateResourceSidebar();
     updateUpgradeButtons();
+    for (const skill of Object.values(skills)) {
+    updateSkillAscendButton(skill);
+}
 
 }
 
@@ -6760,13 +7184,12 @@ let skillLeveledUp = false;
 
 for (const skill of Object.values(skills)) {
 
-    if (skill.level >= 100) {
+    const maxLevel = getSkillMaxLevel(skill);
 
-skill.level = 100;
-skill.xp = 0;
-
-continue;
-
+if (skill.level >= maxLevel) {
+    skill.level = maxLevel;
+    skill.xp = 0;
+    continue;
 }
 
 const xpPerSecond =
@@ -6796,13 +7219,14 @@ skill.xp += xpGained;
 
 
         while (
-            skill.level < 100 &&
-            skill.xp >= xpNeeded
-        ) {
+    skill.level < getSkillMaxLevel(skill) &&
+    skill.xp >= xpNeeded
+) {
 
 skill.xp -= xpNeeded;
 
 skill.level++;
+
 
 if (skill === skills.survival) {
 
@@ -6812,8 +7236,16 @@ skill.effectMultiplier +=
 }
 else {
 
+const tierData = skill.tiers[skill.tier];
+
+const effectPower =
+    tierData?.effectPower ?? 1;
+
 skill.effectMultiplier *=
-    skill.effectPerLevel;
+    Math.pow(
+        skill.effectPerLevel,
+        effectPower
+    );
 
 }
 
@@ -7049,12 +7481,18 @@ survivalSkill.style.display =
 
 }
 
-        if (currentTab === "goldenAcorns") {
-            goldenAcornsTab.click();
-        }
-        else if (currentTab === "skills") {
-            skillsTab.click();
-        }
+if (currentTab === "goldenAcorns") {
+    goldenAcornsTab.click();
+}
+else if (currentTab === "skills") {
+    skillsTab.click();
+}
+else if (
+    currentTab === "apples" &&
+    upgrades[19].purchases > 0
+) {
+    applesTab.click();
+}
 
         saveGame();
 
