@@ -530,6 +530,7 @@
 #learn-skill-point-button {
     width: 500px;
     max-width: 90%;
+    margin-top: 16px;
 
     padding: 15px;
 
@@ -1513,6 +1514,337 @@ cursor: not-allowed;
     margin-top: 25px;
 }
 
+/* Apples gathering grid */
+
+#start-gathering-button {
+    padding: 20px 36px;
+    margin-top: 40px;
+    margin-bottom: 20px;
+
+    background-color: #171717;
+    color: #eeeeee;
+
+    border: 2px solid #ff002f;
+    border-radius: 8px;
+
+    font-size: 20px;
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+#start-gathering-button:hover {
+    background-color: #3a2025;
+}
+#apple-grid {
+    display: grid;
+    grid-template-columns: repeat(24, 19px);
+    grid-template-rows: repeat(16, 19px);
+    gap: 2px;
+
+    width: max-content;
+    height: max-content;
+    flex-shrink: 0;
+    margin: 0;
+    padding: 8px;
+
+    background-color: #111111;
+    border: 2px solid #444444;
+    border-radius: 6px;
+}
+
+.apple-grid-cell {
+    width: 19px;
+    height: 19px;
+    box-sizing: border-box;
+
+    background-color: #222222;
+    border: 1px solid #444444;
+    border-radius: 3px;
+}
+
+.apple-grid-cell.has-apple {
+    background-color: #ff002f;
+    border-color: #ff667f;
+    box-shadow: 0 0 8px #ff002f;
+}
+
+
+.apple-grid-cell.golden-apple {
+    background-color: #ffd700;
+    border-color: #fff0a0;
+    box-shadow: 0 0 8px #ffd700;
+}
+
+/* Larger icons use a square of active tiles without
+   a separate dot inside every tile. */
+.apple-grid-cell.player.player-large::after {
+    display: block;
+}
+
+.apple-grid-cell.player {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: #222222;
+    border-color: #00e5ff;
+}
+
+.apple-grid-cell.player::after {
+    content: "";
+    width: 8px;
+    height: 8px;
+
+    background-color: #00e5ff;
+    border-radius: 50%;
+    box-shadow: 0 0 6px #00e5ff, 0 0 10px #00e5ff;
+}
+
+
+#apple-grid-instructions {
+    margin-top: 12px;
+    margin-bottom: 24px;
+    color: #bbbbbb;
+    font-size: 13px;
+}
+
+#apple-grid-instructions p {
+    margin: 0 0 8px 0;
+}
+
+#apple-grid-instructions p:last-child {
+    margin-bottom: 0;
+}
+
+
+#apple-gathering-timer {
+    margin-top: 12px;
+    margin-bottom: 18px;
+    color: #eeeeee;
+    font-size: 15px;
+}
+
+#finish-gathering-button {
+    display: none;
+    margin: 20px auto 30px;
+    padding: 20px 36px;
+
+    background-color: #171717;
+    color: #eeeeee;
+
+    border: 2px solid #00e5ff;
+    border-radius: 8px;
+
+    font-size: 20px;
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+#finish-gathering-button:hover:not(:disabled) {
+    background-color: #17383b;
+}
+
+#finish-gathering-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Compact Apple Upgrade Cards */
+
+#apple-upgrade-container {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 8px;
+
+    width: 340px;
+    flex-shrink: 0;
+    margin: 0;
+}
+
+.apple-upgrade-button {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+        "name current"
+        "description cost";
+    align-items: center;
+    column-gap: 8px;
+    row-gap: 3px;
+
+    min-width: 0;
+    min-height: 0;
+    padding: 6px 9px;
+
+    background-color: #303030;
+    color: #eeeeee;
+
+    border: 2px solid #ff002f;
+    border-radius: 7px;
+
+    cursor: pointer;
+    text-align: left;
+}
+
+.apple-upgrade-button:hover:not(:disabled) {
+    background-color: #42252a;
+}
+
+.apple-upgrade-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.apple-upgrade-button.available {
+    box-shadow: 0 0 6px 1px #ff002f;
+}
+
+.apple-upgrade-name {
+    grid-area: name;
+    margin: 0;
+
+    color: #ff002f;
+    font-size: 13px;
+    font-weight: bold;
+    line-height: 1.2;
+}
+
+.apple-upgrade-description {
+    grid-area: description;
+    min-height: 0;
+    margin: 0;
+
+    color: #cccccc;
+    font-size: 11px;
+    line-height: 1.2;
+}
+
+.apple-upgrade-current {
+    grid-area: current;
+    margin: 0;
+
+    font-size: 11px;
+    font-weight: bold;
+    text-align: right;
+    white-space: nowrap;
+}
+
+.apple-upgrade-next {
+    display: none;
+    color: #3fbf3f;
+}
+
+.apple-upgrade-button.available:hover .apple-upgrade-next {
+    display: inline;
+}
+
+.apple-upgrade-cost {
+    grid-area: cost;
+    color: #ff667f;
+    font-size: 11px;
+    font-weight: bold;
+    text-align: right;
+    white-space: nowrap;
+}
+
+@media (max-width: 1250px) {
+    #apple-game-layout {
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
+
+    #apple-upgrade-container {
+        width: 100%;
+        max-width: 300px;
+    }
+}
+
+@media (max-width: 550px) {
+    #apple-upgrade-container {
+        grid-template-columns: minmax(0, 240px);
+        justify-content: center;
+    }
+}
+
+#apple-game-layout {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 20px;
+
+    width: calc(100% - 500px);
+    max-width: 1000px;
+    margin: 10px auto 0;
+}
+
+#apple-shard-display {
+    display: none;
+    margin: 0 auto 12px;
+    font-size: 24px;
+    color: #00e5ff;
+}
+
+#apple-shard-display strong {
+    color: #00e5ff;
+}
+
+#apple-shard-separator {
+    display: none;
+    width: 700px;
+    max-width: 90%;
+    margin: 30px auto 15px;
+    border-top: 1px solid #444444;
+    margin-bottom: 44px;
+}
+
+#apple-shard-summary {
+    margin-top: 16px;
+    display: none;
+    max-width: 800px;
+    margin: 0 auto 30px;
+    color: #eeeeee;
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+#apple-shard-summary strong {
+    color: #00e5ff;
+}
+
+#apple-tax-message {
+    margin-top: -8px;
+    margin-bottom: 20px;
+    font-size: 15px;
+    color: #eeeeee;
+}
+
+#apple-tax-message strong {
+    color: #ff002f;
+}
+
+.apple-resource {
+    color: #ff002f;
+}
+
+.apple-resource strong {
+    color: #ff002f;
+}
+
+#sidebar-apple-capped {
+    color: #bbbbbb;
+    font-weight: bold;
+}
+
+.apple-shard-resource {
+    color: #00e5ff;
+}
+
+.apple-shard-resource strong {
+    color: #00e5ff;
+}
+
     </style>
 
 </head>
@@ -1546,6 +1878,16 @@ cursor: not-allowed;
         <span class="available-skill-points">
             (<strong id="sidebar-available-skill-points">0</strong> available)
         </span>
+    </div>
+
+    <div class="sidebar-resource apple-resource">
+        <span>Apples:</span>
+        <strong id="sidebar-apples">0</strong><span id="sidebar-apple-capped"></span>
+    </div>
+
+    <div class="sidebar-resource apple-shard-resource">
+        <span>Apple Shards:</span>
+        <strong id="sidebar-apple-shards">0.00</strong>
     </div>
 
 </div>
@@ -1608,7 +1950,7 @@ cursor: not-allowed;
     </div>
 
     <div id="apples-resource-display">
-        You have <strong id="apple-number">0</strong> apples
+        You have <strong id="apple-number">0</strong> apples<span id="apple-capped-label"></span>
     </div>
 
     <!-- ============================================================
@@ -2020,7 +2362,58 @@ style="display: none;"
      APPLES PAGE
      ============================================================ -->
 
-    <div id="apples-page" style="display: none;"></div>
+
+     <div id="apples-page" style="display: none;">
+
+
+        <button id="start-gathering-button">
+            Start Gathering
+        </button>
+        
+
+        <div id="apple-grid-instructions" style="display: none; text-align: center;">
+            <p>Use the arrow keys to move the blue icon and collect apples.</p>
+            <p>Buy upgrades to further increase your apple gain.</p>
+            <p>Golden apples are worth 4x the value of a red apple.</p>
+            <p>Something strange may happen if you reach 1,000,000 apples...</p>
+        </div>
+
+
+<div id="apple-gathering-timer" style="display: none;">
+    Time spent gathering: <strong><span id="apple-gathering-time">0.0s</span></strong>
+</div>
+
+
+<div id="apple-tax-message" style="display: none;">
+    Thanks to tax breaks, all of your apples are being multiplied by
+    <strong id="apple-tax-multiplier">1.00x</strong>!
+</div>
+
+        
+        <div id="apple-game-layout" style="display: none;">
+            <div id="apple-grid"></div>
+            <div id="apple-upgrade-container"></div>
+        </div>
+
+        <button id="finish-gathering-button" style="display: none;" disabled>
+            Feed the Racc King 1,000,000 apples
+        </button>
+
+<div id="apple-shard-separator"></div>
+
+<div id="apple-shard-display">
+    You have <strong id="apple-shard-number">0.00</strong> apple shards
+</div>
+
+<div id="apple-shard-summary">
+    Your fastest time to feed the Racc King is
+    <strong id="fastest-apple-time">Not yet achieved</strong>,
+    which is generating
+    <strong id="apple-shard-rate">0.0000</strong>
+    <strong>apple shards/sec</strong>
+</div>
+  
+    </div>    
 
     <div id="save-controls">
 
@@ -2058,7 +2451,7 @@ style="display: none;"
 
     <!-- CHANGELOG -->
 
-<button id="changelog-button">v1.6</button>
+<button id="changelog-button">v1.7</button>
 
 <div id="changelog-modal">
 
@@ -2069,6 +2462,11 @@ style="display: none;"
         <h1>Changelog</h1>
 
         <div id="changelog-entries">
+            <h2>v1.7</h2>
+            <p>- Added lots of Apples content, including the grid, all six Apples upgrades, time tracking, taxes, and corresponding log messages</p>
+            <p>- Added a little Apple Shards content, including Apple Shards generation, but nothing beyond that yet</p>
+            <p>- Made it so that resources on the sidebar are hidden until they become nonzero for the first time</p>
+            <p>- Drove myself just slightly crazy</p>
             <h2>v1.6</h2>
             <p>- Added three more Acorn upgrades, bringing the total to 20</p>
             <p>- Added the Ascension feature to Skills</p>
@@ -2141,6 +2539,67 @@ style="display: none;"
         // Golden Acorn currency.
         let goldenAcorns = 0;
         let apples = 0;
+
+let appleShards = 0;
+let lastAppleShardUpdateTime = Date.now();
+
+// Best time, in seconds, to reach 1,000,000 apples.
+let fastestAppleGatheringTime = null;
+
+// Tracks whether the 100,000-apple message has appeared.
+let appleThresholdMessageShown = false;
+
+const appleUpgrades = [
+    {
+        id: 1,
+        name: "Plant New Trees",
+        description: "Multiplies all apple gain.",
+        baseCost: 10,
+        costMultiplier: 1.5,
+        purchases: 0
+    },
+    {
+        id: 2,
+        name: "Improve Fertilizer",
+        description: "Increases apple spawn rate.",
+        baseCost: 20,
+        costMultiplier: 1.75,
+        purchases: 0
+    },
+    {
+        id: 3,
+        name: "Expand Forests",
+        description: "Increases maximum apples.",
+        baseCost: 50,
+        costMultiplier: 1.4,
+        purchases: 0
+    },
+    {
+        id: 4,
+        name: "Run Laps",
+        description: "Increases move speed.",
+        baseCost: 100,
+        costMultiplier: 2,
+        purchases: 0
+    },
+
+    {
+        id: 5,
+        name: "Discover New Varieties",
+        description: "Increases golden apple chance.",
+        baseCost: 250,
+        costMultiplier: 1.6,
+        purchases: 0
+    },
+    {
+        id: 6,
+        name: "Bring Friends Along",
+        description: "Increases player size.",
+        baseCost: 1000,
+        costMultiplier: 100,
+        purchases: 0
+    },
+];
 
         // Multiplier applied to all regular acorn gain.
         let goldenAcornMultiplier = 1;
@@ -2750,8 +3209,7 @@ addLogMessage(
 // Future upgrades go here.
 
             // Future upgrades go here.
-            // Note: Upgrade 18 should keep one Acorn upgrade on Prestige for each purchase. It should have starting cost 1e60 and go up 100x in price each time.
-            // Note: Upgrade 19 should have starting cost 1e68 (I tested this). It should unlock the Ascend feature in skills, which resets capped skills for benefits.
+            // Note: The first acorn shard upgrade (I don't know its effect yet) should cost 1 acorn shard.
 
         ];
 
@@ -2971,6 +3429,66 @@ const applesResourceDisplay =
 
 const appleNumber =
     document.getElementById("apple-number");
+
+const sidebarAppleNumber =
+    document.getElementById("sidebar-apples");
+
+const sidebarAppleCappedLabel =
+    document.getElementById("sidebar-apple-capped");
+
+const sidebarAppleShardNumber =
+    document.getElementById("sidebar-apple-shards");
+
+const appleShardNumber =
+    document.getElementById("apple-shard-number");
+
+const appleShardSeparator =
+    document.getElementById("apple-shard-separator");
+
+const appleShardDisplay =
+    document.getElementById("apple-shard-display");
+
+const appleShardSummary =
+    document.getElementById("apple-shard-summary");
+
+const fastestAppleTimeDisplay =
+    document.getElementById("fastest-apple-time");
+
+const appleShardRateDisplay =
+    document.getElementById("apple-shard-rate");
+
+const appleCappedLabel =
+    document.getElementById("apple-capped-label");
+
+const appleUpgradeContainer =
+    document.getElementById("apple-upgrade-container");
+
+const startGatheringButton =
+    document.getElementById("start-gathering-button");
+
+const appleGrid =
+    document.getElementById("apple-grid");
+
+const appleGridInstructions =
+    document.getElementById("apple-grid-instructions");
+
+
+const appleGatheringTimer =
+    document.getElementById("apple-gathering-timer");
+
+const appleGatheringTime =
+    document.getElementById("apple-gathering-time");
+
+const finishGatheringButton =
+    document.getElementById("finish-gathering-button");
+
+
+const appleTaxMessage =
+    document.getElementById("apple-tax-message");
+
+const appleTaxMultiplierDisplay =
+    document.getElementById("apple-tax-multiplier");
+
 
 applesTab.style.display = "none";
 
@@ -3308,6 +3826,29 @@ return {
         ),
 
 
+appleUpgrades:
+    appleUpgrades.map(
+        upgrade => ({
+            id: upgrade.id,
+            purchases: upgrade.purchases
+        })
+    ),
+
+applePlayerRow,
+applePlayerColumn,
+
+applesOnGrid: Array.from(applesOnGrid),
+goldenApplesOnGrid: Array.from(goldenApplesOnGrid),
+
+
+appleGatheringStarted,
+appleGatheringStartTime,
+
+// Save apple shard progress and the fastest gathering time.
+appleShards,
+fastestAppleGatheringTime,
+appleThresholdMessageShown,
+
         skills: Object.fromEntries(
     Object.entries(skills).map(([skillName, skill]) => [
         skillName,
@@ -3373,7 +3914,26 @@ try {
     // Restore general game values.
     if (typeof saveData.acorns === "number") acorns = saveData.acorns;
     if (typeof saveData.apples === "number") {
-    apples = saveData.apples;
+    apples = Math.min(MAX_APPLES, Math.max(0, saveData.apples));
+}
+
+if (typeof saveData.appleShards === "number") {
+    appleShards = Math.max(0, saveData.appleShards);
+}
+
+if (
+    typeof saveData.fastestAppleGatheringTime === "number" &&
+    saveData.fastestAppleGatheringTime > 0
+) {
+    fastestAppleGatheringTime =
+        saveData.fastestAppleGatheringTime;
+}
+
+if (
+    typeof saveData.appleThresholdMessageShown === "boolean"
+) {
+    appleThresholdMessageShown =
+        saveData.appleThresholdMessageShown;
 }
     if (typeof saveData.acornsPerGather === "number") acornsPerGather = saveData.acornsPerGather;
     if (typeof saveData.goldenAcorns === "number") goldenAcorns = saveData.goldenAcorns;
@@ -3457,6 +4017,92 @@ try {
             }
         }
     }
+
+/* ------------------------------------------------------------
+   Apple upgrades
+   ------------------------------------------------------------ */
+
+
+/* ------------------------------------------------------------
+   Apple upgrades
+   ------------------------------------------------------------ */
+
+   if (Array.isArray(saveData.appleUpgrades)) {
+
+for (const savedUpgrade of saveData.appleUpgrades) {
+
+    const upgrade = appleUpgrades.find(
+        upgrade => upgrade.id === savedUpgrade.id
+    );
+
+    if (
+        upgrade &&
+        typeof savedUpgrade.purchases === "number"
+    ) {
+        upgrade.purchases = savedUpgrade.purchases;
+    }
+
+}
+
+}
+
+
+/* Restore apple gathering state. */
+
+// Restore the player's position.
+if (typeof saveData.applePlayerRow === "number") {
+    applePlayerRow = saveData.applePlayerRow;
+}
+
+if (typeof saveData.applePlayerColumn === "number") {
+    applePlayerColumn = saveData.applePlayerColumn;
+}
+
+// Restore regular apples on the board.
+if (Array.isArray(saveData.applesOnGrid)) {
+    applesOnGrid.clear();
+
+    saveData.applesOnGrid.forEach(position => {
+        applesOnGrid.add(position);
+    });
+}
+
+// Restore golden apples on the board.
+if (Array.isArray(saveData.goldenApplesOnGrid)) {
+    goldenApplesOnGrid.clear();
+
+    saveData.goldenApplesOnGrid.forEach(position => {
+        goldenApplesOnGrid.add(position);
+    });
+}
+
+// Restore whether gathering was started.
+if (typeof saveData.appleGatheringStarted === "boolean") {
+    appleGatheringStarted = saveData.appleGatheringStarted;
+}
+
+
+if (typeof saveData.appleGatheringStartTime === "number") {
+    appleGatheringStartTime = saveData.appleGatheringStartTime;
+}
+else if (appleGatheringStarted) {
+    // Support older saves that do not have a timer timestamp.
+    appleGatheringStartTime = Date.now();
+}
+
+
+// Keep the entire icon inside the grid.
+const playerSize = getApplePlayerSize();
+
+applePlayerRow = Math.max(
+    0,
+    Math.min(applePlayerRow, appleGridRows - playerSize)
+);
+
+applePlayerColumn = Math.max(
+    0,
+    Math.min(applePlayerColumn, appleGridColumns - playerSize)
+);
 
     // Restore EVERY skill automatically.
     // New skills added to the skills object will be handled here too.
@@ -3615,8 +4261,14 @@ hardResetting = true;
 // Reset Prestige-related upgrade visibility state.
 hasPrestiged = false;
 
-// Remove the saved game.
+// Remove the saved game and sidebar visibility records.
 localStorage.removeItem(SAVE_KEY);
+
+Object.keys(localStorage).forEach(key => {
+    if (key.startsWith("sidebarResourceShown_")) {
+        localStorage.removeItem(key);
+    }
+});
 
 // Reload so the game is reconstructed from its default state.
 location.reload();
@@ -3746,8 +4398,24 @@ acorns =
 
     apples =
     typeof saveData.apples === "number"
-        ? saveData.apples
+        ? Math.min(MAX_APPLES, Math.max(0, saveData.apples))
         : 0;
+
+appleShards =
+    typeof saveData.appleShards === "number"
+        ? Math.max(0, saveData.appleShards)
+        : 0;
+
+fastestAppleGatheringTime =
+    typeof saveData.fastestAppleGatheringTime === "number" &&
+    saveData.fastestAppleGatheringTime > 0
+        ? saveData.fastestAppleGatheringTime
+        : null;
+
+appleThresholdMessageShown =
+    typeof saveData.appleThresholdMessageShown === "boolean"
+        ? saveData.appleThresholdMessageShown
+        : false;
 
 acornsPerGather =
     saveData.acornsPerGather;
@@ -4081,10 +4749,19 @@ updateSkillsDisplay();
 createUpgradeButtons();
 updateUpgradeButtons();
 
+
 createGoldenUpgradeButtons();
 updateGoldenUpgradeButtons();
+createAppleUpgradeButtons();
+
+// Refresh the imported apple total and upgrade availability.
+updateAppleCounter();
+updateAppleShardDisplay();
+
+updateAppleUpgradeButtons();
 
 updatePrestigeDisplay();
+
 updateTabGlows();
 
 updateLogDisplay();
@@ -4548,6 +5225,62 @@ sidebarSkillPoints.textContent =
     );
 }
 
+
+function updateSidebarResourceVisibility() {
+
+document.querySelectorAll(".sidebar-resource").forEach(row => {
+
+    const countElement = row.querySelector("strong");
+    const count = parseFloat(
+        countElement.textContent.replace(/,/g, "")
+    );
+
+    // Give each resource a persistent key based on its label.
+    const label = row.querySelector("span").textContent
+        .trim()
+        .replace(/:$/, "");
+
+    const storageKey = "sidebarResourceShown_" + label;
+
+    // Check whether this resource was shown in a previous session.
+    const wasShown =
+        localStorage.getItem(storageKey) === "true";
+
+    if (count > 0 || wasShown) {
+
+        row.style.display = "";
+        row.dataset.everShown = "true";
+
+        // Remember permanently that this resource was shown.
+        localStorage.setItem(storageKey, "true");
+
+    } else {
+
+        row.style.display = "none";
+
+    }
+
+});
+
+}
+
+// Check existing resources immediately.
+updateSidebarResourceVisibility();
+
+// Automatically check again whenever a sidebar count changes.
+const sidebarObserver = new MutationObserver(() => {
+updateSidebarResourceVisibility();
+});
+
+sidebarObserver.observe(
+document.getElementById("resource-sidebar"),
+{
+    subtree: true,
+    childList: true,
+    characterData: true
+}
+);
+
 function updateGoldenAcornDisplay() {
 
 goldenAcornNumber.textContent =
@@ -4584,9 +5317,6 @@ updateResourceSidebar();
 updateUpgradeButtons();
 
 }
-
-appleNumber.textContent =
-    formatNumber(Math.floor(apples));
 
 /* ============================================================
    TAB SWITCHING
@@ -4678,6 +5408,1114 @@ switchTab("skills");
 
 applesTab.addEventListener("click", function() {
 switchTab("apples");
+});
+
+
+/* ============================================================
+   APPLES GATHERING GRID
+   ============================================================ */
+
+   const appleGridRows = 16;
+const appleGridColumns = 24;
+const appleSpawnInterval = 2500;
+
+// The player starts in the bottom-left corner.
+let applePlayerRow = 15;
+let applePlayerColumn = 0;
+
+// Store each apple's position as "row,column".
+const applesOnGrid = new Set();
+const goldenApplesOnGrid = new Set();
+
+let appleGatheringStarted = false;
+let appleSpawnTimer = null;
+
+
+let appleGatheringStartTime = null;
+let appleGatheringTimerInterval = null;
+
+
+// Return the number of seconds spent gathering.
+function getAppleGatheringElapsedSeconds() {
+
+    if (appleGatheringStartTime === null) {
+        return 0;
+    }
+
+    return Math.max(
+        0,
+        (Date.now() - appleGatheringStartTime) / 1000
+    );
+
+}
+
+
+// Format the timer display.
+function formatAppleGatheringTime(seconds) {
+
+    // Below one minute, show one decimal place.
+    if (seconds < 60) {
+        return seconds.toFixed(1) + "s";
+    }
+
+    // At one minute or longer, show MM:SS.
+    const wholeSeconds = Math.floor(seconds);
+    const minutes = Math.floor(wholeSeconds / 60);
+    const remainingSeconds = wholeSeconds % 60;
+
+    return String(minutes) + ":" +
+        String(remainingSeconds).padStart(2, "0");
+
+}
+
+
+/* ============================================================
+   APPLE SHARDS
+   ============================================================ */
+
+// Calculate apple shards generated per second.
+function getAppleShardRate() {
+
+if (
+    fastestAppleGatheringTime === null ||
+    fastestAppleGatheringTime <= 0
+) {
+    return 0;
+    appleShardDisplay.style.display = "none";
+}
+
+return Math.max(
+    Math.pow(300 / fastestAppleGatheringTime, 2),
+    0.001
+);
+
+}
+
+
+// Format shard amounts with two decimal places below 1,000.
+function formatAppleShardAmount(amount) {
+
+if (amount < 1000) {
+    return amount.toFixed(2);
+}
+
+return formatNumber(amount);
+
+}
+
+
+// Refresh the shard counter and fastest-time summary.
+function updateAppleShardDisplay() {
+
+appleShardNumber.textContent =
+    formatAppleShardAmount(appleShards);
+sidebarAppleShardNumber.textContent =
+    formatAppleShardAmount(appleShards);
+
+// Keep the summary hidden until a run is completed.
+if (fastestAppleGatheringTime === null) {
+
+    appleShardSeparator.style.display = "none";
+    appleShardSummary.style.display = "none";
+
+    return;
+
+}
+
+appleShardSeparator.style.display = "block";
+appleShardDisplay.style.display = "block";
+appleShardSummary.style.display = "block";
+
+fastestAppleTimeDisplay.textContent =
+    formatAppleGatheringTime(
+        fastestAppleGatheringTime
+    );
+
+    const shardRate = getAppleShardRate();
+
+if (shardRate < 1) {
+    appleShardRateDisplay.textContent =
+        shardRate.toFixed(4);
+}
+else if (shardRate < 1000) {
+    appleShardRateDisplay.textContent =
+        shardRate.toFixed(2);
+}
+else {
+    appleShardRateDisplay.textContent =
+        Math.round(shardRate).toLocaleString();
+}
+
+}
+
+function generateAppleShards() {
+
+const now = Date.now();
+
+// Calculate the actual time elapsed since the last update.
+const elapsedSeconds = Math.max(
+    0,
+    (now - lastAppleShardUpdateTime) / 1000
+);
+
+lastAppleShardUpdateTime = now;
+
+const rate = getAppleShardRate();
+
+// Award shards based on real elapsed time, not timer frequency.
+if (rate > 0 && elapsedSeconds > 0) {
+    appleShards += rate * elapsedSeconds;
+
+    // Save after catching up from a long background delay.
+    if (elapsedSeconds >= 1) {
+        saveGame();
+    }
+}
+
+updateAppleShardDisplay();
+
+}
+
+// Update the visible timer.
+function updateAppleGatheringTimer() {
+
+    appleGatheringTime.textContent =
+        formatAppleGatheringTime(
+            getAppleGatheringElapsedSeconds()
+        );
+
+}
+
+
+// Start updating the timer every tenth of a second.
+function startAppleGatheringTimer() {
+
+    if (appleGatheringTimerInterval !== null) {
+        clearInterval(appleGatheringTimerInterval);
+    }
+
+    appleGatheringTimer.style.display = "block";
+
+    updateAppleGatheringTimer();
+
+    appleGatheringTimerInterval = setInterval(
+        updateAppleGatheringTimer,
+        100
+    );
+
+}
+
+
+// Stop the timer and return its elapsed time.
+function stopAppleGatheringTimer() {
+
+    const elapsedSeconds =
+        getAppleGatheringElapsedSeconds();
+
+    // Record a new personal best, if applicable.
+    if (
+        fastestAppleGatheringTime === null ||
+        elapsedSeconds < fastestAppleGatheringTime
+    ) {
+        fastestAppleGatheringTime = elapsedSeconds;
+    }
+
+    if (appleGatheringTimerInterval !== null) {
+        clearInterval(appleGatheringTimerInterval);
+        appleGatheringTimerInterval = null;
+    }
+
+    return elapsedSeconds;
+
+}
+
+
+// Show the finish button at 100,000 apples.
+// Enable it only once the player has 1,000,000 apples.
+function updateFinishGatheringButton() {
+
+    const shouldShow =
+        appleGatheringStarted && apples >= 100000;
+
+    finishGatheringButton.style.display =
+        shouldShow ? "block" : "none";
+
+    finishGatheringButton.disabled =
+        apples < 1000000;
+
+}
+
+
+// Finish the gathering activity.
+function finishAppleGathering() {
+
+    if (!appleGatheringStarted || apples < 1000000) {
+        return;
+    }
+
+    // Capture the time before stopping the timer.
+    const elapsedSeconds =
+        stopAppleGatheringTimer();
+
+    const wholeSeconds =
+        Math.floor(elapsedSeconds);
+
+    const minutes =
+        Math.floor(wholeSeconds / 60);
+
+    const remainingSeconds =
+        wholeSeconds % 60;
+
+        const finalTime =
+    String(minutes) + ":" +
+    String(remainingSeconds).padStart(2, "0");
+
+    // Stop apple spawning.
+    if (appleSpawnTimer !== null) {
+        clearInterval(appleSpawnTimer);
+        appleSpawnTimer = null;
+    }
+
+    // Stop player movement.
+    if (applePlayerMoveTimer !== null) {
+        clearInterval(applePlayerMoveTimer);
+        applePlayerMoveTimer = null;
+    }
+
+    applePlayerDirection = null;
+
+    // Mark gathering as finished.
+    appleGatheringStarted = false;
+
+    // Show the congratulatory message in bright blue.
+    addLogMessage(
+        "Congratulations! You've fed the Racc King in " +
+            finalTime,
+        "#00e5ff",
+        "apple-gathering-finished-" + Date.now()
+    );
+
+
+    // Reset the apple balance.
+    apples = 0;
+
+    // Clear every apple from the board.
+    applesOnGrid.clear();
+    goldenApplesOnGrid.clear();
+
+    // Reset the player's position.
+    applePlayerRow = appleGridRows - 1;
+    applePlayerColumn = 0;
+
+    // Reset every apple upgrade.
+    for (const upgrade of appleUpgrades) {
+        upgrade.purchases = 0;
+    }
+
+    // Reset the timer for the next gathering session.
+    appleGatheringStartTime = null;
+    appleGatheringTime.textContent = "0.0s";
+
+    // Refresh the counter, upgrade effects, and board.
+    updateAppleCounter();
+    updateAppleUpgradeButtons();
+    updateAppleGrid();
+    updateAppleShardDisplay();
+
+    // Refresh the finish button's hidden/disabled state.
+    updateFinishGatheringButton();
+
+    // Hide the instructions, timer, grid, and upgrades.
+    appleGridInstructions.style.display = "none";
+    appleGatheringTimer.style.display = "none";
+
+    document.getElementById("apple-game-layout").style.display =
+        "none";
+
+    finishGatheringButton.style.display = "none";
+
+    // Allow the player to start gathering again.
+    startGatheringButton.style.display = "inline-block";
+
+    saveGame();
+
+}
+
+// Create the 16-row, 24-column grid.
+function createAppleGrid() {
+
+    appleGrid.innerHTML = "";
+
+    for (let row = 0; row < appleGridRows; row++) {
+
+        for (
+            let column = 0;
+            column < appleGridColumns;
+            column++
+        ) {
+
+            const cell = document.createElement("div");
+
+            cell.classList.add("apple-grid-cell");
+
+            cell.dataset.row = row;
+            cell.dataset.column = column;
+
+            appleGrid.appendChild(cell);
+
+        }
+
+    }
+
+    updateAppleGrid();
+
+}
+
+
+/* ============================================================
+   APPLE UPGRADES
+   ============================================================ */
+
+// Calculate an upgrade's current cost.
+function getAppleUpgradeCost(upgrade) {
+
+return Math.floor(
+    upgrade.baseCost *
+    Math.pow(
+        upgrade.costMultiplier,
+        upgrade.purchases
+    )
+);
+
+}
+
+
+// Calculate how many apples each collection gives.
+function getAppleGain() {
+
+const purchases = appleUpgrades[0].purchases;
+
+return (
+    Math.pow(1.2, purchases) +
+    purchases
+);
+
+}
+
+
+const MAX_APPLES = 1000000;
+
+
+function getAppleTaxMultiplier() {
+
+if (apples > 1000) {
+    return Math.log10(apples);
+}
+
+return 1;
+
+}
+
+
+function updateAppleTaxDisplay() {
+
+if (apples > 1000) {
+
+    appleTaxMessage.style.display = "block";
+
+    appleTaxMultiplierDisplay.textContent =
+        getAppleTaxMultiplier().toFixed(2) + "x";
+
+}
+else {
+
+    appleTaxMessage.style.display = "none";
+
+    appleTaxMultiplierDisplay.textContent = "1.00x";
+
+}
+
+}
+
+
+// Update the apple counter and capped labels.
+function updateAppleCounter() {
+
+if (apples >= MAX_APPLES) {
+
+    apples = MAX_APPLES;
+
+    appleNumber.textContent = "1,000,000";
+    appleCappedLabel.textContent = " (Capped)";
+
+    sidebarAppleNumber.textContent = "1,000,000";
+    sidebarAppleCappedLabel.textContent = " (Capped)";
+
+}
+else {
+
+    appleNumber.textContent =
+        formatNumber(Math.floor(apples));
+
+    appleCappedLabel.textContent = "";
+
+    sidebarAppleNumber.textContent =
+        formatNumber(Math.floor(apples));
+
+    sidebarAppleCappedLabel.textContent = "";
+
+}
+
+updateAppleTaxDisplay();
+
+}
+// Calculate the time between apple spawns, in milliseconds.
+function getAppleSpawnInterval() {
+
+const purchases = appleUpgrades[1].purchases;
+
+return (
+    2500 *
+    Math.pow(0.9, purchases)
+);
+
+}
+
+// Calculate the maximum number of apples allowed on the grid.
+function getMaxGridApples() {
+    return 10 + 4 * appleUpgrades[2].purchases;
+}
+
+// Calculate the player's movement speed in cells per second.
+function getApplePlayerSpeed() {
+    return 5 + appleUpgrades[3].purchases;
+}
+
+
+function getGoldenAppleChance() {
+    return Math.min(100, 5 * appleUpgrades[4].purchases);
+}
+
+function getApplePlayerSize() {
+    return 1 + appleUpgrades[5].purchases;
+}
+
+
+// Calculate the time between player movements, in milliseconds.
+function getApplePlayerMoveInterval() {
+    return 1000 / getApplePlayerSpeed();
+}
+
+// Create the two upgrade cards.
+function createAppleUpgradeButtons() {
+
+appleUpgradeContainer.innerHTML = "";
+
+for (const upgrade of appleUpgrades) {
+
+    const button = document.createElement("button");
+    button.className = "apple-upgrade-button";
+    button.type = "button";
+
+    const name = document.createElement("div");
+    name.className = "apple-upgrade-name";
+    name.textContent = upgrade.name;
+
+    const description = document.createElement("div");
+    description.className = "apple-upgrade-description";
+    description.textContent = upgrade.description;
+
+    const current = document.createElement("div");
+    current.className = "apple-upgrade-current";
+
+    const next = document.createElement("span");
+    next.className = "apple-upgrade-next";
+
+    current.appendChild(document.createTextNode(""));
+
+    // Keep the current effect separate from the green preview.
+    const currentText = document.createElement("span");
+    currentText.className = "apple-upgrade-current-value";
+
+    current.appendChild(currentText);
+    current.appendChild(next);
+
+    const cost = document.createElement("div");
+    cost.className = "apple-upgrade-cost";
+
+    button.appendChild(name);
+    button.appendChild(description);
+    button.appendChild(current);
+    button.appendChild(cost);
+
+    button.addEventListener("click", function() {
+        purchaseAppleUpgrade(upgrade);
+    });
+
+    appleUpgradeContainer.appendChild(button);
+
+}
+
+updateAppleUpgradeButtons();
+
+}
+
+// Update affordability, costs, and effect previews.
+
+function updateAppleUpgradeButtons() {
+
+const buttons =
+    appleUpgradeContainer.querySelectorAll(
+        ".apple-upgrade-button"
+    );
+
+for (let i = 0; i < appleUpgrades.length; i++) {
+
+    const upgrade = appleUpgrades[i];
+    const button = buttons[i];
+
+    if (!button) {
+        continue;
+    }
+
+    const cost = getAppleUpgradeCost(upgrade);
+    const canAfford = apples >= cost;
+
+    button.disabled = !canAfford;
+    button.classList.toggle("available", canAfford);
+
+    // These variables must be declared inside this function.
+    const currentText =
+        button.querySelector(".apple-upgrade-current-value");
+
+    const next =
+        button.querySelector(".apple-upgrade-next");
+
+    const costElement =
+        button.querySelector(".apple-upgrade-cost");
+
+    if (upgrade.id === 1) {
+
+        const currentEffect = getAppleGain();
+
+        const nextEffect =
+            Math.pow(1.2, upgrade.purchases + 1) +
+            (upgrade.purchases + 1);
+
+        currentText.textContent =
+            "Currently: " +
+            formatNumber(currentEffect) +
+            "x";
+
+        next.textContent =
+            " → " +
+            formatNumber(nextEffect) +
+            "x";
+
+    }
+    else if (upgrade.id === 2) {
+
+        const currentEffect =
+            getAppleSpawnInterval() / 1000;
+
+        const nextEffect = currentEffect * 0.9;
+
+        currentText.textContent =
+            "Currently: " +
+            currentEffect.toFixed(2) +
+            "s";
+
+        next.textContent =
+            " → " +
+            nextEffect.toFixed(2) +
+            "s";
+
+    }
+    else if (upgrade.id === 3) {
+
+        const currentEffect = getMaxGridApples();
+        const nextEffect = currentEffect + 4;
+
+        currentText.textContent =
+            "Currently: " + currentEffect + "";
+
+        next.textContent =
+            " → " + nextEffect + "";
+
+    }
+    else if (upgrade.id === 4) {
+
+        const currentEffect = getApplePlayerSpeed();
+        const nextEffect = currentEffect + 1;
+
+        currentText.textContent =
+            "Currently: " + currentEffect + " cells/s";
+
+        next.textContent =
+            " → " + nextEffect + " cells/s";
+
+    }
+
+else if (upgrade.id === 5) {
+
+const currentEffect = getGoldenAppleChance();
+const nextEffect = Math.min(100, currentEffect + 5);
+
+currentText.textContent =
+    "Currently: " + currentEffect + "%";
+
+next.textContent =
+    " → " + nextEffect + "%";
+
+}
+else if (upgrade.id === 6) {
+
+const currentEffect = getApplePlayerSize();
+const maxSize = Math.min(appleGridRows, appleGridColumns);
+const nextEffect = Math.min(maxSize, currentEffect + 1);
+
+currentText.textContent =
+    "Currently: " + currentEffect + "x" + currentEffect;
+
+next.textContent =
+    " → " + nextEffect + "x" + nextEffect;
+
+}
+
+    costElement.textContent =
+        "Cost: " +
+        formatNumber(cost) +
+        " apples";
+
+}
+
+}
+
+// Purchase an apple upgrade.
+
+function purchaseAppleUpgrade(upgrade) {
+
+const cost = getAppleUpgradeCost(upgrade);
+
+if (apples < cost) {
+    return;
+}
+
+// Do not allow golden chance to exceed 100%.
+if (
+    upgrade.id === 5 &&
+    getGoldenAppleChance() >= 100
+) {
+    return;
+}
+
+// The 16-row grid limits the largest square to 16×16.
+if (
+    upgrade.id === 6 &&
+    getApplePlayerSize() >=
+        Math.min(appleGridRows, appleGridColumns)
+) {
+    return;
+}
+
+apples -= cost;
+upgrade.purchases++;
+
+updateAppleCounter();
+
+// Apply faster apple spawning immediately.
+if (upgrade.id === 2 && appleGatheringStarted) {
+    restartAppleSpawnTimer();
+}
+
+// Apply faster movement immediately.
+if (upgrade.id === 4 && applePlayerMoveTimer !== null) {
+    clearInterval(applePlayerMoveTimer);
+
+    applePlayerMoveTimer = setInterval(
+        moveApplePlayer,
+        getApplePlayerMoveInterval()
+    );
+}
+
+// Reposition the player if the larger square would
+// extend beyond the bottom or right edge.
+if (upgrade.id === 6) {
+
+    const size = getApplePlayerSize();
+
+    applePlayerRow = Math.min(
+        applePlayerRow,
+        appleGridRows - size
+    );
+
+    applePlayerColumn = Math.min(
+        applePlayerColumn,
+        appleGridColumns - size
+    );
+
+    if (appleGatheringStarted) {
+        collectGridApple();
+        updateAppleGrid();
+    }
+
+}
+
+updateAppleUpgradeButtons();
+updateFinishGatheringButton();
+saveGame();
+
+}
+
+// Refresh the appearance of every square.
+
+function updateAppleGrid() {
+
+const cells =
+    appleGrid.querySelectorAll(".apple-grid-cell");
+
+const size = getApplePlayerSize();
+
+cells.forEach(function(cell) {
+
+    const row = Number(cell.dataset.row);
+    const column = Number(cell.dataset.column);
+
+    const position = row + "," + column;
+
+    const isPlayerPosition =
+        row >= applePlayerRow &&
+        row < applePlayerRow + size &&
+        column >= applePlayerColumn &&
+        column < applePlayerColumn + size;
+
+    cell.classList.toggle(
+        "has-apple",
+        applesOnGrid.has(position)
+    );
+
+    cell.classList.toggle(
+        "golden-apple",
+        goldenApplesOnGrid.has(position)
+    );
+
+    cell.classList.toggle(
+        "player",
+        isPlayerPosition
+    );
+
+    cell.classList.toggle(
+        "player-large",
+        isPlayerPosition && size > 1
+    );
+
+});
+
+}
+
+// Spawn an apple on a random unoccupied square.
+
+function spawnGridApple() {
+
+// Respect the current maximum number of apples.
+if (applesOnGrid.size >= getMaxGridApples()) {
+    return;
+}
+
+const availablePositions = [];
+const size = getApplePlayerSize();
+
+for (let row = 0; row < appleGridRows; row++) {
+
+    for (
+        let column = 0;
+        column < appleGridColumns;
+        column++
+    ) {
+
+        const position = row + "," + column;
+
+        const isPlayerPosition =
+            row >= applePlayerRow &&
+            row < applePlayerRow + size &&
+            column >= applePlayerColumn &&
+            column < applePlayerColumn + size;
+
+        if (
+            !isPlayerPosition &&
+            !applesOnGrid.has(position)
+        ) {
+            availablePositions.push(position);
+        }
+
+    }
+
+}
+
+if (availablePositions.length === 0) {
+    return;
+}
+
+const randomIndex =
+    Math.floor(Math.random() * availablePositions.length);
+
+const position = availablePositions[randomIndex];
+
+applesOnGrid.add(position);
+
+// Decide whether this apple is golden.
+if (Math.random() < getGoldenAppleChance() / 100) {
+    goldenApplesOnGrid.add(position);
+}
+
+updateAppleGrid();
+saveGame();
+
+}
+
+// Collect an apple if the player is standing on one.
+
+function collectGridApple() {
+
+const size = getApplePlayerSize();
+let collectedAny = false;
+
+// Check every tile covered by the player's square.
+for (
+    let row = applePlayerRow;
+    row < applePlayerRow + size;
+    row++
+) {
+
+    for (
+        let column = applePlayerColumn;
+        column < applePlayerColumn + size;
+        column++
+    ) {
+
+        const position = row + "," + column;
+
+        if (!applesOnGrid.has(position)) {
+            continue;
+        }
+
+        const isGolden =
+            goldenApplesOnGrid.has(position);
+
+        applesOnGrid.delete(position);
+        goldenApplesOnGrid.delete(position);
+
+        const valueMultiplier = isGolden ? 4 : 1;
+
+        apples = Math.min(
+    MAX_APPLES,
+    apples +
+        getAppleGain() *
+        valueMultiplier *
+        1 *
+        getAppleTaxMultiplier()
+);
+
+        collectedAny = true;
+
+    }
+
+}
+
+if (!collectedAny) {
+    return;
+}
+
+if (
+    apples >= 100000 &&
+    !appleThresholdMessageShown
+) {
+
+    // Mark the message as shown before logging it.
+    appleThresholdMessageShown = true;
+
+    addLogMessage(
+        "The Racc King stirs...he has a secret sense for those with newfound wealth...",
+        "#ff002f",
+        "apple-100000-threshold"
+    );
+
+}
+
+updateAppleCounter();
+
+updateAppleUpgradeButtons();
+updateFinishGatheringButton();
+saveGame();
+
+}
+
+function restartAppleSpawnTimer() {
+
+if (appleSpawnTimer !== null) {
+    clearInterval(appleSpawnTimer);
+}
+
+appleSpawnTimer = setInterval(
+    spawnGridApple,
+    getAppleSpawnInterval()
+);
+
+}
+
+
+// Start the gathering activity.
+function startAppleGathering() {
+
+    if (appleGatheringStarted) {
+        return;
+    }
+
+    appleGatheringStarted = true;
+
+    appleGatheringStartTime = Date.now();
+
+startAppleGatheringTimer();
+
+    startGatheringButton.style.display = "none";
+appleGridInstructions.style.display = "block";
+
+document.getElementById("apple-game-layout").style.display =
+    "flex";
+
+    createAppleGrid();
+
+// Start spawning apples at the current upgrade-adjusted rate.
+restartAppleSpawnTimer();
+updateFinishGatheringButton();
+saveGame();
+
+}
+
+
+// Start gathering when the button is clicked.
+startGatheringButton.addEventListener(
+    "click",
+    startAppleGathering
+);
+
+finishGatheringButton.addEventListener(
+    "click",
+    finishAppleGathering
+);
+
+/* ============================================================
+   APPLES GRID MOVEMENT
+   ============================================================ */
+
+function getApplePlayerMoveInterval() {
+    return 1000 / getApplePlayerSpeed();
+}
+
+// The player initially has no movement direction.
+let applePlayerDirection = null;
+let applePlayerMoveTimer = null;
+
+
+// Move the player one cell in the current direction.
+function moveApplePlayer() {
+
+    if (
+        !appleGatheringStarted ||
+        currentTab !== "apples" ||
+        applePlayerDirection === null
+    ) {
+        return;
+    }
+
+    let nextRow = applePlayerRow;
+    let nextColumn = applePlayerColumn;
+
+    if (applePlayerDirection === "ArrowUp") {
+        nextRow--;
+    }
+    else if (applePlayerDirection === "ArrowDown") {
+        nextRow++;
+    }
+    else if (applePlayerDirection === "ArrowLeft") {
+        nextColumn--;
+    }
+    else if (applePlayerDirection === "ArrowRight") {
+        nextColumn++;
+    }
+
+    // Stop at the edge instead of allowing the player
+    // to leave the grid.
+
+    const size = getApplePlayerSize();
+
+    if (
+        nextRow < 0 ||
+        nextRow + size > appleGridRows ||
+        nextColumn < 0 ||
+        nextColumn + size > appleGridColumns
+    ) {
+        clearInterval(applePlayerMoveTimer);
+        applePlayerMoveTimer = null;
+        applePlayerDirection = null;
+        return;
+    }
+
+    applePlayerRow = nextRow;
+    applePlayerColumn = nextColumn;
+
+    // Collect an apple if the player reaches one.
+    collectGridApple();
+
+    // Redraw the grid.
+    updateAppleGrid();
+    saveGame();
+
+}
+
+
+// Arrow keys change the player's direction.
+document.addEventListener("keydown", function(event) {
+
+    if (
+        !appleGatheringStarted ||
+        currentTab !== "apples"
+    ) {
+        return;
+    }
+
+    const arrowKeys = [
+        "ArrowUp",
+        "ArrowDown",
+        "ArrowLeft",
+        "ArrowRight"
+    ];
+
+    if (!arrowKeys.includes(event.key)) {
+        return;
+    }
+
+    event.preventDefault();
+
+    // Ignore held-key repeats so holding a key does not
+    // repeatedly reset the movement timer.
+    if (event.repeat) {
+        return;
+    }
+
+    // Change direction immediately.
+    applePlayerDirection = event.key;
+
+    // Start moving if the player isn't already moving.
+    if (applePlayerMoveTimer === null) {
+        moveApplePlayer();
+
+        applePlayerMoveTimer = setInterval(
+    moveApplePlayer,
+    getApplePlayerMoveInterval()
+);
+    }
+
 });
 
         /* ============================================================
@@ -7413,9 +9251,43 @@ else {
            INITIALIZE
            ============================================================ */
 
-        loadGame();
 
-        loadGame();
+           loadGame();
+
+createAppleUpgradeButtons();
+
+
+
+if (appleGatheringStarted) {
+
+startGatheringButton.style.display = "none";
+
+appleGridInstructions.style.display = "block";
+
+document.getElementById("apple-game-layout").style.display =
+    "flex";
+
+createAppleGrid();
+
+restartAppleSpawnTimer();
+
+// Resume the timer using its saved starting timestamp.
+if (appleGatheringStartTime === null) {
+    appleGatheringStartTime = Date.now();
+}
+
+startAppleGatheringTimer();
+
+updateFinishGatheringButton();
+
+}
+
+// Display the saved apple total immediately.
+updateAppleCounter();
+updateAppleShardDisplay();
+
+// Refresh all apple upgrade costs and availability.
+updateAppleUpgradeButtons();
 
 if (logMessages.length === 0) {
 
@@ -7497,6 +9369,7 @@ else if (
         saveGame();
 
         setInterval(saveGame, 1000);
+setInterval(generateAppleShards, 50);
 
         setInterval(
     checkExportReminder,
