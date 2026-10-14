@@ -2563,7 +2563,7 @@ style="display: none;"
         </div>
 
         <div id="skills-hold-tip">
-            Tip: You can hold down the + and - buttons to rapidly assign/design skill points!
+            Tip: You can hold down the + and - buttons to rapidly assign/unassign skill points!
         </div>
 
     </div>
@@ -2691,7 +2691,7 @@ style="display: none;"
 
     <!-- CHANGELOG -->
 
-<button id="changelog-button">v1.9</button>
+<button id="changelog-button">v1.9.1</button>
 
 <div id="changelog-modal">
 
@@ -2702,6 +2702,10 @@ style="display: none;"
         <h1>Changelog</h1>
 
         <div id="changelog-entries">
+            <h3>v1.9.1</h3>
+            <p>- Fixed data exporting again so it preserves apple shard upgrades</p>
+            <p>- Fixed display on first apple upgrade so it displays the correct new multiplier</p>
+            <p>- Fixed a typo on Skills tab</p>
             <h2>v1.9</h2>
             <p>- Added 5 more Acorn upgrades, bringing the total to 25</p>
             <p>- Added two more Golden Acorn upgrades, bringing the total to 8</p>
@@ -2960,6 +2964,11 @@ const savePoints = [
             title: "Apples Unlocked",
             data: `{"acorns":8.515568261243288e+79,"apples":0,"acornsPerGather":59049.00000000009,"goldenAcorns":291461.82777019276,"goldenAcornMultiplier":72.89048368510328,"goldenAcornCostMultiplier":0.44012666865176525,"goldenAcornChance":0.20000000000000007,"upgrade1BaseMultiplier":3.0000000000000004,"totalSkillPoints":43,"skillSpeedMultiplier":1030369.7545754757,"prestigeMultiplier":77244082130623.89,"prestigeUnlocked":true,"hasPrestiged":true,"highestAcorns":4.523793009967951e+65,"lastPrestigeAcorns":4.523793009967951e+65,"prestigeGoldenAcornMultiplier":21.888150424363346,"goldenAcornTimerEnd":1791574521030,"goldenAcornTimerActive":true,"skillXPMultiplier":3325.256730079651,"gatheringXPAcornMultiplier":2676513441782601000,"totalGatheringXP":1.5763338331287522e+25,"forgingGoldenAcornMultiplier":83,"gatherOnCooldown":true,"cooldownEndTime":1791572867319.3374,"gatherCooldown":0.6983372960937497,"currentTab":"acorns","prestigeConfirmation":false,"goldenAutobuy":false,"upgrades":[{"id":0,"purchases":10},{"id":1,"purchases":8},{"id":2,"purchases":8},{"id":3,"purchases":10},{"id":4,"purchases":1},{"id":5,"purchases":20},{"id":6,"purchases":10},{"id":7,"purchases":1},{"id":8,"purchases":5},{"id":9,"purchases":1},{"id":10,"purchases":10},{"id":11,"purchases":1},{"id":12,"purchases":1},{"id":13,"purchases":5},{"id":14,"purchases":1},{"id":15,"purchases":1},{"id":16,"purchases":3},{"id":17,"purchases":11},{"id":18,"purchases":1},{"id":19,"purchases":1}],"goldenUpgrades":[{"id":0,"purchases":45},{"id":1,"purchases":16},{"id":2,"purchases":30},{"id":3,"purchases":1},{"id":4,"purchases":7},{"id":5,"purchases":0}],"skills":{"gathering":{"points":15,"level":81,"tier":2,"xp":3.67407372435621e+24,"xpMultiplier":2,"effectMultiplier":6858816903929000},"forging":{"points":14,"level":83,"tier":1,"xp":3.458616132926137e+24,"xpMultiplier":1.75,"effectMultiplier":1},"survival":{"points":14,"level":38,"tier":1,"xp":1.0382808354613807e+24,"xpMultiplier":2,"effectMultiplier":2.849999999999998}},"logMessages":[{"id":"welcome","number":1,"text":"You wake up one day to find that you have transformed into a raccoon overnight. After overcoming the initial shock, you realize that you've retained very little memory from your previous human life, only remembering basic things like what constitutes as food, and potential threats of the outside. You start to look around and notice you're deep in a deciduous forest, as the sunlight peeks through tree branches, spotting your dark gray fur with light patches. You don't know how this happened, but you know one thing's for sure: you're pretty darn hungry right now. After stumbling for a few minutes in your new raccoon form looking for food, you hear a hard crunch under your paw. You look down and see a small acorn that fell off of an oak tree from above. Surely enough, there's plenty more where it came from, and you start to gather them. They're not the best-tasting, but they should sustain you for a while.","color":"#eeeeee"},{"id":"first-golden-acorn","number":2,"text":"You find a particularly shiny acorn. You examine it thoroughly, not for its beauty but because of its uncanny, almost synthetic quality. Nonetheless, you take a bite and feel stronger...perhaps you should check out the Golden Acorns tab?","color":"#ffd700"},{"id":"skills-unlocked","number":3,"text":"You're now somewhat accustomed to the raccoon lifestyle and realize...there's really not much to it. What you can remember of things like school, work, money, and human society seem completely irrelevant to you now. You decide to spend your time refining your gathering skills like all the other raccoons you've met so far...who knows, maybe you can even work with them!","color":"#ff69b4"},{"id":"load-Pre-Prestige-1791153625267","number":4,"text":"Pre-Prestige Loaded!","color":"#eeeeee"},{"id":"export-reminder-1791153625487","number":5,"text":"Attention: You haven't exported your game data in a while! You can save your game data by clicking the \\\"Export Data\\\" button in the bottom left corner, then pasting the text that was copied into a document or text file. Then, if your data ever gets lost, you can import that string and pick up right where you left off!","color":"#ff4444"},{"id":"prestige-1791153627317","number":6,"text":"After being devoured by a hungry coyote, you find yourself back where you started.","color":"#3fbf3f"},{"id":"prestige-1791154637060","number":7,"text":"After being devoured by a hungry coyote, you find yourself back where you started.","color":"#3fbf3f"},{"id":"prestige-1791155413866","number":8,"text":"After being swept into a moving river while trying to wash your food, you find yourself back where you started.","color":"#3fbf3f"},{"id":"load-Pre-Upgrade 16-1791570807526","number":9,"text":"Pre-Upgrade 16 Loaded!","color":"#eeeeee"},{"id":"export-reminder-1791570807846","number":10,"text":"Attention: You haven't exported your game data in a while! You can save your game data by clicking the \\\"Export Data\\\" button in the bottom left corner, then pasting the text that was copied into a document or text file. Then, if your data ever gets lost, you can import that string and pick up right where you left off!","color":"#ff4444"},{"id":"prestige-1791571443082","number":11,"text":"After being bitten by a rabid squirrel, you find yourself back where you started.","color":"#3fbf3f"},{"id":"prestige-1791572018975","number":12,"text":"After being taken in as an exotic pet, only to then be neglected to starvation, you find yourself back where you started.","color":"#3fbf3f"},{"id":"apples-unlocked","number":13,"text":"It's been a few weeks now, and you've become fully accustomed to your new lifestyle. You had no idea that raccoons were so social, intelligent, and apparently inspired by human corporate lifestyle. You've also come to accept that death is a part of life, and the pain that come with it is becoming slowly and slowly more tolerable, although you do wonder why your friends don't keep respawning like you do. Every time you come back, you feel a strange, internal feeling of hollowness, a sense of digitization, almost like you're living vicariously through someone else in a simulation, but figure that might just be a side effect of the constant respawning. After venturing a little further into the forest in attempts to expand your acorn market, you stumble across a bright, red, round object. You apprehensively approach the foreign object, your fur puffed up in defense, until you gently place your paw over it to feel. With care, you take a small bite, and your tail gives off a small flick of excitement as you taste the sweet, rich flavor of the apple. Your eyes dart to other nearby trees and find yourself surrounded with the new food source, though the gathering process quickly proves itself to be trickier to what you were using before. \\\"Wait until my friends hear about this\\\" you purr to yourself...","color":"#ff002f"}],"nextLogNumber":14,"nextExportReminderTime":1791657207846}`
         },
+        {
+            title: "Pre-Survival Tier 2",
+            data: `{"acorns":1.3613797756540544e+172,"apples":0,"acornsPerGather":59049,"goldenAcorns":92847248.88670893,"goldenAcornMultiplier":15158.673573804617,"goldenAcornCostMultiplier":0.10467395472325498,"goldenAcornChance":0.2,"upgrade1BaseMultiplier":3,"totalSkillPoints":93,"skillSpeedMultiplier":379611693.37050766,"prestigeMultiplier":7.372104025151249e+55,"prestigeUnlocked":true,"hasPrestiged":true,"highestAcorns":1.3613797756540544e+172,"lastPrestigeAcorns":1.3613797756540544e+172,"prestigeGoldenAcornMultiplier":56.39743975123502,"goldenAcornTimerEnd":1791994140457,"goldenAcornTimerActive":true,"skillXPMultiplier":3325.256730079651,"gatheringXPAcornMultiplier":753122524199394000000,"totalGatheringXP":1.942509211925638e+44,"forgingGoldenAcornMultiplier":1000,"gatherOnCooldown":true,"cooldownEndTime":1791993817961.499,"gatherCooldown":0.03949909390643792,"currentTab":"skills","prestigeConfirmation":false,"goldenAutobuy":true,"upgrades":[{"id":0,"purchases":10},{"id":1,"purchases":8},{"id":2,"purchases":8},{"id":3,"purchases":10},{"id":4,"purchases":1},{"id":5,"purchases":20},{"id":6,"purchases":10},{"id":7,"purchases":1},{"id":8,"purchases":5},{"id":9,"purchases":1},{"id":10,"purchases":10},{"id":11,"purchases":1},{"id":12,"purchases":1},{"id":13,"purchases":5},{"id":14,"purchases":1},{"id":15,"purchases":1},{"id":16,"purchases":3},{"id":17,"purchases":30},{"id":18,"purchases":1},{"id":19,"purchases":1},{"id":20,"purchases":10},{"id":21,"purchases":1},{"id":22,"purchases":10},{"id":23,"purchases":1},{"id":24,"purchases":1}],"goldenUpgrades":[{"id":0,"purchases":101},{"id":1,"purchases":44},{"id":2,"purchases":92},{"id":3,"purchases":1},{"id":4,"purchases":63},{"id":5,"purchases":48},{"id":6,"purchases":20},{"id":7,"purchases":17}],"appleUpgrades":[{"id":1,"purchases":0},{"id":2,"purchases":0},{"id":3,"purchases":0},{"id":4,"purchases":0},{"id":5,"purchases":0},{"id":6,"purchases":0}],"appleShardUpgrades":[{"id":1,"purchases":18},{"id":2,"purchases":5},{"id":3,"purchases":6},{"id":4,"purchases":5}],"applePlayerRow":15,"applePlayerColumn":0,"applesOnGrid":[],"goldenApplesOnGrid":[],"appleGatheringStarted":false,"appleGatheringStartTime":null,"appleShards":1323741.419668539,"fastestAppleGatheringTime":19.615,"appleThresholdMessageShown":true,"skills":{"gathering":{"points":24,"level":144,"tier":2,"xp":8.274719519991085e+43,"xpMultiplier":2,"effectMultiplier":2.0290626750772906e+28},"forging":{"points":23,"level":100,"tier":2,"xp":1.2547343917277861e+43,"xpMultiplier":2.5,"effectMultiplier":1},"survival":{"points":23,"level":100,"tier":1,"xp":0,"xpMultiplier":2,"effectMultiplier":5.949999999999987},"gardening":{"points":23,"level":44,"tier":1,"xp":9.230826788192721e+43,"xpMultiplier":2.5,"effectMultiplier":0.17284746746244747}},"logMessages":[{"id":"welcome","number":1,"text":"You wake up one day to find that you have transformed into a raccoon overnight. After overcoming the initial shock, you realize that you've retained very little memory from your previous human life, only remembering basic things like what constitutes as food, and potential threats of the outside. You start to look around and notice you're deep in a deciduous forest, as the sunlight peeks through tree branches, spotting your dark gray fur with light patches. You don't know how this happened, but you know one thing's for sure: you're pretty darn hungry right now. After stumbling for a few minutes in your new raccoon form looking for food, you hear a hard crunch under your paw. You look down and see a small acorn that fell off of an oak tree from above. Surely enough, there's plenty more where it came from, and you start to gather them. They're not the best-tasting, but they should sustain you for a while.","color":"#eeeeee"},{"id":"first-golden-acorn","number":2,"text":"You find a particularly shiny acorn. You examine it thoroughly, not for its beauty but because of its uncanny, almost synthetic quality. Nonetheless, you take a bite and feel stronger...perhaps you should check out the Golden Acorns tab?","color":"#ffd700"},{"id":"skills-unlocked","number":3,"text":"You're now somewhat accustomed to the raccoon lifestyle and realize...there's really not much to it. What you can remember of things like school, work, money, and human society seem completely irrelevant to you now. You decide to spend your time refining your gathering skills like all the other raccoons you've met so far...who knows, maybe you can even work with them!","color":"#ff69b4"},{"id":"load-Pre-Prestige-1791153625267","number":4,"text":"Pre-Prestige Loaded!","color":"#eeeeee"},{"id":"export-reminder-1791153625487","number":5,"text":"Attention: You haven't exported your game data in a while! You can save your game data by clicking the \\\"Export Data\\\" button in the bottom left corner, then pasting the text that was copied into a document or text file. Then, if your data ever gets lost, you can import that string and pick up right where you left off!","color":"#ff4444"},{"id":"prestige-1791153627317","number":6,"text":"After being devoured by a hungry coyote, you find yourself back where you started.","color":"#3fbf3f"},{"id":"prestige-1791154637060","number":7,"text":"After being devoured by a hungry coyote, you find yourself back where you started.","color":"#3fbf3f"},{"id":"prestige-1791155413866","number":8,"text":"After being swept into a moving river while trying to wash your food, you find yourself back where you started.","color":"#3fbf3f"},{"id":"load-Pre-Upgrade 16-1791570807526","number":9,"text":"Pre-Upgrade 16 Loaded!","color":"#eeeeee"},{"id":"export-reminder-1791570807846","number":10,"text":"Attention: You haven't exported your game data in a while! You can save your game data by clicking the \\\"Export Data\\\" button in the bottom left corner, then pasting the text that was copied into a document or text file. Then, if your data ever gets lost, you can import that string and pick up right where you left off!","color":"#ff4444"},{"id":"prestige-1791571443082","number":11,"text":"After being bitten by a rabid squirrel, you find yourself back where you started.","color":"#3fbf3f"},{"id":"prestige-1791572018975","number":12,"text":"After being taken in as an exotic pet, only to then be neglected to starvation, you find yourself back where you started.","color":"#3fbf3f"},{"id":"apples-unlocked","number":13,"text":"It's been a few weeks now, and you've become fully accustomed to your new lifestyle. You had no idea that raccoons were so social, intelligent, and apparently inspired by human corporate lifestyle. You've also come to accept that death is a part of life, and the pain that come with it is becoming slowly and slowly more tolerable, although you do wonder why your friends don't keep respawning like you do. Every time you come back, you feel a strange, internal feeling of hollowness, a sense of digitization, almost like you're living vicariously through someone else in a simulation, but figure that might just be a side effect of the constant respawning. After venturing a little further into the forest in attempts to expand your acorn market, you stumble across a bright, red, round object. You apprehensively approach the foreign object, your fur puffed up in defense, until you gently place your paw over it to feel. With care, you take a small bite, and your tail gives off a small flick of excitement as you taste the sweet, rich flavor of the apple. Your eyes dart to other nearby trees and find yourself surrounded with the new food source, though the gathering process quickly proves itself to be trickier to what you were using before. \\\"Wait until my friends hear about this\\\" you purr to yourself...","color":"#ff002f"},{"id":"load-Apples Unlocked-1791944491884","number":14,"text":"Apples Unlocked Loaded!","color":"#eeeeee"},{"id":"export-reminder-1791944492093","number":15,"text":"Attention: You haven't exported your game data in a while! You can save your game data by clicking the \\\"Export Data\\\" button in the bottom left corner, then pasting the text that was copied into a document or text file. Then, if your data ever gets lost, you can import that string and pick up right where you left off!","color":"#ff4444"},{"id":"apple-100000-threshold","number":16,"text":"The Racc King stirs...he has a secret sense for those with newfound wealth...","color":"#ff002f"},{"id":"apple-gathering-finished-1791987469719","number":17,"text":"Congratulations! You've fed the Racc King in 710:47","color":"#00e5ff"},{"id":"apple-gathering-finished-1791989001461","number":18,"text":"Congratulations! You've fed the Racc King in 25:26","color":"#00e5ff"},{"id":"apple-gathering-finished-1791990383884","number":19,"text":"Congratulations! You've fed the Racc King in 7:18","color":"#00e5ff"},{"id":"apple-gathering-finished-1791990962995","number":20,"text":"Congratulations! You've fed the Racc King in 4:22","color":"#00e5ff"},{"id":"prestige-1791991184852","number":21,"text":"After being absolutely pulverized by a moving vehicle, you find yourself back where you started.","color":"#3fbf3f"},{"id":"apple-gathering-finished-1791991826953","number":22,"text":"Congratulations! You've fed the Racc King in 2:44","color":"#00e5ff"},{"id":"prestige-1791992151536","number":23,"text":"After being absolutely pulverized by a moving vehicle, you find yourself back where you started.","color":"#3fbf3f"},{"id":"apple-gathering-finished-1791992699054","number":24,"text":"Congratulations! You've fed the Racc King in 1:07","color":"#00e5ff"},{"id":"apple-gathering-finished-1791992896513","number":25,"text":"Congratulations! You've fed the Racc King in 0:39","color":"#00e5ff"},{"id":"apple-gathering-finished-1791993080002","number":26,"text":"Congratulations! You've fed the Racc King in 1:21","color":"#00e5ff"},{"id":"prestige-1791993168365","number":27,"text":"After being absolutely pulverized by a moving vehicle, you find yourself back where you started.","color":"#3fbf3f"},{"id":"apple-gathering-finished-1791993593591","number":28,"text":"Congratulations! You've fed the Racc King in 0:28","color":"#00e5ff"},{"id":"apple-gathering-finished-1791993649374","number":29,"text":"Congratulations! You've fed the Racc King in 0:25","color":"#00e5ff"},{"id":"apple-gathering-finished-1791993678274","number":30,"text":"Congratulations! You've fed the Racc King in 0:22","color":"#00e5ff"},{"id":"apple-gathering-finished-1791993739591","number":31,"text":"Congratulations! You've fed the Racc King in 0:24","color":"#00e5ff"},{"id":"apple-gathering-finished-1791993764766","number":32,"text":"Congratulations! You've fed the Racc King in 0:19","color":"#00e5ff"},{"id":"export-1791993779297","number":33,"text":"Game state exported to clipboard!","color":"#eeeeee"},{"id":"export-1791993817099","number":34,"text":"Game state exported to clipboard!","color":"#eeeeee"}],"nextLogNumber":35,"nextExportReminderTime":1792080217099}`
+            
+        }
 
 ];
 
@@ -4784,15 +4793,14 @@ nextExportReminderTime =
 saveGame();
 }
 
-
 async function exportGameData() {
 
 try {
 
     const gameData = getSaveData();
 
-    // Convert the save data into JSON.
-    let dataString = JSON.stringify(
+    // Convert the save data into valid JSON.
+    const dataString = JSON.stringify(
         gameData,
         (key, value) => {
 
@@ -4815,18 +4823,9 @@ try {
         }
     );
 
-    // Replace each escaped quotation mark with
-    // three literal backslashes followed by a quotation mark.
-    dataString = dataString.replace(
-        /\\?"/g,
-        match => {
-            return match.startsWith("\\")
-                ? "\\\\\\\""
-                : "\"";
-        }
-    );
+    // Confirm the exported string can be imported.
+    JSON.parse(dataString);
 
-    // Copy the resulting string to the clipboard.
     await navigator.clipboard.writeText(dataString);
 
     nextExportReminderTime =
@@ -5121,6 +5120,28 @@ if (
 
 }
 
+/* ------------------------------------------------------------
+   Apple Shard upgrades
+   ------------------------------------------------------------ */
+
+   if (Array.isArray(saveData.appleShardUpgrades)) {
+
+for (const savedUpgrade of saveData.appleShardUpgrades) {
+
+    const upgrade = appleShardUpgrades.find(
+        upgrade => upgrade.id === savedUpgrade.id
+    );
+
+    if (
+        upgrade &&
+        typeof savedUpgrade.purchases === "number"
+    ) {
+        upgrade.purchases = savedUpgrade.purchases;
+    }
+
+}
+
+}
 
 /* ------------------------------------------------------------
    Skills
@@ -6718,9 +6739,14 @@ for (let i = 0; i < appleUpgrades.length; i++) {
 
 const currentEffect = getAppleGain();
 
-const nextEffect = getAppleGainForPurchases(
-    upgrade.purchases + 1
-);
+const nextEffect =
+    getAppleGainForPurchases(
+        upgrade.purchases + 1
+    ) *
+    Math.pow(
+        1.1,
+        goldenUpgrades[6].purchases
+    );
 
 currentText.textContent =
     "Currently: " +
