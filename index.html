@@ -1784,6 +1784,7 @@ cursor: not-allowed;
     margin: 0 auto 12px;
     font-size: 24px;
     color: #00e5ff;
+    margin-bottom: 20px
 }
 
 #apple-shard-display strong {
@@ -1800,7 +1801,7 @@ cursor: not-allowed;
 }
 
 #apple-shard-summary {
-    margin-top: 16px;
+    margin-top: 24px;
     display: none;
     max-width: 800px;
     margin: 0 auto 30px;
@@ -1843,6 +1844,123 @@ cursor: not-allowed;
 
 .apple-shard-resource strong {
     color: #00e5ff;
+}
+
+
+/* Apple Shard Upgrade Grid */
+
+#apple-shard-upgrade-container {
+    display: none;
+    grid-template-columns: repeat(2, 300px);
+    gap: 15px;
+    width: max-content;
+    max-width: 95%;
+    margin: 25px auto;
+    justify-content: center;
+}
+
+.apple-shard-upgrade-button {
+    box-sizing: border-box;
+    width: 300px;
+    height: 150px;
+    padding: 14px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+
+    background-color: #d9f0ff;
+    color: #18364a;
+    border: 2px solid #80cfff;
+    border-radius: 10px;
+
+    text-align: center;
+    cursor: pointer;
+}
+
+.apple-shard-upgrade-button:hover:not(:disabled) {
+    background-color: #c2e7ff;
+}
+
+.apple-shard-upgrade-button.available {
+    box-shadow: 0 0 8px #80cfff;
+}
+
+.apple-shard-upgrade-button:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+}
+
+.apple-shard-upgrade-name {
+    font-size: 17px;
+    font-weight: bold;
+    color: #176b9a;
+}
+
+.apple-shard-upgrade-description {
+    font-size: 13px;
+    line-height: 1.35;
+}
+
+.apple-shard-upgrade-effect {
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.apple-shard-upgrade-cost {
+    margin-top: auto;
+    font-size: 13px;
+    font-weight: bold;
+    color: #176b9a;
+}
+
+@media (max-width: 650px) {
+    #apple-shard-upgrade-container {
+        grid-template-columns: minmax(0, 300px);
+    }
+}
+
+#apple-shard-summary p {
+    margin-top: 0px;
+    font-size: 14px;
+    color: #bbbbbb;
+}
+
+/* ============================================================
+   GARDENING SKILL THEME
+   ============================================================ */
+
+.gardening-skill {
+    border-color: #ff002f;
+}
+
+.gardening-skill .skill-header {
+    color: #ff002f;
+}
+
+.gardening-skill .skill-effect strong {
+    color: #ff002f;
+}
+
+.gardening-skill .skill-xp-fill {
+    background: #ff002f;
+}
+
+.gardening-skill button {
+    border-color: #ff002f;
+}
+
+.gardening-skill button:hover:not(:disabled) {
+    background: #5a1a28;
+}
+
+#prestige-button-wrapper {
+    display: inline-block;
+}
+
+#prestige-button:disabled {
+    pointer-events: none;
 }
 
     </style>
@@ -1992,74 +2110,73 @@ cursor: not-allowed;
          ACORNS PAGE
          ============================================================ -->
 
-    <div id="acorns-page">
+         <div id="acorns-page">
 
-        <button id="gather-button">
-
-            <span id="gather-button-text">
-                Gather 1 acorn
-            </span>
-
-        </button>
-
-
-        <div id="cooldown-text"></div>
-
-
-        <div id="upgrade-container"></div>
-
-        <div id="prestige-container">
-
-            <div id="prestige-tooltip"></div>
-
-            <button id="prestige-button">
+            <button id="gather-button">
         
-                <div id="prestige-button-title">
-                    Prestige
-                </div>
-
-                <div id="prestige-requirement">
-                    You need at least 1e21 acorns to Prestige.
-                </div>
-        
-                <div id="prestige-description">
-                    Reset most regular upgrades and golden upgrades, and all skills...
-                </div>
-        
-                <div id="prestige-golden-description">
-                    for a 1x boost to regular acorn gain and a 1x boost to golden acorn gain.
-                </div>
+                <span id="gather-button-text">
+                    Gather 1 acorn
+                </span>
         
             </button>
         
-            <div id="prestige-multiplier-display">
-                Current Acorn multiplier:
-                <span id="prestige-current-multiplier">1x</span>
-                <span id="prestige-arrow">→</span>
-                <span id="prestige-new-multiplier">1x</span>
-            </div>
+            <div id="cooldown-text"></div>
         
-            <div id="prestige-golden-multiplier-display">
-                Current Golden Acorn multiplier:
-                <span id="prestige-current-golden-multiplier">1x</span>
-                <span id="prestige-golden-arrow">→</span>
-                <span id="prestige-new-golden-multiplier">1x</span>
-            </div>
-
-            <div id="prestige-confirmation-setting">
-                Prestige Confirmation:
-                <label class="switch">
-                    <input type="checkbox" id="prestige-confirmation-toggle" checked>
-                    <span class="slider"></span>
-                </label>
+            <div id="upgrade-container"></div>
+        
+            <div id="prestige-container">
+        
+                <div id="prestige-tooltip"></div>
+        
+                <div id="prestige-button-wrapper">
+        
+                    <button id="prestige-button">
+        
+                        <div id="prestige-button-title">
+                            Prestige
+                        </div>
+        
+                        <div id="prestige-requirement">
+                            You need at least 1e21 acorns to Prestige.
+                        </div>
+        
+                        <div id="prestige-description">
+                            Reset most regular upgrades and golden upgrades, and all skills...
+                        </div>
+        
+                        <div id="prestige-golden-description">
+                            for a 1x boost to regular acorn gain and a 1x boost to golden acorn gain.
+                        </div>
+        
+                    </button>
+        
+                </div>
+        
+                <div id="prestige-multiplier-display">
+                    Current Acorn multiplier:
+                    <span id="prestige-current-multiplier">1x</span>
+                    <span id="prestige-arrow">→</span>
+                    <span id="prestige-new-multiplier">1x</span>
+                </div>
+        
+                <div id="prestige-golden-multiplier-display">
+                    Current Golden Acorn multiplier:
+                    <span id="prestige-current-golden-multiplier">1x</span>
+                    <span id="prestige-golden-arrow">→</span>
+                    <span id="prestige-new-golden-multiplier">1x</span>
+                </div>
+        
+                <div id="prestige-confirmation-setting">
+                    Prestige Confirmation:
+                    <label class="switch">
+                        <input type="checkbox" id="prestige-confirmation-toggle" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+        
             </div>
         
         </div>
-        
-        </div>
-
-    </div>
-
 
     <!-- ============================================================
          GOLDEN ACORNS PAGE
@@ -2349,7 +2466,100 @@ style="display: none;"
 </div>
 
 </div>
-        
+
+<!-- ============================================================
+     GARDENING
+     ============================================================ -->
+
+<div
+    class="skill gardening-skill"
+    id="gardening-skill"
+    style="display: none;"
+>
+
+    <div class="skill-header">
+        <strong>Gardening: Level 1</strong>
+
+        <div class="skill-subtitle">
+            "Okay, I'm gonna climb up the trees and get the apples, and you're gonna...no, don't eat them!"
+        </div>
+    </div>
+
+    <div class="skill-content">
+
+        <div class="skill-points-controls">
+
+            <button id="gardening-minus">
+                −
+            </button>
+
+            <div id="gardening-points">
+                0
+            </div>
+
+            <button id="gardening-plus">
+                +
+            </button>
+
+        </div>
+
+        <div class="skill-progress-section">
+
+            <div class="skill-xp-text">
+
+                <span id="gardening-xp">0</span>
+
+                /
+
+                <span id="gardening-xp-needed">1e27</span>
+
+                XP
+
+            </div>
+
+            <div class="skill-xp-bar">
+
+                <div
+                    id="gardening-xp-fill"
+                    class="skill-xp-fill"
+                ></div>
+
+            </div>
+
+            <div class="skill-effect">
+
+                Effect:
+
+                <strong id="gardening-effect">1.00x</strong>
+
+                multiplier to apple spawn interval
+
+            </div>
+
+            <div class="skill-xp-rate">
+
+                <span id="gardening-xp-rate">0</span>
+
+                XP/sec
+
+            </div>
+
+            <div class="skill-level-up-timer">
+
+                Next level-up in
+
+                <span id="gardening-level-up-timer">
+                    --:--
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
         </div>
 
         <div id="skills-hold-tip">
@@ -2411,9 +2621,39 @@ style="display: none;"
     which is generating
     <strong id="apple-shard-rate">0.0000</strong>
     <strong>apple shards/sec</strong>
+    <p>Faster completion times yield faster apple shard generation!</p>
 </div>
-  
-    </div>    
+
+<div id="apple-shard-dev-tool" style="margin: 12px 0; padding: 12px; border: 1px dashed #888; border-radius: 8px;">
+    <strong>Apple Shard Testing Tool</strong>
+    <p>Set a test fastest gathering time without completing a run.</p>
+
+    <label for="apple-shard-test-time">
+        Test time (seconds):
+    </label>
+
+    <input
+        id="apple-shard-test-time"
+        type="number"
+        min="0.01"
+        step="any"
+        value="30"
+        style="width: 100px; margin: 0 8px;"
+    >
+
+    <button id="apple-shard-test-button" type="button">
+        Set Test Time
+    </button>
+
+    <p id="apple-shard-test-message" style="margin-bottom: 0;"></p>
+</div>
+
+<!-- Keep these upgrades inside the Apples page. -->
+<div id="apple-shard-upgrade-container"></div>
+
+</div>
+
+</div>    
 
     <div id="save-controls">
 
@@ -2451,17 +2691,28 @@ style="display: none;"
 
     <!-- CHANGELOG -->
 
-<button id="changelog-button">v1.7</button>
+<button id="changelog-button">v1.9</button>
 
 <div id="changelog-modal">
 
     <div id="changelog-content">
 
-        <button id="changelog-close">×</button>
+        <button id="changelog-close">x</button>
 
         <h1>Changelog</h1>
 
         <div id="changelog-entries">
+            <h2>v1.9</h2>
+            <p>- Added 5 more Acorn upgrades, bringing the total to 25</p>
+            <p>- Added two more Golden Acorn upgrades, bringing the total to 8</p>
+            <p>- Added an extra info line below the Apple Shard summary</p>
+            <p>- Fixed data exporting so invalid characters won't make the data unreadable</p>
+            <p>- Added support for Survival Tier 2</p>
+            <h2>v1.8</h2>
+            <p>- Added all four Apple Shard upgrades</p>
+            <p>- Changed the flavor text of Acorn Upgrade 20</p>
+            <p>- Made it so Acorn Upgrade 20 no longer resets on Prestige, thus making Acorn Shard upgrades permanently displayed once unlocked</p>
+            <p>- Added support for Forging Tier 2</p>
             <h2>v1.7</h2>
             <p>- Added lots of Apples content, including the grid, all six Apples upgrades, time tracking, taxes, and corresponding log messages</p>
             <p>- Added a little Apple Shards content, including Apple Shards generation, but nothing beyond that yet</p>
@@ -2601,6 +2852,50 @@ const appleUpgrades = [
     },
 ];
 
+
+const appleShardUpgrades = [
+    {
+        id: 1,
+        name: "Expand Acorn Dimensions",
+        description: "Increases the exponent of all acorn gain by +0.01 (additive).",
+        effect: "Current power: 1 + (0.01 × purchases)",
+        baseCost: 1,
+        costMultiplier: 2,
+        purchases: 0
+    },
+
+    {
+        id: 2,
+        name: "Duplicate Shards",
+        description: "Multiplies all apple shard gain by 2x per purchase.",
+        effect: "Current multiplier: 1.00x",
+        baseCost: 10,
+        costMultiplier: 10,
+        purchases: 0
+    },
+
+    {
+        id: 3,
+        name: "Gain Knowledge Telepathically",
+        description: "Multiplies all skill XP gain based on your current apple shards.",
+        effect: "Current multiplier: (sqrt(apple shards))^purchases",
+        baseCost: 100,
+        costMultiplier: 5,
+        purchases: 0
+    },
+
+    {
+    id: 4,
+    name: "Start Aura Farming",
+    description: "Multiplies base Prestige multiplier by 1.5x per purchase (before exponent bonuses).",
+    effect: "Current multiplier: 1.5^purchases",
+    baseCost: 1000,
+    costMultiplier: 4,
+    purchases: 0
+    },
+
+];
+
         // Multiplier applied to all regular acorn gain.
         let goldenAcornMultiplier = 1;
         let goldenAcornCostMultiplier = 1;
@@ -2669,16 +2964,17 @@ const savePoints = [
 ];
 
 function updateForgingEffect() {
+    const forging = skills.forging;
+    const tierData = forging.tiers[forging.tier];
 
-const forging =
-    skills.forging;
+    const tierEffectMultiplier =
+        tierData?.effectMultiplier ?? 1;
 
-forgingGoldenAcornMultiplier =
-    forging.level;
+    forgingGoldenAcornMultiplier =
+        forging.level * tierEffectMultiplier;
 
-updateGoldenAcornDescription();
-updateGoldenAcornDisplay();
-
+    updateGoldenAcornDescription();
+    updateGoldenAcornDisplay();
 }
 
 function startGoldenAcornTimer() {
@@ -2784,7 +3080,14 @@ const skills = {
         effectPerLevel: 1,
         xpBase: 100000,
         xpMultiplier: 1.75,
-        tiers: {},
+
+        tiers: {
+    2: {
+        xpMultiplier: 2.5,
+        effectMultiplier: 10
+    }
+},
+
     },
     survival: {
     name: "Survival",
@@ -2796,8 +3099,25 @@ const skills = {
     effectPerLevel: 0.05,
     xpBase: 1e14,
     xpMultiplier: 2,
-    tiers: {},
+    tiers: {
+        2: {
+            xpMultiplier: 3,
+            effectPerLevel: 0.08
+        }
+    },
 },
+    gardening: {
+        name: "Gardening",
+        points: 0,
+        level: 1,
+        tier: 1,
+        xp: 0,
+        effectMultiplier: 1,
+        effectPerLevel: 0.96,
+        xpBase: 1e27,
+        xpMultiplier: 2.5,
+        tiers: {}
+    }
 };
 
 const prestigeGoldenDescription =
@@ -2828,15 +3148,20 @@ const preciousMetalMultiplier =
         upgrades[13].purchases
     );
 
-return (
+    const normalAcornGain =
     acornsPerGather *
     goldenAcornMultiplier *
     skills.gathering.effectMultiplier *
     gatheringXPAcornMultiplier *
     prestigeMultiplier *
     doubleDownMultiplier *
-    preciousMetalMultiplier
-);
+    preciousMetalMultiplier;
+
+const acornPower =
+    1 + (0.01 * appleShardUpgrades[0].purchases);
+
+return Math.pow(normalAcornGain, acornPower);
+
 }
 
         /* ============================================================
@@ -3186,8 +3511,8 @@ addLogMessage(
 },
 {
     id: 19,
-    name: "Discover Apples",
-    subtitle: "Wait...there's something other than acorns?",
+    name: "Take a Bite of Something Sweeter",
+    subtitle: "When life gives you apples...make a new tab open up!",
     description: "Unlocks the Apples tab.",
     baseCost: 1e80,
     costMultiplier: 1,
@@ -3205,11 +3530,83 @@ addLogMessage(
     updateUpgradeButtons();
 }
 },
-
-// Future upgrades go here.
+{
+    id: 20,
+    name: "Wait for Apples to Ripen",
+    subtitle: "You finally found the solution to avoiding that tangy aftertaste.",
+    description:
+        "Multiplies apple gain by 1.2x per purchase, multiplicatively.",
+    baseCost: 1e84,
+    costMultiplier: 10,
+    maxPurchases: 10,
+    purchases: 0,
+    effect: function() {
+        updateAppleCounter();
+        updateAppleUpgradeButtons();
+    }
+},
+{
+    id: 21,
+    name: "Don Your Bucket Hat",
+    subtitle: "You know the drill, it's time to get to work again!",
+    description: "Unlocks a new skill.",
+    baseCost: 5e90,
+    costMultiplier: 1,
+    maxPurchases: 1,
+    purchases: 0,
+    effect: function() {
+        gardeningSkill.style.display = "block";
+        updateSkillsDisplay();
+    }
+},
+{
+    id: 22,
+    name: "Bribe the Racc King",
+    subtitle: "He's offered you a few more tax cuts in exchange for a lifetime supply of apples.",
+    description:
+        "Raises the tax exponent by +0.1 per purchase.",
+    baseCost: 1e93,
+    costMultiplier: 200,
+    maxPurchases: 10,
+    purchases: 0,
+    effect: function() {
+        updateAppleCounter();
+    }
+},
+{
+    id: 23,
+    name: "Unleash the Golden Acorn Void",
+    subtitle: "Whenever you spend golden acorns they seem to just...pop right back out?!",
+    description:
+        "Unlocks two more Golden Acorn upgrades, and Golden Acorn upgrades no longer spend golden acorns.",
+    baseCost: 1e115,
+    costMultiplier: 1,
+    maxPurchases: 1,
+    purchases: 0,
+    effect: function() {
+        // Rebuild the Golden Upgrades shop to reveal
+        // Golden Upgrades 7 and 8.
+        createGoldenUpgradeButtons();
+        updateTabGlows();
+    }
+},
+{
+    id: 24,
+    name: "Achieve Immortality",
+    subtitle: "Your wealth has provided you with the biotechnology to never die again.",
+    description:
+        "Allows you to gain your Prestige multiplier passively without needing to Prestige.",
+    baseCost: 1e140,
+    costMultiplier: 1,
+    maxPurchases: 1,
+    purchases: 0,
+    effect: function() {
+        updatePrestigeDisplay();
+        updateTabGlows();
+    }
+},
 
             // Future upgrades go here.
-            // Note: The first acorn shard upgrade (I don't know its effect yet) should cost 1 acorn shard.
 
         ];
 
@@ -3305,6 +3702,33 @@ if (!gatherOnCooldown) {
 
     }
 },
+{
+    id: 6,
+    name: "Genetic-Modify Larger Apples",
+    description:
+        "Increases all apple gain by 10\%, multiplicatively.",
+    baseCost: 1e6,
+    costMultiplier: 1.25,
+    effectMultiplier: 1.1,
+    purchases: 0,
+    effect: function() {
+        updateAppleCounter();
+        updateAppleUpgradeButtons();
+    }
+},
+{
+    id: 7,
+    name: "Raise the Gold Market",
+    description:
+        "Increases how much more valuable a golden apple is than a red one.",
+    baseCost: 2e6,
+    costMultiplier: 1.25,
+    effectMultiplier: 0.25,
+    purchases: 0,
+    effect: function() {
+        updateAppleCounter();
+    }
+},
 
             // Future Golden Acorn upgrades go here.
 
@@ -3379,6 +3803,9 @@ const prestigeContainer =
 const prestigeButton =
     document.getElementById("prestige-button");
 
+const prestigeButtonWrapper =
+    document.getElementById("prestige-button-wrapper");
+
 const prestigeButtonTitle =
     document.getElementById("prestige-button-title");
 
@@ -3450,6 +3877,9 @@ const appleShardDisplay =
 
 const appleShardSummary =
     document.getElementById("apple-shard-summary");
+
+const appleShardUpgradeContainer =
+    document.getElementById("apple-shard-upgrade-container");
 
 const fastestAppleTimeDisplay =
     document.getElementById("fastest-apple-time");
@@ -3708,6 +4138,36 @@ const survivalEffect =
 const survivalLevelUpTimer =
     document.getElementById("survival-level-up-timer");
 
+const gardeningSkill =
+    document.getElementById("gardening-skill");
+
+const gardeningMinus =
+    document.getElementById("gardening-minus");
+
+const gardeningPlus =
+    document.getElementById("gardening-plus");
+
+const gardeningPoints =
+    document.getElementById("gardening-points");
+
+const gardeningXPElement =
+    document.getElementById("gardening-xp");
+
+const gardeningXPNeeded =
+    document.getElementById("gardening-xp-needed");
+
+const gardeningXPFill =
+    document.getElementById("gardening-xp-fill");
+
+const gardeningXPRate =
+    document.getElementById("gardening-xp-rate");
+
+const gardeningEffect =
+    document.getElementById("gardening-effect");
+
+const gardeningLevelUpTimer =
+    document.getElementById("gardening-level-up-timer");
+
 const logMessagesElement =
     document.getElementById("log-messages");
 
@@ -3828,6 +4288,14 @@ return {
 
 appleUpgrades:
     appleUpgrades.map(
+        upgrade => ({
+            id: upgrade.id,
+            purchases: upgrade.purchases
+        })
+    ),
+
+appleShardUpgrades:
+    appleShardUpgrades.map(
         upgrade => ({
             id: upgrade.id,
             purchases: upgrade.purchases
@@ -4046,6 +4514,22 @@ for (const savedUpgrade of saveData.appleUpgrades) {
 
 }
 
+/* Restore Apple Shard upgrades. */
+
+if (Array.isArray(saveData.appleShardUpgrades)) {
+    for (const savedUpgrade of saveData.appleShardUpgrades) {
+        const upgrade = appleShardUpgrades.find(
+            upgrade => upgrade.id === savedUpgrade.id
+        );
+
+        if (
+            upgrade &&
+            typeof savedUpgrade.purchases === "number"
+        ) {
+            upgrade.purchases = savedUpgrade.purchases;
+        }
+    }
+}
 
 /* Restore apple gathering state. */
 
@@ -4223,12 +4707,17 @@ if (
         goldenAcornTimer.style.display = "block";
     }
 
-    if (upgrades[19].purchases > 0) {
-    applesTab.style.display = "block";
-}
-else {
-    applesTab.style.display = "none";
-}
+    // Upgrade 20 unlocks the Apples tab.
+    applesTab.style.display =
+        upgrades[19].purchases > 0
+            ? "block"
+            : "none";
+
+    // Upgrade 22 unlocks Gardening.
+    gardeningSkill.style.display =
+        upgrades[21].purchases > 0
+            ? "block"
+            : "none";
 
     // Recalculate and refresh derived values.
     updateGatherCooldown();
@@ -4295,25 +4784,55 @@ nextExportReminderTime =
 saveGame();
 }
 
+
 async function exportGameData() {
-
-const gameData =
-    getSaveData();
-
-const dataString =
-    JSON.stringify(gameData);
 
 try {
 
-    await navigator.clipboard.writeText(
-    dataString
-);
+    const gameData = getSaveData();
 
-nextExportReminderTime =
-    Date.now() +
-    (24 * 60 * 60 * 1000);
+    // Convert the save data into JSON.
+    let dataString = JSON.stringify(
+        gameData,
+        (key, value) => {
 
-saveGame();
+            if (
+                typeof value === "number" &&
+                !Number.isFinite(value)
+            ) {
+                throw new Error(
+                    `Invalid number in save data: ${key}`
+                );
+            }
+
+            if (typeof value === "bigint") {
+                throw new Error(
+                    `Unsupported BigInt in save data: ${key}`
+                );
+            }
+
+            return value;
+        }
+    );
+
+    // Replace each escaped quotation mark with
+    // three literal backslashes followed by a quotation mark.
+    dataString = dataString.replace(
+        /\\?"/g,
+        match => {
+            return match.startsWith("\\")
+                ? "\\\\\\\""
+                : "\"";
+        }
+    );
+
+    // Copy the resulting string to the clipboard.
+    await navigator.clipboard.writeText(dataString);
+
+    nextExportReminderTime =
+        Date.now() + (24 * 60 * 60 * 1000);
+
+    saveGame();
 
     addLogMessage(
         "Game state exported to clipboard!",
@@ -4325,12 +4844,12 @@ saveGame();
 catch (error) {
 
     console.error(
-        "Could not copy game data:",
+        "Could not export game data:",
         error
     );
 
     alert(
-        "Could not copy game data to clipboard."
+        "Could not export game data. Check the console for details."
     );
 
 }
@@ -4610,7 +5129,8 @@ if (
    const defaultSkillXPMultipliers = {
     gathering: 1.5,
     forging: 1.75,
-    survival: 2
+    survival: 2,
+    gardening: 2.5,
 };
 
 if (
@@ -4753,6 +5273,7 @@ updateUpgradeButtons();
 createGoldenUpgradeButtons();
 updateGoldenUpgradeButtons();
 createAppleUpgradeButtons();
+createAppleShardUpgradeButtons();
 
 // Refresh the imported apple total and upgrade availability.
 updateAppleCounter();
@@ -4795,6 +5316,12 @@ if (upgrades[15].purchases > 0) {
 else {
     survivalSkill.style.display = "none";
 }
+
+// Upgrade 22 unlocks Gardening.
+gardeningSkill.style.display =
+    upgrades[21].purchases > 0
+        ? "block"
+        : "none";
 
 if (goldenUpgrades[3].purchases > 0) {
     goldenAcornTimer.style.display = "block";
@@ -5474,6 +6001,7 @@ function formatAppleGatheringTime(seconds) {
    ============================================================ */
 
 // Calculate apple shards generated per second.
+
 function getAppleShardRate() {
 
 if (
@@ -5481,16 +6009,22 @@ if (
     fastestAppleGatheringTime <= 0
 ) {
     return 0;
-    appleShardDisplay.style.display = "none";
 }
 
-return Math.max(
+const baseRate = Math.max(
     Math.pow(300 / fastestAppleGatheringTime, 2),
     0.001
 );
 
-}
+// Upgrade 2 doubles all Apple Shard gain per purchase.
+const shardMultiplier = Math.pow(
+    2,
+    appleShardUpgrades[1].purchases
+);
 
+return baseRate * shardMultiplier;
+
+}
 
 // Format shard amounts with two decimal places below 1,000.
 function formatAppleShardAmount(amount) {
@@ -5526,6 +6060,9 @@ appleShardSeparator.style.display = "block";
 appleShardDisplay.style.display = "block";
 appleShardSummary.style.display = "block";
 
+appleShardUpgradeContainer.style.display = "grid";
+updateAppleShardUpgradeButtons();
+
 fastestAppleTimeDisplay.textContent =
     formatAppleGatheringTime(
         fastestAppleGatheringTime
@@ -5547,6 +6084,160 @@ else {
 }
 
 }
+
+
+function getAppleShardUpgradeCost(upgrade) {
+    if (upgrade.baseCost === null) {
+        return null;
+    }
+
+    return (
+        upgrade.baseCost *
+        Math.pow(upgrade.costMultiplier, upgrade.purchases)
+    );
+}
+
+
+function createAppleShardUpgradeButtons() {
+    appleShardUpgradeContainer.innerHTML = "";
+
+    for (const upgrade of appleShardUpgrades) {
+        const button = document.createElement("button");
+        button.className = "apple-shard-upgrade-button";
+        button.type = "button";
+
+        const name = document.createElement("div");
+        name.className = "apple-shard-upgrade-name";
+        name.textContent = upgrade.name;
+
+        const description = document.createElement("div");
+        description.className = "apple-shard-upgrade-description";
+        description.textContent = upgrade.description;
+
+        const effect = document.createElement("div");
+        effect.className = "apple-shard-upgrade-effect";
+
+        const cost = document.createElement("div");
+        cost.className = "apple-shard-upgrade-cost";
+
+        button.append(name, description, effect, cost);
+
+        button.addEventListener("click", function() {
+            purchaseAppleShardUpgrade(upgrade);
+        });
+
+        appleShardUpgradeContainer.appendChild(button);
+    }
+
+    updateAppleShardUpgradeButtons();
+
+    if (fastestAppleGatheringTime !== null) {
+        appleShardUpgradeContainer.style.display = "grid";
+    }
+}
+
+
+function updateAppleShardUpgradeButtons() {
+    const buttons = appleShardUpgradeContainer.querySelectorAll(
+        ".apple-shard-upgrade-button"
+    );
+
+    appleShardUpgrades.forEach(function(upgrade, index) {
+        const button = buttons[index];
+        if (!button) return;
+
+        const effect = button.querySelector(
+            ".apple-shard-upgrade-effect"
+        );
+        const costElement = button.querySelector(
+            ".apple-shard-upgrade-cost"
+        );
+
+        const cost = getAppleShardUpgradeCost(upgrade);
+
+        if (cost === null) {
+            effect.textContent = upgrade.effect;
+            costElement.textContent = "Coming soon";
+            button.disabled = true;
+            button.classList.remove("available");
+            return;
+        }
+
+
+        if (upgrade.id === 1) {
+
+const power =
+    1 + (0.01 * upgrade.purchases);
+
+effect.textContent =
+    "Current power: " + power.toFixed(2);
+
+}
+else if (upgrade.id === 2) {
+
+const multiplier =
+    Math.pow(2, upgrade.purchases);
+
+effect.textContent =
+    "Current multiplier: " +
+    multiplier + "x";
+
+}
+else if (upgrade.id === 3) {
+
+const multiplier =
+    getAppleShardSkillXPMultiplier();
+
+effect.textContent =
+    "Current XP multiplier: " +
+    formatNumber(multiplier) + "x";
+
+}
+else if (upgrade.id === 4) {
+    const multiplier = Math.pow(
+        1.5,
+        upgrade.purchases
+    );
+
+    effect.textContent =
+        "Current base multiplier: " +
+        formatNumber(multiplier) + "x";
+}
+
+        costElement.textContent =
+            "Cost: " + formatAppleShardAmount(cost) +
+            " apple shards";
+
+        const canAfford = appleShards >= cost;
+
+        button.disabled = !canAfford;
+        button.classList.toggle("available", canAfford);
+    });
+}
+
+
+function purchaseAppleShardUpgrade(upgrade) {
+    const cost = getAppleShardUpgradeCost(upgrade);
+
+    if (cost === null || appleShards < cost) {
+        return;
+    }
+
+    appleShards -= cost;
+    upgrade.purchases++;
+
+    updateAppleShardDisplay();
+    updateAppleShardUpgradeButtons();
+    updateSkillsDisplay();
+    updatePrestigeDisplay();
+
+    // Refresh acorn gain and its displayed value immediately.
+    updateAcornsPerGather();
+    updateResourceDisplay();
+
+    saveGame();
+}
+
 
 function generateAppleShards() {
 
@@ -5722,6 +6413,10 @@ function finishAppleGathering() {
     updateAppleGrid();
     updateAppleShardDisplay();
 
+    // Refresh regular upgrades in case gathering unlocked more.
+    createUpgradeButtons();
+    updateUpgradeButtons();
+
     // Refresh the finish button's hidden/disabled state.
     updateFinishGatheringButton();
 
@@ -5790,32 +6485,58 @@ return Math.floor(
 }
 
 
-// Calculate how many apples each collection gives.
+function getAppleGainForPurchases(
+    plantTreePurchases,
+    empirePurchases = upgrades[20].purchases
+) {
+
+    const baseAppleGain =
+        Math.pow(1.2, plantTreePurchases) +
+        plantTreePurchases;
+
+    const empireMultiplier =
+        Math.pow(1.2, empirePurchases);
+
+    return baseAppleGain * empireMultiplier;
+
+}
+
+
 function getAppleGain() {
 
-const purchases = appleUpgrades[0].purchases;
+const baseAppleGain =
+    getAppleGainForPurchases(
+        appleUpgrades[0].purchases
+    );
 
-return (
-    Math.pow(1.2, purchases) +
-    purchases
-);
+const goldenAppleGainMultiplier =
+    Math.pow(
+        1.1,
+        goldenUpgrades[6].purchases
+    );
+
+return baseAppleGain * goldenAppleGainMultiplier;
 
 }
 
 
 const MAX_APPLES = 1000000;
 
-
 function getAppleTaxMultiplier() {
 
-if (apples > 1000) {
-    return Math.log10(apples);
+// Taxes always have a multiplier of 1 at 1,000 apples or fewer.
+if (apples <= 1000) {
+    return 1;
 }
 
-return 1;
+const baseTaxMultiplier = Math.log10(apples);
+
+const exponent =
+    1 + 0.1 * upgrades[22].purchases;
+
+return Math.pow(baseTaxMultiplier, exponent);
 
 }
-
 
 function updateAppleTaxDisplay() {
 
@@ -5871,14 +6592,13 @@ updateAppleTaxDisplay();
 }
 // Calculate the time between apple spawns, in milliseconds.
 function getAppleSpawnInterval() {
+    const purchases = appleUpgrades[1].purchases;
 
-const purchases = appleUpgrades[1].purchases;
-
-return (
-    2500 *
-    Math.pow(0.9, purchases)
-);
-
+    return (
+        2500 *
+        Math.pow(0.9, purchases) *
+        skills.gardening.effectMultiplier
+    );
 }
 
 // Calculate the maximum number of apples allowed on the grid.
@@ -5994,25 +6714,25 @@ for (let i = 0; i < appleUpgrades.length; i++) {
     const costElement =
         button.querySelector(".apple-upgrade-cost");
 
-    if (upgrade.id === 1) {
+        if (upgrade.id === 1) {
 
-        const currentEffect = getAppleGain();
+const currentEffect = getAppleGain();
 
-        const nextEffect =
-            Math.pow(1.2, upgrade.purchases + 1) +
-            (upgrade.purchases + 1);
+const nextEffect = getAppleGainForPurchases(
+    upgrade.purchases + 1
+);
 
-        currentText.textContent =
-            "Currently: " +
-            formatNumber(currentEffect) +
-            "x";
+currentText.textContent =
+    "Currently: " +
+    formatNumber(currentEffect) +
+    "x";
 
-        next.textContent =
-            " → " +
-            formatNumber(nextEffect) +
-            "x";
+next.textContent =
+    " → " +
+    formatNumber(nextEffect) +
+    "x";
 
-    }
+}
     else if (upgrade.id === 2) {
 
         const currentEffect =
@@ -6305,7 +7025,9 @@ for (
         applesOnGrid.delete(position);
         goldenApplesOnGrid.delete(position);
 
-        const valueMultiplier = isGolden ? 4 : 1;
+        const valueMultiplier = isGolden
+    ? 4 + (0.25 * goldenUpgrades[7].purchases)
+    : 1;
 
         apples = Math.min(
     MAX_APPLES,
@@ -6352,15 +7074,20 @@ saveGame();
 
 function restartAppleSpawnTimer() {
 
-if (appleSpawnTimer !== null) {
-    clearInterval(appleSpawnTimer);
-}
+    if (appleSpawnTimer !== null) {
+        clearInterval(appleSpawnTimer);
+        appleSpawnTimer = null;
+    }
 
-appleSpawnTimer = setInterval(
-    spawnGridApple,
-    getAppleSpawnInterval()
-);
+    // Do not spawn apples until the player starts gathering.
+    if (!appleGatheringStarted) {
+        return;
+    }
 
+    appleSpawnTimer = setInterval(
+        spawnGridApple,
+        getAppleSpawnInterval()
+    );
 }
 
 
@@ -6796,101 +7523,75 @@ gatherCooldown =
 
    let prestigeTooltipTimer = null;
 
-prestigeButton.addEventListener(
+   prestigeButtonWrapper.addEventListener(
     "mouseenter",
     function() {
 
-        if (!prestigeButton.disabled) {
-            return;
-        }
+        clearTimeout(prestigeTooltipTimer);
 
         prestigeTooltipTimer = setTimeout(
             function() {
 
-                if (!prestigeButton.disabled) {
-                    return;
-                }
+                if (upgrades[24].purchases > 0) {
 
-                if (hasPrestiged) {
+                    prestigeTooltip.textContent =
+                        "You have no need to Prestige because you are passively gaining Prestige multiplier!";
+
+                }
+                else if (hasPrestiged) {
 
                     prestigeTooltip.innerHTML =
+                        "Prestige is only available when your acorns are greater than " +
+                        "that at which you last Prestiged, AND your acorn multiplier is above 1.00x." +
+                        "<br><span style=\"display: inline-block; margin-top: 6px;\">" +
+                        "You last Prestiged at " +
+                        formatNumber(lastPrestigeAcorns) +
+                        " acorns.</span>";
 
-"Prestige is only available when your acorns are greater than " +
+                }
+                else {
 
-"that at which you last Prestiged, AND your acorn multiplier is " +
+                    prestigeTooltip.innerHTML =
+                        "Prestige is only available when your acorns are greater than " +
+                        "that at which you last Prestiged, AND your acorn multiplier is above 1.00x." +
+                        "<br><span style=\"display: inline-block; margin-top: 6px;\">" +
+                        "You have not Prestiged yet.</span>";
 
-"above 1.00x." +
+                }
 
-"<br><span style=\"display: inline-block; margin-top: 6px;\">" +
-
-"You last Prestiged at " +
-
-formatNumber(lastPrestigeAcorns) +
-
-" acorns." +
-
-"</span>";
-
-}
-else {
-
-prestigeTooltip.innerHTML =
-
-"Prestige is only available when your acorns are greater than " +
-
-"that at which you last Prestiged, AND your acorn multiplier is " +
-
-"above 1.00x." +
-
-"<br><span style=\"display: inline-block; margin-top: 6px;\">" +
-
-"You have not Prestiged yet." +
-
-"</span>";
-
-}
-
-                prestigeTooltip.style.display =
-                    "block";
-
-                const buttonRect =
-                    prestigeButton.getBoundingClientRect();
+                const rect =
+                    prestigeButtonWrapper.getBoundingClientRect();
 
                 prestigeTooltip.style.left =
-                    (
-                        buttonRect.left +
-                        buttonRect.width / 2 -
-                        prestigeTooltip.offsetWidth / 2
-                    ) +
-                    "px";
+                    (rect.left + rect.width / 2) + "px";
 
-                    prestigeTooltip.style.top =
-    (
-        buttonRect.top -
-        prestigeTooltip.offsetHeight -
-        8
-    ) +
-    "px";
+                prestigeTooltip.style.top =
+                    (rect.top - prestigeTooltip.offsetHeight - 10) + "px";
+
+                prestigeTooltip.style.transform =
+                    "translateX(-50%)";
+
+                prestigeTooltip.style.display = "block";
 
             },
-            1000
+            500
         );
 
     }
 );
 
-prestigeButton.addEventListener(
+prestigeButtonWrapper.addEventListener(
     "mouseleave",
     function() {
 
         clearTimeout(prestigeTooltipTimer);
 
-        prestigeTooltip.style.display =
-            "none";
+        prestigeTooltip.style.display = "none";
 
     }
 );
-   function calculatePrestigeMultiplier(acornAmount) {
+
+function calculatePrestigeMultiplier(acornAmount) {
 
 if (acornAmount < 1e21) {
     return 1;
@@ -6912,9 +7613,28 @@ const prestigeExponent =
     ) +
     goldenUpgrades[5].purchases * 0.02;
 
-return Math.pow(
+// Step 1: Calculate the general Prestige formula.
+const basePrestigeMultiplier = Math.pow(
     Math.log2(acornAmount / 1e20),
-    prestigeExponent
+    1.5
+);
+
+// Step 2: Apply Apple Shard Upgrade 4.
+const prestigeFoundationMultiplier = Math.pow(
+    1.5,
+    appleShardUpgrades[3].purchases
+);
+
+const multiplierBeforeExponentBonuses =
+    basePrestigeMultiplier *
+    prestigeFoundationMultiplier;
+
+// Step 3: Apply the existing exponent bonuses.
+// Divide by 1.5 to preserve the original formula
+// when no additional exponent bonuses are present.
+return Math.pow(
+    multiplierBeforeExponentBonuses,
+    prestigeExponent / 1.5
 );
 }
 
@@ -6960,16 +7680,30 @@ const newPrestigeGoldenMultiplier =
     calculatePrestigeGoldenAcornMultiplier(acorns);
     updateGoldenAcornDescription();
 
-    const prestigeMultiplierGain =
-    newPrestigeMultiplier /
-    prestigeMultiplier;
+const passivePrestigeEnabled =
+    upgrades[24].purchases > 0;
+
+let prestigeMultiplierGain =
+    newPrestigeMultiplier / prestigeMultiplier;
+
+let goldenMultiplierGain =
+    newPrestigeGoldenMultiplier /
+    prestigeGoldenAcornMultiplier;
+
+// Passive Prestige is continuous, so tiny changes in
+// the displayed gain should not make the text flicker.
+if (passivePrestigeEnabled) {
+    prestigeMultiplierGain = 1;
+    goldenMultiplierGain = 1;
+}
 
 const canPrestige =
     acorns >= 1e21 &&
     acorns > lastPrestigeAcorns &&
     prestigeMultiplierGain > 1;
 
-prestigeButton.disabled = !canPrestige;
+prestigeButton.disabled =
+    passivePrestigeEnabled || !canPrestige;
 
 /*
  * Update the multiplier displays.
@@ -7029,11 +7763,6 @@ else {
 
     prestigeGoldenDescription.style.display =
         "block";
-
-    const goldenMultiplierGain =
-        newPrestigeGoldenMultiplier /
-        prestigeGoldenAcornMultiplier;
-
 
     prestigeDescription.textContent =
         "Reset most regular upgrades and golden upgrades, and all skills...";
@@ -7113,9 +7842,17 @@ hasPrestiged = true;
 // Reset regular upgrades, preserving the first N upgrades.
 for (const upgrade of upgrades) {
 
-if (upgrade.id === 9) {
+
+    if (upgrade.id === 9) {
     // Prestige itself remains permanently unlocked.
     upgrade.purchases = 1;
+}
+else if (upgrade.id === 19) {
+    // The Apple Tab unlock is always preserved.
+    upgrade.purchases = Math.max(
+        upgrade.purchases,
+        1
+    );
 }
 else if (upgrade.id < upgradesToPreserve) {
     // Keep this upgrade at its current purchase count.
@@ -7123,6 +7860,7 @@ else if (upgrade.id < upgradesToPreserve) {
 else {
     upgrade.purchases = 0;
 }
+
 }
 
 updateGoldenAcornDisplay();
@@ -7148,7 +7886,11 @@ for (const skill of Object.values(skills)) {
     else if (skill === skills.survival) {
         skill.xpMultiplier = 2;
     }
+    else if (skill === skills.gardening) {
+        skill.xpMultiplier = 2.5;
+    }
 }
+restartAppleSpawnTimer();
 
 totalGatheringXP = 0;
 forgingGoldenAcornMultiplier = 1;
@@ -7215,6 +7957,11 @@ survivalSkill.style.display =
         ? "block"
         : "none";
 
+gardeningSkill.style.display =
+    upgrades[21].purchases > 0
+        ? "block"
+        : "none";
+
 skillsPage.style.display = "none";
 skillsResourceDisplay.style.display = "none";
 
@@ -7242,6 +7989,56 @@ updateGoldenUpgradeButtons();
 updatePrestigeDisplay();
 updateTabGlows();
 saveGame();
+}
+
+function checkPassivePrestige() {
+
+// Do nothing until Upgrade 25 is purchased.
+if (upgrades[24].purchases <= 0) {
+    return;
+}
+
+// Use the same eligibility requirements as normal Prestige.
+if (!prestigeUnlocked) {
+    return;
+}
+
+if (acorns < 1e21) {
+    return;
+}
+
+if (acorns <= lastPrestigeAcorns) {
+    return;
+}
+
+const newPrestigeMultiplier =
+    calculatePrestigeMultiplier(acorns);
+
+const prestigeMultiplierGain =
+    newPrestigeMultiplier / prestigeMultiplier;
+
+if (prestigeMultiplierGain <= 1) {
+    return;
+}
+
+// Record the new Prestige milestone without resetting anything.
+lastPrestigeAcorns = acorns;
+highestAcorns = Math.max(highestAcorns, acorns);
+hasPrestiged = true;
+
+// Grant both Prestige multipliers.
+prestigeMultiplier =
+    calculatePrestigeMultiplier(acorns);
+
+prestigeGoldenAcornMultiplier =
+    calculatePrestigeGoldenAcornMultiplier(acorns);
+
+// Refresh displays and apply the updated multiplier effects.
+updateAcornGainMultiplier();
+updatePrestigeDisplay();
+updateResourceDisplay();
+updateGoldenAcornDisplay();
+
 }
 
 prestigeButton.addEventListener(
@@ -7343,8 +8140,7 @@ const furthestPurchased =
 const normalVisibleCount =
     furthestPurchased + 4;
 
-// Before the first Prestige, upgrade 11
-// and everything after it remains hidden.
+// Before the first Prestige, upgrades 11 and beyond remain hidden.
 if (!hasPrestiged) {
     return Math.min(
         10,
@@ -7353,6 +8149,17 @@ if (!hasPrestiged) {
     );
 }
 
+// After the first Prestige, keep upgrades 21 and beyond hidden
+// until the player has completed a gathering run.
+if (fastestAppleGatheringTime === null) {
+    return Math.min(
+        20,
+        upgrades.length,
+        normalVisibleCount
+    );
+}
+
+// Once a gathering time has been recorded, use normal progression.
 return Math.min(
     upgrades.length,
     normalVisibleCount
@@ -7702,6 +8509,9 @@ tooltip.innerHTML =
             createUpgradeButtons();
 
             updateUpgradeButtons();
+
+            updateAppleUpgradeButtons();
+
             saveGame();
 
         }
@@ -7910,6 +8720,13 @@ if (upgrade.purchases >= upgrade.maxPurchases) {
     ) {
         continue;
     }
+    // Golden Upgrades 7 and 8 require regular Upgrade 24.
+if (
+    upgrade.id >= 6 &&
+    upgrades[23].purchases <= 0
+) {
+    continue;
+}
 
                 const button =
                     document.createElement("button");
@@ -7982,6 +8799,19 @@ else if (upgrade.id === 5) {
             upgrade.effectMultiplier *
             upgrade.purchases
         );
+
+}
+else if (upgrade.id === 7) {
+
+current.textContent =
+    "Currently: " +
+    formatNumber(
+        4 + (
+            upgrade.effectMultiplier *
+            upgrade.purchases
+        )
+    ) +
+    "x";
 
 }
 else if (upgrade.id !== 3) {
@@ -8172,9 +9002,14 @@ if (goldenAcorns < cost) {
     return;
 }
 
-goldenAcorns -= cost;
+// Upgrade 24 makes Golden Upgrades stop consuming
+// golden acorns, but the player must still afford them.
+if (upgrades[23].purchases <= 0) {
+    goldenAcorns -= cost;
+}
 
 upgrade.purchases++;
+
 if (upgrade.id === 3) {
     goldenAcornTimer.style.display = "block";
     startGoldenAcornTimer();
@@ -8273,6 +9108,19 @@ if (upgrade.id === 5) {
             upgrade.effectMultiplier *
             upgrade.purchases
         );
+
+}
+else if (upgrade.id === 7) {
+
+currentElement.textContent =
+    "Currently: " +
+    formatNumber(
+        4 + (
+            upgrade.effectMultiplier *
+            upgrade.purchases
+        )
+    ) +
+    "x";
 
 }
 else {
@@ -8448,6 +9296,9 @@ const forging =
 const survival =
     skills.survival;
 
+const gardening =
+    skills.gardening;
+
 skillPointNumber.textContent =
     formatNumber(
         getAvailableSkillPoints()
@@ -8488,11 +9339,14 @@ gatheringXPNeeded.textContent =
 gatheringXPFill.style.width =
     gatheringProgress + "%";
 
+
     const currentGatheringXPRate =
     Math.pow(gathering.points, 2) *
     skillSpeedMultiplier *
     skillXPMultiplier *
-    getSkillPointProductMultiplier();
+    getSkillPointProductMultiplier() *
+    getAppleShardSkillXPMultiplier();
+
 
 gatheringXPRate.textContent =
     formatNumber(currentGatheringXPRate);
@@ -8578,11 +9432,14 @@ forgingXPNeeded.textContent =
 forgingXPFill.style.width =
     forgingProgress + "%";
 
+
     const currentForgingXPRate =
     Math.pow(forging.points, 2) *
     skillSpeedMultiplier *
     skillXPMultiplier *
-    getSkillPointProductMultiplier();
+    getSkillPointProductMultiplier() *
+    getAppleShardSkillXPMultiplier();
+
 
 forgingXPRate.textContent =
     formatNumber(currentForgingXPRate);
@@ -8669,11 +9526,14 @@ survivalXPNeeded.textContent =
 survivalXPFill.style.width =
     survivalProgress + "%";
 
+
     const currentSurvivalXPRate =
     Math.pow(survival.points, 2) *
     skillSpeedMultiplier *
     skillXPMultiplier *
-    getSkillPointProductMultiplier();
+    getSkillPointProductMultiplier() *
+    getAppleShardSkillXPMultiplier();
+
 
 survivalXPRate.textContent =
     formatNumber(currentSurvivalXPRate);
@@ -8733,6 +9593,86 @@ survivalEffect.textContent =
     "x";
 
 /* ============================================================
+   GARDENING
+   ============================================================ */
+
+   gardeningPoints.textContent =
+    gardening.points;
+
+const gardeningXPNeededAmount =
+    getSkillXPNeeded(gardening);
+
+gardeningXPElement.textContent =
+    formatNumber(gardening.xp);
+
+gardeningXPNeeded.textContent =
+    formatNumber(gardeningXPNeededAmount);
+
+const gardeningProgress =
+    gardening.level >= getSkillMaxLevel(gardening)
+        ? 100
+        : Math.min(
+            100,
+            (gardening.xp / gardeningXPNeededAmount) * 100
+        );
+
+gardeningXPFill.style.width =
+    gardeningProgress + "%";
+
+const currentGardeningXPRate =
+    Math.pow(gardening.points, 2) *
+    skillSpeedMultiplier *
+    skillXPMultiplier *
+    getSkillPointProductMultiplier() *
+    getAppleShardSkillXPMultiplier();
+
+gardeningXPRate.textContent =
+    formatNumber(currentGardeningXPRate);
+
+if (
+    gardening.level < getSkillMaxLevel(gardening) &&
+    currentGardeningXPRate > 0
+) {
+    const gardeningXPRemaining =
+        gardeningXPNeededAmount - gardening.xp;
+
+    const gardeningSecondsRemaining =
+        Math.max(
+            0,
+            Math.ceil(
+                gardeningXPRemaining /
+                currentGardeningXPRate
+            )
+        );
+
+    gardeningLevelUpTimer.textContent =
+        formatSkillTimer(gardeningSecondsRemaining);
+}
+else {
+    gardeningLevelUpTimer.textContent = "--:--";
+}
+
+document.querySelectorAll(
+    ".skill-header strong"
+)[3].textContent =
+    gardening.name +
+    ": Level " +
+    gardening.level +
+    (
+        gardening.tier > 1
+            ? ", Tier " + gardening.tier
+            : ""
+    ) +
+    (
+        gardening.level >= getSkillMaxLevel(gardening)
+            ? " (Capped)"
+            : ""
+    );
+
+gardeningEffect.textContent =
+    formatNumber(gardening.effectMultiplier) + "x";
+
+/* ============================================================
    SKILL POINT BUTTONS
    ============================================================ */
 
@@ -8766,6 +9706,12 @@ survivalPlus.disabled =
 
 survivalMinus.disabled =
     survival.points <= 0;
+
+gardeningPlus.disabled =
+    availableSkillPoints <= 0;
+
+gardeningMinus.disabled =
+    gardening.points <= 0;
 
     updateResourceSidebar();
     updateUpgradeButtons();
@@ -8967,6 +9913,18 @@ setupSkillPointHoldButton(
     -1
 );
 
+setupSkillPointHoldButton(
+    gardeningPlus,
+    skills.gardening,
+    1
+);
+
+setupSkillPointHoldButton(
+    gardeningMinus,
+    skills.gardening,
+    -1
+);
+
 function getAvailableSkillPoints() {
     let assignedPoints = 0;
 
@@ -9007,6 +9965,16 @@ return Math.pow(
 
 }
 
+function getAppleShardSkillXPMultiplier() {
+    return Math.max(
+        Math.pow(
+            Math.pow(appleShards, 0.3),
+            appleShardUpgrades[2].purchases
+        ),
+        1
+    );
+}
+
 let lastSkillUpdateTime = Date.now();
 
 function updateSkillXP() {
@@ -9031,10 +9999,11 @@ if (skill.level >= maxLevel) {
 }
 
 const xpPerSecond =
-Math.pow(skill.points, 2) *
-skillSpeedMultiplier *
-skillXPMultiplier *
-getSkillPointProductMultiplier();
+    Math.pow(skill.points, 2) *
+    skillSpeedMultiplier *
+    skillXPMultiplier *
+    getSkillPointProductMultiplier() *
+    getAppleShardSkillXPMultiplier();
 
 const xpGained =
 xpPerSecond * elapsed;
@@ -9065,13 +10034,18 @@ skill.xp -= xpNeeded;
 
 skill.level++;
 
-
 if (skill === skills.survival) {
 
-skill.effectMultiplier +=
+const tierData = skill.tiers[skill.tier];
+
+const effectPerLevel =
+    tierData?.effectPerLevel ??
     skill.effectPerLevel;
 
+skill.effectMultiplier += effectPerLevel;
+
 }
+
 else {
 
 const tierData = skill.tiers[skill.tier];
@@ -9085,6 +10059,12 @@ skill.effectMultiplier *=
         effectPower
     );
 
+}
+
+// Restart only when Gardening actually levels up.
+// Restarting this timer every animation frame prevents it from firing.
+if (skill === skills.gardening) {
+    restartAppleSpawnTimer();
 }
 
 skillLeveledUp = true;
@@ -9103,7 +10083,7 @@ xpNeeded = getSkillXPNeeded(skill);
 
     }
 
-}
+    }
 
 
 updateAcornGainMultiplier();
@@ -9255,8 +10235,7 @@ else {
            loadGame();
 
 createAppleUpgradeButtons();
-
-
+createAppleShardUpgradeButtons();
 
 if (appleGatheringStarted) {
 
@@ -9285,6 +10264,47 @@ updateFinishGatheringButton();
 // Display the saved apple total immediately.
 updateAppleCounter();
 updateAppleShardDisplay();
+
+// Developer tool: manually set the fastest Apple Shard generation time.
+document
+    .getElementById("apple-shard-test-button")
+    .addEventListener("click", function() {
+
+        const input = document.getElementById(
+            "apple-shard-test-time"
+        );
+
+        const message = document.getElementById(
+            "apple-shard-test-message"
+        );
+
+        const testTime = Number(input.value);
+
+        // Require a valid, positive time.
+        if (
+            !Number.isFinite(testTime) ||
+            testTime <= 0
+        ) {
+            message.textContent =
+                "Please enter a number greater than 0.";
+            return;
+        }
+
+        // Apply the test time without completing a gathering run.
+        fastestAppleGatheringTime = testTime;
+
+        // Refresh the shard rate and display immediately.
+        updateAppleShardDisplay();
+        createUpgradeButtons();
+        updateUpgradeButtons();
+
+        // Persist the test value.
+        saveGame();
+
+        message.textContent =
+            "Test time set to " + testTime +
+            " seconds. Apple Shard generation is now active!";
+    });
 
 // Refresh all apple upgrade costs and availability.
 updateAppleUpgradeButtons();
@@ -9353,6 +10373,12 @@ survivalSkill.style.display =
 
 }
 
+// Restore Gardening visibility from Upgrade 22.
+gardeningSkill.style.display =
+    upgrades[21].purchases > 0
+        ? "block"
+        : "none";
+
 if (currentTab === "goldenAcorns") {
     goldenAcornsTab.click();
 }
@@ -9370,6 +10396,7 @@ else if (
 
         setInterval(saveGame, 1000);
 setInterval(generateAppleShards, 50);
+setInterval(checkPassivePrestige, 50);
 
         setInterval(
     checkExportReminder,
