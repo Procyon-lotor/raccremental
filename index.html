@@ -1963,6 +1963,412 @@ cursor: not-allowed;
     pointer-events: none;
 }
 
+/* ============================================================
+   PHILOSOPHY SKILL THEME
+   ============================================================ */
+
+   .philosophy-skill {
+    border-color: #ff69b4;
+}
+
+.philosophy-skill .skill-header {
+    color: #ff69b4;
+}
+
+.philosophy-skill .skill-effect strong {
+    color: #ff69b4;
+}
+
+.philosophy-skill .skill-xp-fill {
+    background: #ff69b4;
+}
+
+.philosophy-skill button {
+    border-color: #ff69b4;
+}
+
+.philosophy-skill button:hover:not(:disabled) {
+    background: #5a1a45;
+}
+
+/* ============================================================
+   AWAKENING
+   ============================================================ */
+
+   #awakening-intro {
+    display: none;
+    width: 580px;
+    max-width: 90%;
+    margin: 30px auto 25px auto;
+    font-size: 26px;
+    font-weight: bold;
+    line-height: 1.5;
+    color: #4f2fff;
+}
+
+#awakening-page {
+    display: none;
+    margin-top: 25px;
+}
+
+#awakening-button {
+    width: 600px;
+    max-width: 90%;
+
+    margin-top: 20px;
+
+    padding: 25px;
+
+    font-size: 24px;
+    font-weight: bold;
+
+    background: linear-gradient(
+        135deg,
+        #26105c,
+        #6245ff,
+        #26105c
+    );
+
+    color: white;
+
+    border: 3px solid #4f2fff;
+    border-radius: 10px;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+#awakening-button:hover:not(:disabled) {
+    background: linear-gradient(
+        135deg,
+        #351582,
+        #8068ff,
+        #351582
+    );
+
+    box-shadow: 0 0 15px 5px #4f2fff;
+}
+
+#awakening-button:hover:not(:disabled) {
+    background-color: #6245ff;
+    box-shadow: 0 0 15px 5px #4f2fff;
+}
+
+#awakening-button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+#awakening-requirements {
+    width: 700px;
+    max-width: 90%;
+
+    margin: 35px auto;
+}
+
+.awakening-requirement {
+    margin-bottom: 8px;
+
+    color: white;
+    font-size: 16px;
+}
+
+.awakening-progress-bar {
+    position: relative;
+
+    width: 400px;
+    max-width: 100%;
+    height: 32px;
+
+    margin: 0 auto;
+
+    background-color: #222222;
+
+    border: 1px solid #666666;
+    border-radius: 6px;
+
+    overflow: hidden;
+}
+
+.awakening-progress-fill {
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    height: 100%;
+    width: 0%;
+
+    background-color: #4f2fff;
+
+    transition: width 0.2s linear;
+}
+
+.awakening-requirement:nth-child(1) .awakening-progress-bar {
+    border: 2px solid #eeeeee;
+}
+
+.awakening-requirement:nth-child(2) .awakening-progress-bar {
+    border: 2px solid #3fbf3f;
+}
+
+.awakening-requirement:nth-child(3) .awakening-progress-bar {
+    border: 2px solid #ffd700;
+}
+
+.awakening-requirement:nth-child(4) .awakening-progress-bar {
+    border: 2px solid #ff69b4;
+}
+
+.awakening-requirement:nth-child(5) .awakening-progress-bar {
+    border: 2px solid #00e5ff;
+}
+
+.awakening-progress-text {
+    position: absolute;
+
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    z-index: 1;
+
+    color: white;
+    font-weight: bold;
+
+    text-align: center;
+
+    pointer-events: none;
+}
+
+.awakening-progress-fill {
+    height: 100%;
+    width: 0%;
+
+    background-color: #4f2fff;
+
+    transition: width 0.2s linear;
+}
+
+/* Awakening animation */
+
+#awakening-white-screen {
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: 100vw;
+    height: 100vh;
+
+    background-color: white;
+
+    opacity: 0;
+
+    pointer-events: none;
+
+    z-index: 99999;
+}
+
+body.awakening-shaking {
+    animation: awakening-shake 0.08s infinite;
+}
+
+#awakening-white-screen.awakening-fade-in {
+    animation: awakening-fade-in 3s ease forwards;
+}
+
+#awakening-white-screen.awakening-fade-out {
+    animation: awakening-fade-out 3s ease forwards;
+}
+
+@keyframes awakening-shake {
+    0% {
+        transform: translate(0, 0);
+    }
+
+    25% {
+        transform: translate(2px, -1px);
+    }
+
+    50% {
+        transform: translate(-2px, 2px);
+    }
+
+    75% {
+        transform: translate(1px, 1px);
+    }
+
+    100% {
+        transform: translate(0, 0);
+    }
+}
+
+@keyframes awakening-fade-in {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes awakening-fade-out {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}
+
+/* Awakening tab */
+
+#awakening-tab {
+    color: #4f2fff;
+}
+
+#awakening-tab.active {
+    border-color: #4f2fff;
+}
+
+#awakening-tab.upgrade-available {
+    box-shadow: 0 0 10px 3px #4f2fff;
+}
+
+#awakening-message {
+    display: none;
+
+    width: 700px;
+    max-width: 90%;
+
+    margin: 45px auto 30px auto;
+
+    padding: 25px 30px;
+
+    box-sizing: border-box;
+
+    color: #dfbfff;
+
+    font-size: 16px;
+    line-height: 1.7;
+
+    text-align: left;
+
+    border: 2px solid #4f2fff;
+    border-radius: 10px;
+
+    background: rgba(79, 47, 255, 0.05);
+
+    box-shadow: 0 0 12px rgba(79, 47, 255, 0.25);
+}
+
+#awakening-message p {
+    margin: 0 0 20px 0;
+}
+
+#awakening-message p:last-child {
+    margin-bottom: 0;
+}
+
+#awakening-message.visible {
+    display: block;
+}
+
+/* ============================================================
+   CREDITS MODAL
+   ============================================================ */
+
+   #credits-modal {
+    display: none;
+
+    position: fixed;
+
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    background-color: rgba(0, 0, 0, 0.7);
+
+    align-items: center;
+    justify-content: center;
+
+    z-index: 200;
+}
+
+#credits-content {
+    position: relative;
+
+    width: 500px;
+    max-width: 90%;
+
+    padding: 25px;
+
+    background-color: #303030;
+    color: #eeeeee;
+
+    border: 2px solid #666666;
+    border-radius: 10px;
+
+    text-align: center;
+
+    box-sizing: border-box;
+}
+
+#credits-content h1 {
+    margin-top: 0;
+    margin-bottom: 25px;
+}
+
+#credits-content p {
+    line-height: 1.6;
+}
+
+#credits-close {
+    position: absolute;
+
+    top: 10px;
+    right: 15px;
+
+    background: none;
+    border: none;
+
+    color: #bbbbbb;
+
+    font-size: 24px;
+
+    cursor: pointer;
+}
+
+#credits-close:hover {
+    color: #eeeeee;
+}
+
+#discord-button {
+    background: #5865F2;
+    border-color: #4752C4;
+}
+
+#discord-button:hover {
+    background: #4752C4;
+    border-color: #4752C4;
+}
+
+#awakening-test-button {
+    display: none;
+}
+
     </style>
 
 </head>
@@ -1982,7 +2388,7 @@ cursor: not-allowed;
 
     <div class="sidebar-resource acorn-resource">
         <span>Acorns:</span>
-        <strong id="sidebar-acorns">0</strong>
+        <strong id="sidebar-acorns">0</strong><span id="sidebar-acorn-capped"></span>
     </div>
 
     <div class="sidebar-resource golden-acorn-resource">
@@ -2031,7 +2437,7 @@ cursor: not-allowed;
     <div id="resource-display">
 
         <div id="acorn-count">
-            You have <strong id="acorn-number">0</strong> acorns
+            You have <strong id="acorn-number">0</strong> acorns<span id="acorn-capped-label"></span>
         </div>
 
         <div id="production-rate">
@@ -2071,6 +2477,10 @@ cursor: not-allowed;
         You have <strong id="apple-number">0</strong> apples<span id="apple-capped-label"></span>
     </div>
 
+    <div id="awakening-intro">
+        The very reality around you begins to tremble. It is time to become awakened.
+    </div>
+
     <!-- ============================================================
          RESOURCE TABS
          ============================================================ -->
@@ -2101,6 +2511,14 @@ cursor: not-allowed;
     style="display: none;"
 >
     Apples
+</button>
+
+<button
+    id="awakening-tab"
+    class="resource-tab"
+    style="display: none;"
+>
+    Awakening
 </button>
 
     </div>
@@ -2157,6 +2575,10 @@ cursor: not-allowed;
                     <span id="prestige-current-multiplier">1x</span>
                     <span id="prestige-arrow">→</span>
                     <span id="prestige-new-multiplier">1x</span>
+                    <span
+                        id="prestige-softcap-notice"
+                        style="color: #ff4444; display: none;"
+                    >(softcapped after 1e60x!)</span>
                 </div>
         
                 <div id="prestige-golden-multiplier-display">
@@ -2532,7 +2954,7 @@ style="display: none;"
 
                 <strong id="gardening-effect">1.00x</strong>
 
-                multiplier to apple spawn interval
+                apple spawn rate
 
             </div>
 
@@ -2559,6 +2981,82 @@ style="display: none;"
     </div>
 
 </div>
+
+<!-- ============================================================
+     PHILOSOPHY
+     ============================================================ -->
+
+     <div
+     class="skill philosophy-skill"
+     id="philosophy-skill"
+     style="display: none;"
+ >
+ 
+     <div class="skill-header">
+         <strong>Philosophy: Level 1</strong>
+ 
+         <div class="skill-subtitle">
+             "You're telling me I can just sit in a chair and think about things? And get paid? Sign me up!"
+         </div>
+     </div>
+ 
+     <div class="skill-content">
+ 
+         <div class="skill-points-controls">
+ 
+             <button id="philosophy-minus">
+                 −
+             </button>
+ 
+             <div id="philosophy-points">
+                 0
+             </div>
+ 
+             <button id="philosophy-plus">
+                 +
+             </button>
+ 
+         </div>
+ 
+         <div class="skill-progress-section">
+ 
+             <div class="skill-xp-text">
+                 <span id="philosophy-xp">0</span>
+                 /
+                 <span id="philosophy-xp-needed">1e51</span>
+                 XP
+             </div>
+ 
+             <div class="skill-xp-bar">
+                 <div
+                     id="philosophy-xp-fill"
+                     class="skill-xp-fill"
+                 ></div>
+             </div>
+ 
+             <div class="skill-effect">
+                 Effect:
+                 <strong id="philosophy-effect">1.50x</strong>
+                 all skill XP gain
+             </div>
+ 
+             <div class="skill-xp-rate">
+                 <span id="philosophy-xp-rate">0</span>
+                 XP/sec
+             </div>
+ 
+             <div class="skill-level-up-timer">
+                 Next level-up in
+                 <span id="philosophy-level-up-timer">
+                     --:--
+                 </span>
+             </div>
+ 
+         </div>
+ 
+     </div>
+ 
+ </div> 
 
         </div>
 
@@ -2624,7 +3122,7 @@ style="display: none;"
     <p>Faster completion times yield faster apple shard generation!</p>
 </div>
 
-<div id="apple-shard-dev-tool" style="margin: 12px 0; padding: 12px; border: 1px dashed #888; border-radius: 8px;">
+<div id="apple-shard-dev-tool" style="margin: 12px 0; padding: 12px; border: 1px dashed #888; border-radius: 8px; display: none">
     <strong>Apple Shard Testing Tool</strong>
     <p>Set a test fastest gathering time without completing a run.</p>
 
@@ -2653,27 +3151,169 @@ style="display: none;"
 
 </div>
 
-</div>    
+<div id="awakening-page">
 
-    <div id="save-controls">
+    <button id="awakening-button" disabled>
+        Become Awakened
+    </button>
 
-        <button id="export-data-button" class="save-control-button">
-            Export Data
-        </button>
+    <button id="awakening-test-button" type="button">
+        TEST: Satisfy All Requirements
+    </button>
+
+    <div id="awakening-requirements">
+
+        <div class="awakening-requirement">
+            <div class="awakening-progress-bar">
+                <div
+                    id="awakening-acorns-fill"
+                    class="awakening-progress-fill"
+                ></div>
     
-        <button id="import-data-button" class="save-control-button">
-            Import Data
-        </button>
+                <div
+                    id="awakening-acorns-text"
+                    class="awakening-progress-text"
+                >
+                    Acorns: 0 / 1e308
+                </div>
+            </div>
+        </div>
     
-        <button id="save-bank-button" class="save-control-button">
-            Save Bank
-        </button>
+        <div class="awakening-requirement">
+            <div class="awakening-progress-bar">
+                <div
+                    id="awakening-upgrades-fill"
+                    class="awakening-progress-fill"
+                ></div>
     
-        <button id="hard-reset-button" class="save-control-button">
-            Hard Reset
-        </button>
+                <div
+                    id="awakening-upgrades-text"
+                    class="awakening-progress-text"
+                >
+                    Acorn Upgrades Maxed: 0 / 30
+                </div>
+            </div>
+        </div>
+    
+        <div class="awakening-requirement">
+            <div class="awakening-progress-bar">
+                <div
+                    id="awakening-golden-acorns-fill"
+                    class="awakening-progress-fill"
+                ></div>
+    
+                <div
+                    id="awakening-golden-acorns-text"
+                    class="awakening-progress-text"
+                >
+                    Golden Acorns: 0 / 1e9
+                </div>
+            </div>
+        </div>
+    
+        <div class="awakening-requirement">
+            <div class="awakening-progress-bar">
+                <div
+                    id="awakening-philosophy-fill"
+                    class="awakening-progress-fill"
+                ></div>
+    
+                <div
+                    id="awakening-philosophy-text"
+                    class="awakening-progress-text"
+                >
+                    Philosophy Level: 0 / 50
+                </div>
+            </div>
+        </div>
+    
+        <div class="awakening-requirement">
+            <div class="awakening-progress-bar">
+                <div
+                    id="awakening-apple-shards-fill"
+                    class="awakening-progress-fill"
+                ></div>
+    
+                <div
+                    id="awakening-apple-shards-text"
+                    class="awakening-progress-text"
+                >
+                    Apple Shards: 0 / 1e9
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="awakening-message">
+
+        <p>
+            Woah, you really made it all the way to the end! Congratulations!
+        </p>
+    
+        <p>
+            If you are reading this right now, that means you have played through all the content I've made so far, and for that I genuinely want to express my sincere and immense thanks. The idea of someone taking the time to try out my game, let alone enjoying it enough to play through all the way to the end, just makes me so happy and gives me all the motivation I need to keep making games like this, regardless of how crazy they drive me. Whether you thought this was your favorite incremental game ever, or just needed something to kill a few hours, thank you for spending that time with me.
+        </p>
+    
+        <p>
+            I do apologize if this was kind of an anticlimactic end to the game, or if you expected something big to happen after Awakening. Balancing started to become very delicate as more and more formulas were introduced, and also school is almost certainly going to get a lot more busy as midterms approach right about now. I don't know if I'll add more content to the game; I'm leaning towards no, just because this code file is already over 12,000 lines long and in many places unoptimal, and as I had mentioned before, I became a little obsessive and crazy with this project as I neared the end of it and I don't want it to affect my life like that anymore. If I do add more content, it will be in the form of a "Chapter 2", where new content is pretty much separate from what you've just played, with newer currencies and features having little impact on previous ones, but I wouldn't get your hopes up for it.
+        </p>
+    
+        <p>
+            Purr purr purrrrr...sorry where was I? Oh yeah, seriously, thank you for playing the game, I really do want you to know I appreciate you. If you find any bugs, want to suggest something (preferably something small), or just want to say hi, feel free to join my Discord by clicking the button in the bottom-left corner!
+        </p>
+        
+        <p>
+            I wish I had more to say given how much this game means to me, but to avoid sounding cloying I'll just leave it here. For now though, enjoy the rest of your day or night, and may the Racc King guide your spirit as you carry on.
+        </p>
+
+        <p>
+            Much love,
+        </p>
+
+        <p>
+            Procyon
+        </p>
+
+        <p>
+            P.S. Don't forget to turn off the apple teleporters before you leave! We're having raccoon interns at the factory this week and we are NOT failing another safety inspection! :3
+        </p>
     
     </div>
+
+</div>
+
+<div id="awakening-white-screen"></div>
+
+</div>    
+
+<div id="save-controls">
+
+    <button id="credits-button" class="save-control-button">
+        Credits
+    </button>
+
+    <button id="discord-button" class="save-control-button">
+        Discord
+    </button>
+
+    <button id="export-data-button" class="save-control-button">
+        Export Data
+    </button>
+
+    <button id="import-data-button" class="save-control-button">
+        Import Data
+    </button>
+
+    <button id="save-bank-button" class="save-control-button">
+        Save Bank
+    </button>
+
+    <button id="hard-reset-button" class="save-control-button">
+        Hard Reset
+    </button>
+
+</div>
 
     <div id="save-bank-modal">
 
@@ -2689,9 +3329,33 @@ style="display: none;"
     
     </div>
 
+    <div id="credits-modal">
+
+        <div id="credits-content">
+    
+            <button id="credits-close">×</button>
+    
+            <h1>Credits</h1>
+    
+            <p>
+                Created by Procyon
+            </p>
+    
+            <p>
+                Tested by Procyon and Dragonus (thanks so much!)
+            </p>
+    
+            <p>
+                Thanks for playing!
+            </p>
+    
+        </div>
+    
+    </div>
+
     <!-- CHANGELOG -->
 
-<button id="changelog-button">v1.9.1</button>
+<button id="changelog-button">v1.10</button>
 
 <div id="changelog-modal">
 
@@ -2702,6 +3366,16 @@ style="display: none;"
         <h1>Changelog</h1>
 
         <div id="changelog-entries">
+            <h2>v1.10</h2>
+            <p>- Added Acorn Upgrades 26-30</p>
+            <p>- Added the fifth and final skill: Philosophy</p>
+            <p>- Added a softcap to Prestige multiplier to prevent it from causing inflation</p>
+            <p>- Added Support for Gathering Tier 3, Forging Tier 3, and Gardening Tier 2</p>
+            <p>- Added everything you see on the Awakening tab</p>
+            <p>- Added Credits and Discord buttons</p>
+            <p>- Added infinity protection to everything that could cause NaN errors when reaching infinity</p>
+            <p>- Changed a few descriptions that were misinformative</p>
+            <p>- Added a silly Easter Egg...</p>
             <h3>v1.9.1</h3>
             <p>- Fixed data exporting again so it preserves apple shard upgrades</p>
             <p>- Fixed display on first apple upgrade so it displays the correct new multiplier</p>
@@ -2709,6 +3383,7 @@ style="display: none;"
             <h2>v1.9</h2>
             <p>- Added 5 more Acorn upgrades, bringing the total to 25</p>
             <p>- Added two more Golden Acorn upgrades, bringing the total to 8</p>
+            <p>- Added the fourth skill: Gardening</p>
             <p>- Added an extra info line below the Apple Shard summary</p>
             <p>- Fixed data exporting so invalid characters won't make the data unreadable</p>
             <p>- Added support for Survival Tier 2</p>
@@ -2787,6 +3462,8 @@ style="display: none;"
            ============================================================ */
 
         let acorns = 0;
+        // Tracks rapid Escape key presses for the hidden Easter egg.
+let     escapePressTimes = [];
 
         // Number of acorns gathered by one click.
         let acornsPerGather = 1;
@@ -2909,19 +3586,19 @@ const appleShardUpgrades = [
         let upgrade1BaseMultiplier = 1.4;
 
         function getAcornsPerSecond() {
+    if (
+        upgrades &&
+        upgrades[14] &&
+        upgrades[14].purchases > 0
+    ) {
+        return Math.min(
+            MAX_ACORNS,
+            getAcornsPerGather() /
+            gatherCooldown
+        );
+    }
 
-if (
-    upgrades &&
-    upgrades[14] &&
-    upgrades[14].purchases > 0
-) {
-    return (
-        getAcornsPerGather() /
-        gatherCooldown
-    );
-}
-
-return 0;
+    return 0;
 }
 
         let totalSkillPoints = 0;
@@ -2944,6 +3621,7 @@ let totalGatheringXP = 0;
 let forgingGoldenAcornMultiplier = 1;
 let currentTab = "acorns";
 let hardResetting = false;
+let hasAwakened = false;
 
 let logMessages = [];
 let nextLogNumber = 1;
@@ -3068,15 +3746,21 @@ const skills = {
     xp: 0,
     effectMultiplier: 1,
     effectPerLevel: 1.2,
+    baseEffectPerLevel: 1.2,
     xpBase: 10,
     xpMultiplier: 1.5,
 
     tiers: {
-        2: {
-            xpMultiplier: 2,
-            effectPower: 2.5
-        }
+    2: {
+        xpMultiplier: 2,
+        effectPower: 2.5
     },
+    3: {
+        xpMultiplier: 3,
+        effectPerLevel: 2,
+        effectPower: 1
+    }
+},
 },
 
     forging: {
@@ -3094,6 +3778,10 @@ const skills = {
     2: {
         xpMultiplier: 2.5,
         effectMultiplier: 10
+    },
+    3: {
+        xpMultiplier: 4,
+        effectMultiplier: 100
     }
 },
 
@@ -3123,10 +3811,30 @@ const skills = {
         xp: 0,
         effectMultiplier: 1,
         effectPerLevel: 0.96,
+        baseEffectPerLevel: 0.96,
         xpBase: 1e27,
         xpMultiplier: 2.5,
+        tiers: {
+    2: {
+        xpMultiplier: 3.5,
+        effectPerLevel: 0.94
+    }
+}
+    },
+
+    philosophy: {
+        name: "Philosophy",
+        points: 0,
+        level: 1,
+        tier: 1,
+        xp: 0,
+        effectMultiplier: 1.5,
+        effectPerLevel: 1.5,
+        xpBase: 1e53,
+        xpMultiplier: 3,
         tiers: {}
     }
+
 };
 
 const prestigeGoldenDescription =
@@ -3614,6 +4322,77 @@ addLogMessage(
         updateTabGlows();
     }
 },
+{
+    id: 25,
+    name: "Form an Endless Apple Loop",
+    subtitle: "Just an apple cloner sandwiched between two apple teleporters. Nothing fancy.",
+    description:
+        "Passively generates apples when gathering has started.",
+    baseCost: 1e190,
+    costMultiplier: 500,
+    maxPurchases: 7,
+    purchases: 0,
+    effect: function() {
+        updateUpgradeButtons();
+    }
+},
+{
+    id: 26,
+    name: "Establish the Raccoon Academy",
+    subtitle: "In order to understand the meaning of all this, you're gonna need the brains as well as the brawn.",
+    description:
+        "Unlocks the fifth and final skill.",
+    baseCost: 1e210,
+    costMultiplier: 1,
+    maxPurchases: 1,
+    purchases: 0,
+    effect: function() {
+        philosophySkill.style.display = "block";
+        updateSkillsDisplay();
+        updateUpgradeButtons();
+    }
+},
+{
+    id: 27,
+    name: "Accumulate Skill Momentum",
+    subtitle: "Skill Points are now so fast and powerful that they can buy themselves!",
+    description:
+        "Automatically buys Skill Points whenever you can afford them.",
+    baseCost: 1e250,
+    costMultiplier: 1,
+    maxPurchases: 1,
+    purchases: 0
+},
+{
+    id: 28,
+    name: "Harvest from Forests in Parallel Universes",
+    subtitle: "This upgrade is useless lol :sob:",
+    description:
+        "Increases the maximum number of apples that can be on the grid by +20.",
+    baseCost: 1e270,
+    costMultiplier: 1e5,
+    maxPurchases: 5,
+    purchases: 0,
+    effect: function() {
+        updateAppleUpgradeButtons();
+        updateAppleGrid();
+    }
+},
+{
+    id: 29,
+    name: "Awaken",
+    subtitle: "You've gathered enough power to finally break through the simulation.",
+    description:
+        "Unlocks the Awakening tab.",
+    baseCost: 1e300,
+    costMultiplier: 1,
+    maxPurchases: 1,
+    purchases: 0,
+    effect: function() {
+        awakeningTab.style.display = "inline-block";
+        updateAwakeningDisplay();
+    }
+},
 
             // Future upgrades go here.
 
@@ -3700,7 +4479,7 @@ if (!gatherOnCooldown) {
     id: 5,
     name: "Consult with a Spiritualist",
     description:
-        "Adds 0.02 to the Prestige regular acorn multiplier.",
+        "Adds 0.02 to the Prestige regular acorn exponent.",
     baseCost: 2000,
     costMultiplier: 1.25,
     effectMultiplier: 0.02,
@@ -3833,6 +4612,9 @@ const prestigeNewGoldenMultiplier =
 const prestigeNewMultiplier =
     document.getElementById("prestige-new-multiplier");
 
+const prestigeSoftcapNotice =
+    document.getElementById("prestige-softcap-notice");
+
 const prestigeRequirement =
     document.getElementById("prestige-requirement");
 
@@ -3859,6 +4641,57 @@ const applesTab =
 
 const applesPage =
     document.getElementById("apples-page");
+
+const awakeningTab =
+    document.getElementById("awakening-tab");
+
+const awakeningPage =
+    document.getElementById("awakening-page");
+
+const awakeningIntro =
+    document.getElementById("awakening-intro");
+
+const awakeningButton =
+    document.getElementById("awakening-button");
+
+const awakeningTestButton =
+    document.getElementById("awakening-test-button");
+
+const awakeningWhiteScreen =
+    document.getElementById("awakening-white-screen");
+
+const awakeningAcornsText =
+    document.getElementById("awakening-acorns-text");
+
+const awakeningAcornsFill =
+    document.getElementById("awakening-acorns-fill");
+
+const awakeningUpgradesText =
+    document.getElementById("awakening-upgrades-text");
+
+const awakeningUpgradesFill =
+    document.getElementById("awakening-upgrades-fill");
+
+const awakeningGoldenAcornsText =
+    document.getElementById("awakening-golden-acorns-text");
+
+const awakeningGoldenAcornsFill =
+    document.getElementById("awakening-golden-acorns-fill");
+
+const awakeningPhilosophyText =
+    document.getElementById("awakening-philosophy-text");
+
+const awakeningPhilosophyFill =
+    document.getElementById("awakening-philosophy-fill");
+
+const awakeningAppleShardsText =
+    document.getElementById("awakening-apple-shards-text");
+
+const awakeningAppleShardsFill =
+    document.getElementById("awakening-apple-shards-fill");
+
+const awakeningMessage =
+    document.getElementById("awakening-message");
 
 const applesResourceDisplay =
     document.getElementById("apples-resource-display");
@@ -3983,6 +4816,276 @@ return (
 );
 }
 
+function updateAwakeningDisplay() {
+
+/*
+ * ACORNS
+ *
+ * Logarithmic progress from 1 acorn to 1e308 acorns.
+ */
+const acornProgress =
+    acorns <= 1
+        ? 0
+        : Math.min(
+            100,
+            (Math.log10(acorns) / 308) * 100
+        );
+
+awakeningAcornsText.textContent =
+    "Acorns: " +
+    formatNumber(Math.floor(acorns)) +
+    " / 1e308";
+
+awakeningAcornsFill.style.width =
+    acornProgress + "%";
+
+
+/*
+ * ACORN UPGRADES
+ *
+ * Count upgrades that have reached their maximum.
+ */
+const maxedAcornUpgrades =
+    upgrades.filter(
+        upgrade =>
+            upgrade.purchases >=
+            upgrade.maxPurchases
+    ).length;
+
+const upgradeProgress =
+    Math.min(
+        100,
+        (maxedAcornUpgrades / 30) * 100
+    );
+
+awakeningUpgradesText.textContent =
+    "Acorn Upgrades Maxed: " +
+    maxedAcornUpgrades +
+    " / 30";
+
+awakeningUpgradesFill.style.width =
+    upgradeProgress + "%";
+
+
+/*
+ * GOLDEN ACORNS
+ */
+const goldenAcornProgress =
+    Math.min(
+        100,
+        (goldenAcorns / 1e9) * 100
+    );
+
+awakeningGoldenAcornsText.textContent =
+    "Golden Acorns: " +
+    formatNumber(Math.floor(goldenAcorns)) +
+    " / 1e9";
+
+awakeningGoldenAcornsFill.style.width =
+    goldenAcornProgress + "%";
+
+
+/*
+ * PHILOSOPHY
+ */
+ const philosophyProgress =
+    Math.min(
+        100,
+        (skills.philosophy.level / 50) * 100
+    );
+
+awakeningPhilosophyText.textContent =
+    "Philosophy Level: " +
+    skills.philosophy.level +
+    " / 50";
+
+awakeningPhilosophyFill.style.width =
+    philosophyProgress + "%";
+
+
+/*
+ * APPLE SHARDS
+ */
+const appleShardProgress =
+    Math.min(
+        100,
+        (appleShards / 1e9) * 100
+    );
+
+awakeningAppleShardsText.textContent =
+    "Apple Shards: " +
+    formatNumber(Math.floor(appleShards)) +
+    " / 1e9";
+
+awakeningAppleShardsFill.style.width =
+    appleShardProgress + "%";
+
+
+/*
+ * ALL REQUIREMENTS
+ */
+const requirementsMet =
+    acorns >= 1e308 &&
+    maxedAcornUpgrades >= 30 &&
+    goldenAcorns >= 1e9 &&
+    skills.philosophy.level >= 50 &&
+    appleShards >= 1e9;
+
+awakeningButton.disabled =
+    !requirementsMet;
+}
+
+function becomeAwakened() {
+
+if (awakeningButton.disabled) {
+    return;
+}
+
+awakeningButton.disabled = true;
+
+/*
+ * Start shaking and fading to white.
+ */
+document.body.classList.add(
+    "awakening-shaking"
+);
+
+awakeningWhiteScreen.classList.remove(
+    "awakening-fade-out"
+);
+
+awakeningWhiteScreen.classList.add(
+    "awakening-fade-in"
+);
+
+
+/*
+ * After the 3-second fade:
+ * stop shaking and remain white for 1 second.
+ */
+setTimeout(function() {
+
+    document.body.classList.remove(
+        "awakening-shaking"
+    );
+
+    setTimeout(function() {
+
+        hasAwakened = true;
+
+awakeningMessage.classList.add("visible");
+
+saveGame();
+
+        /*
+         * Fade back to the normal display.
+         */
+        awakeningWhiteScreen.classList.remove(
+            "awakening-fade-in"
+        );
+
+        awakeningWhiteScreen.classList.add(
+            "awakening-fade-out"
+        );
+
+    }, 1000);
+
+}, 3000);
+}
+
+function testAwakeningRequirements() {
+
+/*
+ * Give the player enough Acorns.
+ */
+acorns = 1.5e308;
+
+/*
+ * Max every Acorn upgrade.
+ */
+upgrades.forEach(function(upgrade) {
+
+    upgrade.purchases =
+        upgrade.maxPurchases;
+
+});
+
+/*
+ * Give enough Golden Acorns.
+ */
+goldenAcorns = 1e9;
+
+/*
+ * Give Philosophy enough levels.
+ */
+skills.philosophy.level = 50;
+
+/*
+ * Give enough Apple Shards.
+ */
+appleShards = 1e9;
+
+/*
+ * Refresh everything that depends
+ * on these values.
+ */
+updateResourceDisplay();
+updateGoldenAcornDisplay();
+updateSkillsDisplay();
+updateAppleShardDisplay();
+updateAwakeningDisplay();
+updateUpgradeButtons();
+updateGoldenUpgradeButtons();
+updateResourceSidebar();
+updateTabGlows();
+}
+
+awakeningButton.addEventListener(
+    "click",
+    becomeAwakened
+);
+
+awakeningTestButton.addEventListener(
+    "click",
+    testAwakeningRequirements
+);
+
+function autoPurchaseSkillPoints() {
+    const automationUpgrade =
+        upgrades.find(
+            upgrade => upgrade.id === 27
+        );
+
+    if (
+        !automationUpgrade ||
+        automationUpgrade.purchases <= 0
+    ) {
+        return;
+    }
+
+    let purchasedAny = false;
+
+    while (acorns >= getSkillPointCost()) {
+        acorns -= getSkillPointCost();
+        totalSkillPoints++;
+        purchasedAny = true;
+    }
+
+    if (!purchasedAny) {
+        return;
+    }
+
+    updateResourceDisplay();
+    updateUpgradeButtons();
+    updateSkillsDisplay();
+    updateTabGlows();
+    saveGame();
+}
+
+setInterval(
+    autoPurchaseSkillPoints,
+    100
+);
 
 function getSkillMaxLevel(skill) {
     return 100 * Math.pow(2, skill.tier - 1);
@@ -4025,8 +5128,14 @@ function ascendSkill(skill) {
     skill.level = 1;
     skill.xp = 0;
 
-    // Apply the new tier's XP scaling.
-    skill.xpMultiplier = tierData.xpMultiplier;
+// Apply the new tier's XP scaling.
+skill.xpMultiplier = tierData.xpMultiplier;
+
+// Apply a new per-level effect multiplier if this
+// tier defines one.
+if (typeof tierData.effectPerLevel === "number") {
+    skill.effectPerLevel = tierData.effectPerLevel;
+}
 
     // Refresh effects that depend on skill level.
     if (skill === skills.gathering) {
@@ -4177,6 +5286,36 @@ const gardeningEffect =
 const gardeningLevelUpTimer =
     document.getElementById("gardening-level-up-timer");
 
+const philosophySkill =
+    document.getElementById("philosophy-skill");
+
+const philosophyMinus =
+    document.getElementById("philosophy-minus");
+
+const philosophyPlus =
+    document.getElementById("philosophy-plus");
+
+const philosophyPoints =
+    document.getElementById("philosophy-points");
+
+const philosophyXPElement =
+    document.getElementById("philosophy-xp");
+
+const philosophyXPNeeded =
+    document.getElementById("philosophy-xp-needed");
+
+const philosophyXPFill =
+    document.getElementById("philosophy-xp-fill");
+
+const philosophyXPRate =
+    document.getElementById("philosophy-xp-rate");
+
+const philosophyEffect =
+    document.getElementById("philosophy-effect");
+
+const philosophyLevelUpTimer =
+    document.getElementById("philosophy-level-up-timer");
+
 const logMessagesElement =
     document.getElementById("log-messages");
 
@@ -4198,8 +5337,25 @@ const saveBankClose =
 const saveBankList =
     document.getElementById("save-bank-list");
 
+const creditsButton =
+    document.getElementById("credits-button");
+
+const creditsModal =
+    document.getElementById("credits-modal");
+
+const creditsClose =
+    document.getElementById("credits-close");
+
+const discordButton =
+    document.getElementById("discord-button");
+
 const prestigeTooltip =
     document.getElementById("prestige-tooltip");
+
+const MAX_ACORNS = 1e308;
+
+const SAVE_BANK_PASSWORD =
+    "racc-032905-fluff";
 
     const prestigeLogMessages = [
     "After being absolutely pulverized by a moving vehicle, you find yourself back where you started.",
@@ -4252,6 +5408,7 @@ return {
     prestigeMultiplier,
     prestigeUnlocked,
     hasPrestiged,
+    hasAwakened,
 
     highestAcorns,
     lastPrestigeAcorns,
@@ -4389,7 +5546,12 @@ try {
     }
 
     // Restore general game values.
-    if (typeof saveData.acorns === "number") acorns = saveData.acorns;
+    if (typeof saveData.acorns === "number") {
+    acorns = Math.min(
+        MAX_ACORNS,
+        saveData.acorns
+    );
+}
     if (typeof saveData.apples === "number") {
     apples = Math.min(MAX_APPLES, Math.max(0, saveData.apples));
 }
@@ -4429,6 +5591,9 @@ if (
     if (typeof saveData.prestigeMultiplier === "number") prestigeMultiplier = saveData.prestigeMultiplier;
     if (typeof saveData.prestigeUnlocked === "boolean") prestigeUnlocked = saveData.prestigeUnlocked;
     if (typeof saveData.hasPrestiged === "boolean") hasPrestiged = saveData.hasPrestiged;
+    if (typeof saveData.hasAwakened === "boolean") {
+    hasAwakened = saveData.hasAwakened;
+}
     if (typeof saveData.highestAcorns === "number") highestAcorns = saveData.highestAcorns;
     if (typeof saveData.lastPrestigeAcorns === "number") lastPrestigeAcorns = saveData.lastPrestigeAcorns;
     if (typeof saveData.prestigeGoldenAcornMultiplier === "number") prestigeGoldenAcornMultiplier = saveData.prestigeGoldenAcornMultiplier;
@@ -4640,6 +5805,19 @@ applePlayerColumn = Math.max(
                 ? skill.tiers[savedTier]
                 : undefined;
 
+                // Restore the original effect scaling before applying
+// any tier-specific override.
+if (typeof skill.baseEffectPerLevel === "number") {
+    skill.effectPerLevel = skill.baseEffectPerLevel;
+}
+
+if (
+    tierData &&
+    typeof tierData.effectPerLevel === "number"
+) {
+    skill.effectPerLevel = tierData.effectPerLevel;
+}
+
                 // Recalculate tier-scaled effects so older saves
 // cannot retain an oversized multiplier.
 if (
@@ -4728,11 +5906,19 @@ if (
             ? "block"
             : "none";
 
+    philosophySkill.style.display =
+        upgrades[26].purchases > 0
+            ? "block"
+            : "none";
+
     // Recalculate and refresh derived values.
     updateGatherCooldown();
     updateForgingEffect();
     updateAcornsPerGather();
     updateSkillsDisplay();
+    if (hasAwakened) {
+    awakeningMessage.classList.add("visible");
+}
 
 } catch (error) {
 
@@ -4911,8 +6097,11 @@ catch (error) {
 
 function loadImportedGameData(saveData) {
 
-acorns =
-    saveData.acorns;
+    acorns =
+    Math.min(
+        MAX_ACORNS,
+        saveData.acorns
+    );
 
     apples =
     typeof saveData.apples === "number"
@@ -5152,6 +6341,7 @@ for (const savedUpgrade of saveData.appleShardUpgrades) {
     forging: 1.75,
     survival: 2,
     gardening: 2.5,
+    philosophy: 3,
 };
 
 if (
@@ -5201,6 +6391,19 @@ if (
             skill.tiers
                 ? skill.tiers[skill.tier]
                 : undefined;
+
+                // Restore the original effect scaling before applying
+// any tier-specific override.
+if (typeof skill.baseEffectPerLevel === "number") {
+    skill.effectPerLevel = skill.baseEffectPerLevel;
+}
+
+if (
+    tierData &&
+    typeof tierData.effectPerLevel === "number"
+) {
+    skill.effectPerLevel = tierData.effectPerLevel;
+}
 
         // Restore the correct XP scaling for this tier.
         if (
@@ -5388,6 +6591,29 @@ saveGame();
 
 }
 
+function requestSaveBankAccess() {
+
+const enteredPassword =
+    prompt(
+        "Enter the Save Bank password:"
+    );
+
+if (
+    enteredPassword ===
+    SAVE_BANK_PASSWORD
+) {
+    openSaveBank();
+}
+else if (
+    enteredPassword !== null
+) {
+    alert(
+        "Incorrect password."
+    );
+}
+
+}
+
 function openSaveBank() {
 
 updateSaveBankDisplay();
@@ -5400,6 +6626,20 @@ saveBankModal.style.display =
 function closeSaveBank() {
 
 saveBankModal.style.display =
+    "none";
+
+}
+
+function openCredits() {
+
+creditsModal.style.display =
+    "flex";
+
+}
+
+function closeCredits() {
+
+creditsModal.style.display =
     "none";
 
 }
@@ -5601,12 +6841,33 @@ importDataButton.addEventListener(
 
 saveBankButton.addEventListener(
     "click",
-    openSaveBank
+    requestSaveBankAccess
 );
 
 saveBankClose.addEventListener(
     "click",
     closeSaveBank
+);
+
+creditsButton.addEventListener(
+    "click",
+    openCredits
+);
+
+creditsClose.addEventListener(
+    "click",
+    closeCredits
+);
+
+creditsModal.addEventListener(
+    "click",
+    function(event) {
+
+        if (event.target === creditsModal) {
+            closeCredits();
+        }
+
+    }
 );
 
 saveBankModal.addEventListener(
@@ -5616,6 +6877,18 @@ saveBankModal.addEventListener(
         if (event.target === saveBankModal) {
             closeSaveBank();
         }
+
+    }
+);
+
+discordButton.addEventListener(
+    "click",
+    function() {
+
+        window.open(
+            "https://discord.gg/zFfb5vhusJ",
+            "_blank"
+        );
 
     }
 );
@@ -5746,8 +7019,26 @@ function updateResourceDisplay() {
 acornNumber.textContent =
     formatNumber(Math.floor(acorns));
 
+const acornCappedLabel =
+    document.getElementById("acorn-capped-label");
 
-    acornRate.textContent =
+if (acornCappedLabel) {
+    acornCappedLabel.textContent =
+        acorns >= MAX_ACORNS
+            ? " (Capped)"
+            : "";
+}
+
+// One-time milestone at 1e200 acorns.
+if (acorns >= 1e200) {
+    addLogMessage(
+        "The number of acorns you've accumulated is extraordinary, far more than the number of atoms in the observable universe. You start to look around and get somewhat of an uneasy feeling, as if the world around you is breaking down. Lights fade in and out, tiny digital squares flicker in your line of vision, and you start to feel a strange, spiritual pull, as if your old human form will return if you can break out of this simulatory shell that you're in. There's no longer any doubt—you need to awaken.",
+        "#4f2fff",
+        "reached-1e200-acorns"
+    );
+}
+
+acornRate.textContent =
     formatNumber(getAcornsPerSecond());
 
 updatePrestigeDisplay();
@@ -5760,6 +7051,16 @@ function updateResourceSidebar() {
 
 sidebarAcorns.textContent =
     formatNumber(Math.floor(acorns));
+
+const sidebarAcornCappedLabel =
+    document.getElementById("sidebar-acorn-capped");
+
+if (sidebarAcornCappedLabel) {
+    sidebarAcornCappedLabel.textContent =
+        acorns >= MAX_ACORNS
+            ? " (Capped)"
+            : "";
+}
 
 sidebarGoldenAcorns.textContent =
     formatNumber(Math.floor(goldenAcorns));
@@ -5887,6 +7188,13 @@ if (
     return;
 }
 
+if (
+    tabName === "awakening" &&
+    awakeningTab.style.display === "none"
+) {
+    return;
+}
+
 currentTab = tabName;
 
 // Hide every resource display.
@@ -5894,18 +7202,21 @@ resourceDisplay.style.display = "none";
 goldenResourceDisplay.style.display = "none";
 skillsResourceDisplay.style.display = "none";
 applesResourceDisplay.style.display = "none";
+awakeningIntro.style.display = "none";
 
 // Hide every page.
 acornsPage.style.display = "none";
 goldenAcornsPage.style.display = "none";
 skillsPage.style.display = "none";
 applesPage.style.display = "none";
+awakeningPage.style.display = "none";
 
 // Deactivate every tab.
 acornsTab.classList.remove("active");
 goldenAcornsTab.classList.remove("active");
 skillsTab.classList.remove("active");
 applesTab.classList.remove("active");
+awakeningTab.classList.remove("active");
 
 // Activate only the selected tab.
 if (tabName === "acorns") {
@@ -5937,6 +7248,16 @@ else if (tabName === "apples") {
 
 }
 
+else if (tabName === "awakening") {
+
+awakeningPage.style.display = "block";
+awakeningIntro.style.display = "block";
+
+awakeningTab.classList.add("active");
+
+updateAwakeningDisplay();
+}
+
 saveGame();
 }
 
@@ -5958,6 +7279,9 @@ applesTab.addEventListener("click", function() {
 switchTab("apples");
 });
 
+awakeningTab.addEventListener("click", function() {
+    switchTab("awakening");
+});
 
 /* ============================================================
    APPLES GATHERING GRID
@@ -5977,7 +7301,8 @@ const goldenApplesOnGrid = new Set();
 
 let appleGatheringStarted = false;
 let appleSpawnTimer = null;
-
+let passiveAppleTimer = null;
+let lastPassiveAppleUpdateTime = null;
 
 let appleGatheringStartTime = null;
 let appleGatheringTimerInterval = null;
@@ -6103,6 +7428,7 @@ else {
     appleShardRateDisplay.textContent =
         Math.round(shardRate).toLocaleString();
 }
+updateTabGlows();
 
 }
 
@@ -6398,6 +7724,7 @@ function finishAppleGathering() {
 
     // Mark gathering as finished.
     appleGatheringStarted = false;
+    stopPassiveAppleGeneration();
 
     // Show the congratulatory message in bright blue.
     addLogMessage(
@@ -6624,7 +7951,11 @@ function getAppleSpawnInterval() {
 
 // Calculate the maximum number of apples allowed on the grid.
 function getMaxGridApples() {
-    return 10 + 4 * appleUpgrades[2].purchases;
+    return (
+        10 +
+        4 * appleUpgrades[2].purchases +
+        20 * upgrades[28].purchases
+    );
 }
 
 // Calculate the player's movement speed in cells per second.
@@ -7098,6 +8429,77 @@ saveGame();
 
 }
 
+// Calculate the passive apple generation rate from Upgrade 26.
+function getPassiveAppleRate() {
+    const purchases = upgrades[25].purchases;
+
+    if (purchases <= 0) {
+        return 0;
+    }
+
+    return Math.pow(10, purchases - 1);
+}
+
+// Start generating passive apples during an active gathering run.
+function startPassiveAppleGeneration() {
+    // Avoid accidentally creating multiple timers.
+    if (passiveAppleTimer !== null) {
+        clearInterval(passiveAppleTimer);
+    }
+
+    lastPassiveAppleUpdateTime = Date.now();
+    let lastSaveTime = Date.now();
+
+    passiveAppleTimer = setInterval(function() {
+        const now = Date.now();
+
+        const elapsedSeconds = Math.max(
+            0,
+            (now - lastPassiveAppleUpdateTime) / 1000
+        );
+
+        lastPassiveAppleUpdateTime = now;
+
+        // Passive apples only generate during Apple Gathering.
+        if (!appleGatheringStarted) {
+            return;
+        }
+
+        const rate = getPassiveAppleRate();
+
+        if (rate <= 0 || apples >= MAX_APPLES) {
+            return;
+        }
+
+        // Generate approximately 1/20 of a second's
+        // worth of apples every 50 milliseconds.
+        apples = Math.min(
+            MAX_APPLES,
+            apples + rate * elapsedSeconds
+        );
+
+        updateAppleCounter();
+        updateAppleUpgradeButtons();
+        updateFinishGatheringButton();
+
+        // Save at most once per second.
+        if (now - lastSaveTime >= 1000) {
+            saveGame();
+            lastSaveTime = now;
+        }
+    }, 50);
+}
+
+// Stop passive apple generation when gathering ends.
+function stopPassiveAppleGeneration() {
+    if (passiveAppleTimer !== null) {
+        clearInterval(passiveAppleTimer);
+        passiveAppleTimer = null;
+    }
+
+    lastPassiveAppleUpdateTime = null;
+}
+
 function restartAppleSpawnTimer() {
 
     if (appleSpawnTimer !== null) {
@@ -7125,6 +8527,7 @@ function startAppleGathering() {
     }
 
     appleGatheringStarted = true;
+    startPassiveAppleGeneration();
 
     appleGatheringStartTime = Date.now();
 
@@ -7226,6 +8629,31 @@ function moveApplePlayer() {
 
 }
 
+document.addEventListener("keydown", function(event) {
+    if (event.key !== "Escape") {
+        return;
+    }
+
+    const now = Date.now();
+
+    // Keep only Escape presses from the last second.
+    escapePressTimes = escapePressTimes.filter(function(time) {
+        return now - time <= 1000;
+    });
+
+    escapePressTimes.push(now);
+
+    if (escapePressTimes.length >= 5) {
+        addLogMessage(
+            "The foundation of reality cracks just slightly...you might be on to something...",
+            "#999999",
+            "easter-egg-rapid-escape"
+        );
+
+        // Prevent additional triggers from the same burst.
+        escapePressTimes = [];
+    }
+});
 
 // Arrow keys change the player's direction.
 document.addEventListener("keydown", function(event) {
@@ -7292,8 +8720,10 @@ document.addEventListener("keydown", function(event) {
                Gather acorns
                -------------------------------------------------------- */
 
-            acorns += getAcornsPerGather();
-
+               acorns = Math.min(
+    MAX_ACORNS,
+    acorns + getAcornsPerGather()
+);
 
             /* --------------------------------------------------------
                10% chance to receive a Golden Acorn
@@ -7463,8 +8893,13 @@ else {
            ============================================================ */
 
            function updateGatherButtonText() {
-    const displayedGatherAmount =
-        formatNumber(getAcornsPerGather());
+            const displayedGatherAmount =
+    formatNumber(
+        Math.min(
+            MAX_ACORNS,
+            getAcornsPerGather()
+        )
+    );
 
     gatherButtonText.textContent =
         "Gather " +
@@ -7491,6 +8926,17 @@ if (upgrade.id === 6) {
     }
 
     return cost * goldenAcornCostMultiplier;
+}
+
+if (upgrade.id === 25) {
+    const purchases = upgrade.purchases;
+
+    const exponent =
+        purchases * (purchases + 1) / 2;
+
+    return upgrade.baseCost *
+        Math.pow(500, exponent) *
+        goldenAcornCostMultiplier;
 }
 
 return upgrade.baseCost *
@@ -7655,12 +9101,27 @@ const multiplierBeforeExponentBonuses =
     basePrestigeMultiplier *
     prestigeFoundationMultiplier;
 
+
 // Step 3: Apply the existing exponent bonuses.
 // Divide by 1.5 to preserve the original formula
 // when no additional exponent bonuses are present.
-return Math.pow(
+const rawPrestigeMultiplier = Math.pow(
     multiplierBeforeExponentBonuses,
     prestigeExponent / 1.5
+);
+
+// Step 4: Apply the Prestige multiplier softcap.
+const prestigeSoftcap = 1e60;
+
+// Multipliers up to 1e60 are unaffected.
+if (rawPrestigeMultiplier <= prestigeSoftcap) {
+    return rawPrestigeMultiplier;
+}
+
+// Above 1e60, raise the excess multiplier to the power of 0.5.
+return prestigeSoftcap * Math.pow(
+    rawPrestigeMultiplier / prestigeSoftcap,
+    0.5
 );
 }
 
@@ -7743,6 +9204,13 @@ prestigeNewMultiplier.textContent =
     formatNumber(newPrestigeMultiplier) +
     "x";
 
+const softcapActive =
+    prestigeMultiplier > 1e60 ||
+    newPrestigeMultiplier > 1e60;
+
+prestigeSoftcapNotice.style.display =
+    softcapActive ? "inline" : "none";
+
 prestigeCurrentGoldenMultiplier.textContent =
     formatNumber(prestigeGoldenAcornMultiplier) +
     "x";
@@ -7790,15 +9258,12 @@ else {
     prestigeGoldenDescription.style.display =
         "block";
 
-    prestigeDescription.textContent =
-        "Reset most regular upgrades and golden upgrades, and all skills...";
-
-    prestigeGoldenDescription.textContent =
-        "for a " +
-        formatNumber(prestigeMultiplierGain) +
-        "x boost to regular acorn gain and a " +
-        formatNumber(goldenMultiplierGain) +
-        "x boost to golden acorn gain.";
+        prestigeGoldenDescription.textContent =
+    "for a " +
+    formatNumber(prestigeMultiplierGain) +
+    "x boost to regular acorn gain and a " +
+    formatNumber(goldenMultiplierGain) +
+    "x boost to golden acorn gain.";
 
 }
 
@@ -8426,6 +9891,13 @@ currentEffectText =
     "x";
 }
 
+if (upgrade.id === 25) {
+    currentEffectText =
+        "Currently: " +
+        formatNumber(getPassiveAppleRate()) +
+        " apples/sec";
+}
+
 const currentEffectHTML =
     currentEffectText
         ? "<br><br>" + currentEffectText
@@ -8668,10 +10140,29 @@ tooltip.innerHTML =
                 const costElement =
     button.querySelector(".upgrade-cost");
 
-if (costElement) {
+if (upgrade.purchases >= upgrade.maxPurchases) {
+
+    if (costElement) {
+        costElement.remove();
+    }
+
+    const divider =
+        button.querySelector(".upgrade-divider");
+
+    if (divider) {
+        divider.remove();
+    }
+
+}
+else if (costElement) {
+
     costElement.textContent =
-    formatNumber(Math.floor(getUpgradeCost(upgrade))) +
-        "";
+        formatNumber(
+            Math.floor(
+                getUpgradeCost(upgrade)
+            )
+        ) + "";
+
 }
 
 if (upgrade.purchases >= upgrade.maxPurchases) {
@@ -9325,6 +10816,9 @@ const survival =
 const gardening =
     skills.gardening;
 
+const philosophy =
+    skills.philosophy;
+
 skillPointNumber.textContent =
     formatNumber(
         getAvailableSkillPoints()
@@ -9370,6 +10864,7 @@ gatheringXPFill.style.width =
     Math.pow(gathering.points, 2) *
     skillSpeedMultiplier *
     skillXPMultiplier *
+    getPhilosophyXPMultiplier() *
     getSkillPointProductMultiplier() *
     getAppleShardSkillXPMultiplier();
 
@@ -9463,6 +10958,7 @@ forgingXPFill.style.width =
     Math.pow(forging.points, 2) *
     skillSpeedMultiplier *
     skillXPMultiplier *
+    getPhilosophyXPMultiplier() *
     getSkillPointProductMultiplier() *
     getAppleShardSkillXPMultiplier();
 
@@ -9557,6 +11053,7 @@ survivalXPFill.style.width =
     Math.pow(survival.points, 2) *
     skillSpeedMultiplier *
     skillXPMultiplier *
+    getPhilosophyXPMultiplier() *
     getSkillPointProductMultiplier() *
     getAppleShardSkillXPMultiplier();
 
@@ -9649,6 +11146,7 @@ const currentGardeningXPRate =
     Math.pow(gardening.points, 2) *
     skillSpeedMultiplier *
     skillXPMultiplier *
+    getPhilosophyXPMultiplier() *
     getSkillPointProductMultiplier() *
     getAppleShardSkillXPMultiplier();
 
@@ -9696,7 +11194,83 @@ document.querySelectorAll(
     );
 
 gardeningEffect.textContent =
-    formatNumber(gardening.effectMultiplier) + "x";
+    gardening.effectMultiplier.toFixed(4) + "x";
+
+/* ============================================================
+   PHILOSOPHY
+   ============================================================ */
+
+philosophyPoints.textContent =
+    philosophy.points;
+
+const philosophyXPNeededAmount =
+    getSkillXPNeeded(philosophy);
+
+philosophyXPElement.textContent =
+    formatNumber(philosophy.xp);
+
+philosophyXPNeeded.textContent =
+    formatNumber(philosophyXPNeededAmount);
+
+const philosophyProgress =
+    philosophy.level >= getSkillMaxLevel(philosophy)
+        ? 100
+        : Math.min(
+            100,
+            (philosophy.xp / philosophyXPNeededAmount) * 100
+        );
+
+philosophyXPFill.style.width =
+    philosophyProgress + "%";
+
+const currentPhilosophyXPRate =
+    Math.pow(philosophy.points, 2) *
+    skillSpeedMultiplier *
+    skillXPMultiplier *
+    getPhilosophyXPMultiplier() *
+    getSkillPointProductMultiplier() *
+    getAppleShardSkillXPMultiplier();
+
+philosophyXPRate.textContent =
+    formatNumber(currentPhilosophyXPRate);
+
+if (
+    philosophy.level < getSkillMaxLevel(philosophy) &&
+    currentPhilosophyXPRate > 0
+) {
+    const philosophyXPRemaining =
+        philosophyXPNeededAmount - philosophy.xp;
+
+    const philosophySecondsRemaining =
+        Math.max(
+            0,
+            Math.ceil(
+                philosophyXPRemaining /
+                currentPhilosophyXPRate
+            )
+        );
+
+    philosophyLevelUpTimer.textContent =
+        formatSkillTimer(philosophySecondsRemaining);
+}
+else {
+    philosophyLevelUpTimer.textContent = "--:--";
+}
+
+philosophySkill.querySelector(
+    ".skill-header strong"
+).textContent =
+    philosophy.name +
+    ": Level " +
+    philosophy.level +
+    (
+        philosophy.level >= getSkillMaxLevel(philosophy)
+            ? " (Capped)"
+            : ""
+    );
+
+philosophyEffect.textContent =
+    formatNumber(getPhilosophyXPMultiplier()) + "x";
 
 /* ============================================================
    SKILL POINT BUTTONS
@@ -9739,6 +11313,12 @@ gardeningPlus.disabled =
 gardeningMinus.disabled =
     gardening.points <= 0;
 
+philosophyPlus.disabled =
+    availableSkillPoints <= 0;
+
+philosophyMinus.disabled =
+    philosophy.points <= 0;
+
     updateResourceSidebar();
     updateUpgradeButtons();
     for (const skill of Object.values(skills)) {
@@ -9748,6 +11328,8 @@ gardeningMinus.disabled =
 }
 
 setInterval(updateSkillsDisplay, 1000);
+setInterval(updateAwakeningDisplay, 100);
+setInterval(updateTabGlows, 100);
 
 learnSkillPointButton.addEventListener(
     "click",
@@ -9951,6 +11533,18 @@ setupSkillPointHoldButton(
     -1
 );
 
+setupSkillPointHoldButton(
+    philosophyPlus,
+    skills.philosophy,
+    1
+);
+
+setupSkillPointHoldButton(
+    philosophyMinus,
+    skills.philosophy,
+    -1
+);
+
 function getAvailableSkillPoints() {
     let assignedPoints = 0;
 
@@ -10001,6 +11595,19 @@ function getAppleShardSkillXPMultiplier() {
     );
 }
 
+
+function getPhilosophyXPMultiplier() {
+    if (upgrades[26].purchases <= 0) {
+        return 1;
+    }
+
+    return Math.pow(
+        1.5,
+        skills.philosophy.level
+    );
+}
+
+
 let lastSkillUpdateTime = Date.now();
 
 function updateSkillXP() {
@@ -10028,6 +11635,7 @@ const xpPerSecond =
     Math.pow(skill.points, 2) *
     skillSpeedMultiplier *
     skillXPMultiplier *
+    getPhilosophyXPMultiplier() *
     getSkillPointProductMultiplier() *
     getAppleShardSkillXPMultiplier();
 
@@ -10251,6 +11859,59 @@ else {
     skillsTab.classList.remove("upgrade-available");
 }
 
+/* --------------------------------------------------------
+   Apples tab — Apple Shard upgrades
+   -------------------------------------------------------- */
+
+   let appleShardUpgradeAvailable = false;
+
+for (const upgrade of appleShardUpgrades) {
+
+    const cost =
+        getAppleShardUpgradeCost(upgrade);
+
+    if (
+        cost !== null &&
+        appleShards >= cost
+    ) {
+        appleShardUpgradeAvailable = true;
+        break;
+    }
+}
+
+if (appleShardUpgradeAvailable) {
+    applesTab.classList.add("upgrade-available");
+}
+else {
+    applesTab.classList.remove("upgrade-available");
+}
+
+/* --------------------------------------------------------
+   Awakening tab
+   -------------------------------------------------------- */
+
+const awakeningAvailable =
+    acorns >= 1e308 &&
+    upgrades.filter(
+        upgrade =>
+            upgrade.purchases >=
+            upgrade.maxPurchases
+    ).length >= 30 &&
+    goldenAcorns >= 1e9 &&
+    skills.philosophy.level >= 50 &&
+    appleShards >= 1e9;
+
+if (awakeningAvailable) {
+    awakeningTab.classList.add(
+        "upgrade-available"
+    );
+}
+else {
+    awakeningTab.classList.remove(
+        "upgrade-available"
+    );
+}
+
         }
 
         /* ============================================================
@@ -10275,6 +11936,8 @@ document.getElementById("apple-game-layout").style.display =
 createAppleGrid();
 
 restartAppleSpawnTimer();
+
+startPassiveAppleGeneration();
 
 // Resume the timer using its saved starting timestamp.
 if (appleGatheringStartTime === null) {
@@ -10361,6 +12024,8 @@ createUpgradeButtons();
 
         updateGoldenUpgradeButtons();
 
+        updateAwakeningDisplay();
+
         updateGatherButtonText();
 
         updateCooldown();
@@ -10405,6 +12070,18 @@ gardeningSkill.style.display =
         ? "block"
         : "none";
 
+philosophySkill.style.display =
+    upgrades[26].purchases > 0
+        ? "block"
+        : "none";
+
+        if (upgrades[29].purchases > 0) {
+
+awakeningTab.style.display =
+    "inline-block";
+
+}
+
 if (currentTab === "goldenAcorns") {
     goldenAcornsTab.click();
 }
@@ -10416,6 +12093,12 @@ else if (
     upgrades[19].purchases > 0
 ) {
     applesTab.click();
+}
+else if (
+    currentTab === "awakening" &&
+    upgrades[29].purchases > 0
+) {
+    awakeningTab.click();
 }
 
         saveGame();
