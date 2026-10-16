@@ -3081,7 +3081,7 @@ style="display: none;"
         <div id="apple-grid-instructions" style="display: none; text-align: center;">
             <p>Use the arrow keys to move the blue icon and collect apples.</p>
             <p>Buy upgrades to further increase your apple gain.</p>
-            <p>Golden apples are worth 4x the value of a red apple.</p>
+            <p id="golden-apple-value-info"></p>
             <p>Something strange may happen if you reach 1,000,000 apples...</p>
         </div>
 
@@ -4765,6 +4765,21 @@ const appleTaxMessage =
 const appleTaxMultiplierDisplay =
     document.getElementById("apple-tax-multiplier");
 
+const goldenAppleValueInfo =
+    document.getElementById("golden-apple-value-info");
+
+function updateGoldenAppleValueInfo() {
+    const multiplier =
+        4 + (
+            goldenUpgrades[7].effectMultiplier *
+            goldenUpgrades[7].purchases
+        );
+
+    goldenAppleValueInfo.textContent =
+        "Golden apples are worth " +
+        formatNumber(multiplier) +
+        "x the value of a red apple.";
+}
 
 applesTab.style.display = "none";
 
@@ -10682,6 +10697,7 @@ else {
 
 
             updateTabGlows();
+            updateGoldenAppleValueInfo();
 
         }
 
