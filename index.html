@@ -3164,7 +3164,7 @@ style="display: none;"
         
 
         <div id="apple-grid-instructions" style="display: none; text-align: center;">
-            <p>Use the arrow keys to move the blue icon and collect apples.</p>
+            <p>Use the arrow keys or WASD to move the blue icon and collect apples.</p>
             <p>Buy upgrades to further increase your apple gain.</p>
             <p id="golden-apple-value-info"></p>
             <p>Something strange may happen if you reach 1,000,000 apples...</p>
@@ -3443,7 +3443,7 @@ style="display: none;"
 
     <!-- CHANGELOG -->
 
-<button id="changelog-button">v1.10.2</button>
+<button id="changelog-button">v1.10.3</button>
 
 <div id="changelog-modal">
 
@@ -3454,6 +3454,8 @@ style="display: none;"
         <h1>Changelog</h1>
 
         <div id="changelog-entries">
+            <h3>v1.10.3</h3>
+            <p>- Changed apple gathering controls so now WASD works as well as arrow keys</p>
             <h3>v1.10.2</h3>
             <p>- Flipped the + and - buttons in each of the skill containers</p>
             <h3>v1.10.1</h3>
@@ -8785,73 +8787,57 @@ function moveApplePlayer() {
 
 }
 
-document.addEventListener("keydown", function(event) {
-    if (event.key !== "Escape") {
-        return;
-    }
-
-    const now = Date.now();
-
-    // Keep only Escape presses from the last second.
-    escapePressTimes = escapePressTimes.filter(function(time) {
-        return now - time <= 1000;
-    });
-
-    escapePressTimes.push(now);
-
-    if (escapePressTimes.length >= 5) {
-        addLogMessage(
-            "The foundation of reality cracks just slightly...you might be on to something...",
-            "#999999",
-            "easter-egg-rapid-escape"
-        );
-
-        // Prevent additional triggers from the same burst.
-        escapePressTimes = [];
-    }
-});
-
-// Arrow keys change the player's direction.
+// Arrow keys and WASD change the player's direction.
 document.addEventListener("keydown", function(event) {
 
-    if (
-        !appleGatheringStarted ||
-        currentTab !== "apples"
-    ) {
-        return;
-    }
+if (
+    !appleGatheringStarted ||
+    currentTab !== "apples"
+) {
+    return;
+}
 
-    const arrowKeys = [
-        "ArrowUp",
-        "ArrowDown",
-        "ArrowLeft",
-        "ArrowRight"
-    ];
+const movementKeys = {
+    ArrowUp: "ArrowUp",
+    ArrowDown: "ArrowDown",
+    ArrowLeft: "ArrowLeft",
+    ArrowRight: "ArrowRight",
 
-    if (!arrowKeys.includes(event.key)) {
-        return;
-    }
+    w: "ArrowUp",
+    W: "ArrowUp",
+    s: "ArrowDown",
+    S: "ArrowDown",
+    a: "ArrowLeft",
+    A: "ArrowLeft",
+    d: "ArrowRight",
+    D: "ArrowRight"
+};
 
-    event.preventDefault();
+if (!movementKeys[event.key]) {
+    return;
+}
 
-    // Ignore held-key repeats so holding a key does not
-    // repeatedly reset the movement timer.
-    if (event.repeat) {
-        return;
-    }
+event.preventDefault();
 
-    // Change direction immediately.
-    applePlayerDirection = event.key;
+// Ignore held-key repeats so holding a key does not
+// repeatedly reset the movement timer.
+if (event.repeat) {
+    return;
+}
 
-    // Start moving if the player isn't already moving.
-    if (applePlayerMoveTimer === null) {
-        moveApplePlayer();
+// Convert WASD into the same directions used by the
+// existing movement system.
+applePlayerDirection = movementKeys[event.key];
 
-        applePlayerMoveTimer = setInterval(
-    moveApplePlayer,
-    getApplePlayerMoveInterval()
-);
-    }
+// Start moving if the player isn't already moving.
+if (applePlayerMoveTimer === null) {
+    moveApplePlayer();
+
+    applePlayerMoveTimer = setInterval(
+        moveApplePlayer,
+        getApplePlayerMoveInterval()
+    );
+}
 
 });
 
