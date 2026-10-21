@@ -2368,6 +2368,87 @@ body.awakening-shaking {
     display: none;
 }
 
+/* ============================================================
+   SIDEBAR TOGGLE BUTTONS
+   ============================================================ */
+
+   #resource-sidebar {
+    transition: transform 0.25s ease;
+}
+
+#log-sidebar {
+    transition: transform 0.25s ease;
+}
+
+#resource-sidebar.closed {
+    transform: translateX(-100%);
+}
+
+#log-sidebar.closed {
+    transform: translateX(100%);
+}
+
+#resource-sidebar-toggle,
+#log-sidebar-toggle {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+
+    width: 24px;
+    height: 60px;
+
+    padding: 0;
+
+    /* Match the sidebar background */
+    background-color: #181818;
+    color: #bbbbbb;
+
+    /* Right corners rounded, left corners square */
+    border: 2px solid #555555;
+    border-left: none;
+    border-radius: 0 6px 6px 0;
+
+    font-size: 14px;
+    font-weight: bold;
+
+    cursor: pointer;
+
+    z-index: 1001;
+
+    transition:
+        left 0.25s ease,
+        right 0.25s ease,
+        background-color 0.2s ease;
+}
+
+#log-sidebar-toggle {
+    border-left: 2px solid #555555;
+    border-right: none;
+    border-radius: 6px 0 0 6px;
+}
+
+#resource-sidebar-toggle {
+    left: 240px;
+}
+
+#log-sidebar-toggle {
+    right: 240px;
+}
+
+#resource-sidebar-toggle.closed {
+    left: 0;
+}
+
+#log-sidebar-toggle.closed {
+    right: 0;
+}
+
+#resource-sidebar-toggle:hover,
+#log-sidebar-toggle:hover {
+    background-color: #444444;
+    color: #eeeeee;
+}
+
     </style>
 
 </head>
@@ -2415,6 +2496,8 @@ body.awakening-shaking {
 
 </div>
 
+<button id="resource-sidebar-toggle" type="button">◀</button>
+
 <!-- ============================================================
      LOG SIDEBAR
      ============================================================ -->
@@ -2428,6 +2511,8 @@ body.awakening-shaking {
         <div id="log-messages"></div>
     
     </div>
+
+    <button id="log-sidebar-toggle" type="button">▶</button>
 
     <!-- ============================================================
          RESOURCE DISPLAYS
@@ -3358,7 +3443,7 @@ style="display: none;"
 
     <!-- CHANGELOG -->
 
-<button id="changelog-button">v1.10</button>
+<button id="changelog-button">v1.10.1</button>
 
 <div id="changelog-modal">
 
@@ -3369,6 +3454,8 @@ style="display: none;"
         <h1>Changelog</h1>
 
         <div id="changelog-entries">
+            <h3>v1.10.1</h3>
+            <p>- Added buttons to close and open left and right sidebars</p>
             <h2>v1.10</h2>
             <p>- Added Acorn Upgrades 26-30</p>
             <p>- Added the fifth and final skill: Philosophy</p>
@@ -5338,7 +5425,55 @@ const philosophyLevelUpTimer =
 const logMessagesElement =
     document.getElementById("log-messages");
 
-    const exportDataButton =
+const resourceSidebar =
+    document.getElementById("resource-sidebar");
+
+const logSidebar =
+    document.getElementById("log-sidebar");
+
+const resourceSidebarToggle =
+    document.getElementById("resource-sidebar-toggle");
+
+const logSidebarToggle =
+    document.getElementById("log-sidebar-toggle");
+
+function toggleResourceSidebar() {
+    const isClosed =
+        resourceSidebar.classList.toggle("closed");
+
+    resourceSidebarToggle.classList.toggle(
+        "closed",
+        isClosed
+    );
+
+    resourceSidebarToggle.textContent =
+        isClosed ? "▶" : "◀";
+}
+
+function toggleLogSidebar() {
+    const isClosed =
+        logSidebar.classList.toggle("closed");
+
+    logSidebarToggle.classList.toggle(
+        "closed",
+        isClosed
+    );
+
+    logSidebarToggle.textContent =
+        isClosed ? "◀" : "▶";
+}
+
+resourceSidebarToggle.addEventListener(
+    "click",
+    toggleResourceSidebar
+);
+
+logSidebarToggle.addEventListener(
+    "click",
+    toggleLogSidebar
+);
+
+const exportDataButton =
     document.getElementById("export-data-button");
 
 const importDataButton =
