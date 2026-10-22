@@ -5810,11 +5810,22 @@ if (
     if (typeof saveData.gatherCooldown === "number") gatherCooldown = saveData.gatherCooldown;
 
     if (
-        ["acorns", "goldenAcorns", "skills", "apples"].includes(
+        ["acorns", "goldenAcorns", "skills", "apples", "awakening"].includes(
             saveData.currentTab
         )
     ) {
-        currentTab = saveData.currentTab;
+        if (
+    [
+        "acorns",
+        "goldenAcorns",
+        "skills",
+        "apples",
+        "awakening"
+    ].includes(saveData.currentTab)
+) {
+    currentTab =
+        saveData.currentTab;
+}
     }
 
     // Restore settings.
@@ -6365,6 +6376,13 @@ if (
         saveData.hasPrestiged;
 }
 
+if (
+    typeof saveData.hasAwakened === "boolean"
+) {
+    hasAwakened =
+        saveData.hasAwakened;
+}
+
 highestAcorns =
     saveData.highestAcorns;
 
@@ -6758,6 +6776,18 @@ else {
     goldenAcornTimer.style.display = "none";
 }
 
+// Upgrade 30 unlocks Awakening.
+awakeningTab.style.display =
+    upgrades[29].purchases > 0
+        ? "inline-block"
+        : "none";
+
+if (hasAwakened) {
+    awakeningMessage.classList.add("visible");
+}
+else {
+    awakeningMessage.classList.remove("visible");
+}
 
 /* ------------------------------------------------------------
    Make sure the saved tab is actually available
