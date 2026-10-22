@@ -2449,6 +2449,31 @@ body.awakening-shaking {
     color: #eeeeee;
 }
 
+/* Regular upgrade numbers */
+
+.upgrade-number {
+    position: absolute;
+
+    top: 3px;
+    left: 5px;
+
+    font-size: 10px;
+    font-weight: normal;
+
+    color: #888888;
+
+    line-height: 1;
+    pointer-events: none;
+}
+
+#upgrade-number-setting {
+    margin-top: -20px;
+    margin-bottom: 25px;
+
+    font-size: 14px;
+    color: #bbbbbb;
+}
+
     </style>
 
 </head>
@@ -2625,7 +2650,18 @@ body.awakening-shaking {
             <div id="cooldown-text"></div>
         
             <div id="upgrade-container"></div>
-        
+
+            <div id="upgrade-number-setting">
+                Upgrade Numbers Visible:
+                <label class="switch">
+                    <input
+                        type="checkbox"
+                        id="upgrade-number-toggle"
+                    >
+                    <span class="slider"></span>
+                </label>
+            </div>
+            
             <div id="prestige-container">
         
                 <div id="prestige-tooltip"></div>
@@ -4677,8 +4713,11 @@ const sidebarAvailableSkillPoints =
         const cooldownText =
             document.getElementById("cooldown-text");
 
-            const upgradeContainer =
-    document.getElementById("upgrade-container");
+        const upgradeContainer =
+            document.getElementById("upgrade-container");
+
+const upgradeNumberToggle =
+    document.getElementById("upgrade-number-toggle");
 
 const prestigeContainer =
     document.getElementById("prestige-container");
@@ -9689,6 +9728,26 @@ prestigeButton.addEventListener(
     }
 );
 
+upgradeNumberToggle.addEventListener(
+    "change",
+    function() {
+
+        const numbers =
+            upgradeContainer.querySelectorAll(
+                ".upgrade-number"
+            );
+
+        numbers.forEach(function(number) {
+            number.style.display =
+                upgradeNumberToggle.checked
+                    ? "block"
+                    : "none";
+        });
+
+        saveGame();
+    }
+);
+
 prestigeConfirmationToggle.addEventListener(
     "change",
     function() {
@@ -9854,6 +9913,22 @@ return Math.min(
 
                 button.className =
                     "upgrade-button";
+
+                const number =
+    document.createElement("div");
+
+number.className =
+    "upgrade-number";
+
+    number.textContent =
+    upgrade.id + 1;
+
+number.style.display =
+    upgradeNumberToggle.checked
+        ? "block"
+        : "none";
+
+button.appendChild(number);
 
                 /* ----------------------------------------------------
                    Level
