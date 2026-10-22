@@ -2467,11 +2467,16 @@ body.awakening-shaking {
 }
 
 #upgrade-number-setting {
-    margin-top: -20px;
-    margin-bottom: 25px;
+    grid-column: 1 / 3;
 
-    font-size: 14px;
+    font-size: 13px;
     color: #bbbbbb;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 8px;
 }
 
     </style>
@@ -2650,17 +2655,6 @@ body.awakening-shaking {
             <div id="cooldown-text"></div>
         
             <div id="upgrade-container"></div>
-
-            <div id="upgrade-number-setting">
-                Upgrade Numbers Visible:
-                <label class="switch">
-                    <input
-                        type="checkbox"
-                        id="upgrade-number-toggle"
-                    >
-                    <span class="slider"></span>
-                </label>
-            </div>
             
             <div id="prestige-container">
         
@@ -3408,6 +3402,17 @@ style="display: none;"
 </div>    
 
 <div id="save-controls">
+
+    <div id="upgrade-number-setting">
+        Upgrade Numbers Visible:
+        <label class="switch">
+            <input
+                type="checkbox"
+                id="upgrade-number-toggle"
+            >
+            <span class="slider"></span>
+        </label>
+    </div>
 
     <button id="credits-button" class="save-control-button">
         Credits
