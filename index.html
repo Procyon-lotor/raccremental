@@ -1103,6 +1103,12 @@ cursor: not-allowed;
     gap: 6px;
 
     z-index: 10000;
+
+    transition: transform 0.25s ease;
+}
+
+#resource-sidebar.closed ~ #save-controls {
+    transform: translateX(calc(-100% - 12px));
 }
 
 .save-control-button {
