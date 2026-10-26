@@ -2476,6 +2476,67 @@ body.awakening-shaking {
     align-items: center;
     justify-content: center;
 
+    margin-bottom: 2px;
+}
+
+/* Mobile Apple Grid movement controls */
+
+#apple-movement-controls {
+    display: none;
+    margin: 18px auto 25px;
+    width: 210px;
+    text-align: center;
+}
+
+.apple-movement-row {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.apple-movement-button {
+    width: 64px;
+    height: 48px;
+
+    padding: 0;
+
+    background-color: #303030;
+    color: #eeeeee;
+
+    border: 2px solid #ff002f;
+    border-radius: 8px;
+
+    font-size: 24px;
+    font-weight: bold;
+
+    cursor: pointer;
+
+    touch-action: manipulation;
+    user-select: none;
+
+    -webkit-tap-highlight-color: transparent;
+}
+
+.apple-movement-button:hover {
+    background-color: #404040;
+}
+
+.apple-movement-button:active {
+    background-color: #17383b;
+    transform: translateY(1px);
+}
+
+#apple-arrow-button-setting {
+    grid-column: 1 / 3;
+
+    font-size: 13px;
+    color: #bbbbbb;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
     margin-bottom: 8px;
 }
 
@@ -3194,7 +3255,7 @@ style="display: none;"
         
 
         <div id="apple-grid-instructions" style="display: none; text-align: center;">
-            <p>Use the arrow keys or WASD to move the blue icon and collect apples.</p>
+            <p>Use the arrow keys, arrow buttons, or WASD to move the blue icon and collect apples.</p>
             <p>Buy upgrades to further increase your apple gain.</p>
             <p id="golden-apple-value-info"></p>
             <p>Something strange may happen if you reach 1,000,000 apples...</p>
@@ -3210,16 +3271,56 @@ style="display: none;"
     Thanks to tax breaks, all of your apples are being multiplied by
     <strong id="apple-tax-multiplier">1.00x</strong>!
 </div>
+<div id="apple-game-layout" style="display: none;">
+    <div id="apple-grid"></div>
+    <div id="apple-upgrade-container"></div>
+</div>
 
-        
-        <div id="apple-game-layout" style="display: none;">
-            <div id="apple-grid"></div>
-            <div id="apple-upgrade-container"></div>
-        </div>
-
-        <button id="finish-gathering-button" style="display: none;" disabled>
-            Feed the Racc King 1,000,000 apples
+<div id="apple-movement-controls">
+    <div class="apple-movement-row">
+        <button
+            id="apple-move-up"
+            class="apple-movement-button"
+            type="button"
+            aria-label="Move up"
+        >
+            ▲
         </button>
+    </div>
+
+    <div class="apple-movement-row">
+        <button
+            id="apple-move-left"
+            class="apple-movement-button"
+            type="button"
+            aria-label="Move left"
+        >
+            ◀
+        </button>
+
+        <button
+            id="apple-move-down"
+            class="apple-movement-button"
+            type="button"
+            aria-label="Move down"
+        >
+            ▼
+        </button>
+
+        <button
+            id="apple-move-right"
+            class="apple-movement-button"
+            type="button"
+            aria-label="Move right"
+        >
+            ▶
+        </button>
+    </div>
+</div>
+
+<button id="finish-gathering-button" style="display: none;" disabled>
+    Feed the Racc King 1,000,000 apples
+</button>
 
 <div id="apple-shard-separator"></div>
 
@@ -3414,6 +3515,18 @@ style="display: none;"
         </label>
     </div>
 
+    <div id="apple-arrow-button-setting">
+        Show Arrow Buttons:
+        <label class="switch">
+            <input
+                type="checkbox"
+                id="apple-arrow-button-toggle"
+                checked
+            >
+            <span class="slider"></span>
+        </label>
+    </div>
+
     <button id="credits-button" class="save-control-button">
         Credits
     </button>
@@ -3484,7 +3597,7 @@ style="display: none;"
 
     <!-- CHANGELOG -->
 
-<button id="changelog-button">v1.10.5</button>
+<button id="changelog-button">v1.10.7</button>
 
 <div id="changelog-modal">
 
@@ -3495,6 +3608,11 @@ style="display: none;"
         <h1>Changelog</h1>
 
         <div id="changelog-entries">
+            <h3>v1.10.7</h3>
+            <p>-Added arrow buttons and, hopefully in doing so, mobile support for Apples</p>
+            <p>-Added a setting to make arrow buttons visible/invisible</p>
+            <h3>v1.10.6</h3>
+            <p>- Fixed a few small bugs and changed a few small descriptions</p>
             <h3>v1.10.5</h3>
             <p>- Fixed a bug where Awakening data does not get exported when exporting game data</p>
             <p>- Fixed a bug where, if the player's current tab is Awakening, the current tab gets reverted to Acorns when closing or refreshing the game</p>
@@ -4729,6 +4847,9 @@ const sidebarAvailableSkillPoints =
 const upgradeNumberToggle =
     document.getElementById("upgrade-number-toggle");
 
+const appleArrowButtonToggle =
+    document.getElementById("apple-arrow-button-toggle");
+
 const prestigeContainer =
     document.getElementById("prestige-container");
 
@@ -4888,6 +5009,20 @@ const appleGrid =
 const appleGridInstructions =
     document.getElementById("apple-grid-instructions");
 
+const appleMovementControls =
+    document.getElementById("apple-movement-controls");
+
+const appleMoveUpButton =
+    document.getElementById("apple-move-up");
+
+const appleMoveDownButton =
+    document.getElementById("apple-move-down");
+
+const appleMoveLeftButton =
+    document.getElementById("apple-move-left");
+
+const appleMoveRightButton =
+    document.getElementById("apple-move-right");
 
 const appleGatheringTimer =
     document.getElementById("apple-gathering-timer");
@@ -5640,7 +5775,9 @@ return {
 
     goldenAutobuy:
     goldenAutobuyToggle.checked,
-    
+
+    appleArrowButtons:
+    appleArrowButtonToggle.checked,
 
     upgrades:
         upgrades.map(
@@ -5840,6 +5977,11 @@ if (
     if (typeof saveData.goldenAutobuy === "boolean") {
         goldenAutobuyToggle.checked =
             saveData.goldenAutobuy;
+    }
+
+    if (typeof saveData.appleArrowButtons === "boolean") {
+    appleArrowButtonToggle.checked =
+        saveData.appleArrowButtons;
     }
 
     // Restore regular upgrades by ID.
@@ -6148,7 +6290,7 @@ if (
 updateGatherCooldown();
 }
 
-        function hardReset() {
+function hardReset() {
 
 const confirmed = confirm(
     "WARNING: This will permanently delete ALL of your progress. Are you sure you want to continue?"
@@ -6444,6 +6586,11 @@ if (
     goldenAutobuyToggle.checked =
         saveData.goldenAutobuy;
 
+}
+
+if (typeof saveData.appleArrowButtons === "boolean") {
+    appleArrowButtonToggle.checked =
+        saveData.appleArrowButtons;
 }
 
 if (
@@ -8012,6 +8159,8 @@ function finishAppleGathering() {
     document.getElementById("apple-game-layout").style.display =
         "none";
 
+    appleMovementControls.style.display = "none";
+
     finishGatheringButton.style.display = "none";
 
     // Allow the player to start gathering again.
@@ -8776,6 +8925,11 @@ appleGridInstructions.style.display = "block";
 document.getElementById("apple-game-layout").style.display =
     "flex";
 
+appleMovementControls.style.display =
+    appleArrowButtonToggle.checked
+        ? "block"
+        : "none";
+
     createAppleGrid();
 
 // Start spawning apples at the current upgrade-adjusted rate.
@@ -8866,6 +9020,31 @@ function moveApplePlayer() {
 
 }
 
+// Set the player's movement direction and start movement.
+function setApplePlayerDirection(direction) {
+
+if (
+    !appleGatheringStarted ||
+    currentTab !== "apples"
+) {
+    return;
+}
+
+applePlayerDirection = direction;
+
+// Start moving if the player isn't already moving.
+if (applePlayerMoveTimer === null) {
+    moveApplePlayer();
+
+    applePlayerMoveTimer = setInterval(
+        moveApplePlayer,
+        getApplePlayerMoveInterval()
+    );
+}
+
+}
+
+
 // Arrow keys and WASD change the player's direction.
 document.addEventListener("keydown", function(event) {
 
@@ -8904,21 +9083,41 @@ if (event.repeat) {
     return;
 }
 
-// Convert WASD into the same directions used by the
-// existing movement system.
-applePlayerDirection = movementKeys[event.key];
-
-// Start moving if the player isn't already moving.
-if (applePlayerMoveTimer === null) {
-    moveApplePlayer();
-
-    applePlayerMoveTimer = setInterval(
-        moveApplePlayer,
-        getApplePlayerMoveInterval()
-    );
-}
+setApplePlayerDirection(
+    movementKeys[event.key]
+);
 
 });
+
+
+// Mobile movement buttons.
+appleMoveUpButton.addEventListener(
+"click",
+function() {
+    setApplePlayerDirection("ArrowUp");
+}
+);
+
+appleMoveDownButton.addEventListener(
+"click",
+function() {
+    setApplePlayerDirection("ArrowDown");
+}
+);
+
+appleMoveLeftButton.addEventListener(
+"click",
+function() {
+    setApplePlayerDirection("ArrowLeft");
+}
+);
+
+appleMoveRightButton.addEventListener(
+"click",
+function() {
+    setApplePlayerDirection("ArrowRight");
+}
+);
 
         /* ============================================================
            GATHER BUTTON
@@ -9785,6 +9984,25 @@ upgradeNumberToggle.addEventListener(
         });
 
         saveGame();
+    }
+);
+
+appleArrowButtonToggle.addEventListener(
+    "change",
+    function() {
+
+        if (appleArrowButtonToggle.checked) {
+            if (appleGatheringStarted) {
+                appleMovementControls.style.display =
+                    "block";
+            }
+        } else {
+            appleMovementControls.style.display =
+                "none";
+        }
+
+        saveGame();
+
     }
 );
 
@@ -12184,6 +12402,11 @@ appleGridInstructions.style.display = "block";
 
 document.getElementById("apple-game-layout").style.display =
     "flex";
+
+appleMovementControls.style.display =
+    appleArrowButtonToggle.checked
+        ? "block"
+        : "none";
 
 createAppleGrid();
 
